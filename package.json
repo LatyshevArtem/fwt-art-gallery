@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://latyshevartem.github.io/fwt-art-gallery/",
   "dependencies": {
     "@types/node": "^16.18.39",
     "@types/react": "^18.2.18",
