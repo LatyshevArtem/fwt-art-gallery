@@ -1,0 +1,28 @@
+name: Deploy React Application
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [17.5.0]
+    
+    steps:
+      - name: Checking the repository code to gain access to it
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React-app
+        run: npm run build
+
+      - name: Deploy to gh-pages
+        run: |
+          git remote set-url origin https://git:${{secrets.ACCESS_TOKEN}}@github.com/${GITHUB_REPOSITORY}.git
+          npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
