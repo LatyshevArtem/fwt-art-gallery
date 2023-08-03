@@ -9,6 +9,8 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "import/extensions": "off",
+    "no-restricted-exports": "off",
     "react/react-in-jsx-scope": "off",
     "react/function-component-definition": [
       2,
