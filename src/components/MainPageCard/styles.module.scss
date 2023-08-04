@@ -1,0 +1,129 @@
+@import "../App/scss/breakpoints.scss";
+@import "../App/scss/colors.scss";
+
+$mobile-card-width: 280px;
+$mobile-card-height: 185px;
+
+$tablet-card-width: 352px;
+$tablet-card-height: 220px;
+
+$desktop-card-width: 392px;
+$desktop-card-height: 260px;
+
+
+.card {
+  position: relative;
+  width: $mobile-card-width;
+  height: $mobile-card-height;
+
+  &__image {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (min-width: $tablet-width) {
+    width: $tablet-card-width;
+    height: $tablet-card-height;
+  }
+
+  @media (min-width: $desktop-width) {
+    width: $desktop-card-width;
+    height: $desktop-card-height;
+  }
+}
+
+.figcaption {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+  width: 236px;
+  padding: 8px 12px;
+  text-transform: uppercase;
+  background-color: $primary-white;
+
+  @media (min-width: $tablet-width) {
+    row-gap: 8px;
+    width: 300px;
+    padding: 12px;
+  }
+
+  @media (min-width: $desktop-width) {
+    padding: 20px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 2px;
+      height: 42px;
+      background-color: $accent-red;
+    }
+  }
+
+  &__name {
+    font-family: "Cormorant SC";
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    color: $primary-black;
+
+    @media (min-width: $tablet-width) {
+      font-size: 16px;
+      line-height: 19px;
+    }
+  }
+
+  &__date {
+    font-family: "Inter";
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 10px;
+    color: $accent-red;
+
+    @media (min-width: $tablet-width) {
+      font-size: 12px;
+      line-height: 15px;
+    }
+  }
+
+  &__arrow-block {
+    position: absolute;
+    top: 0;
+    left: calc(100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: $accent-red;
+  
+    @media (min-width: $desktop-width) {
+      display: none;
+    }
+  
+    svg {
+      fill: $primary-light-gray;
+    }
+  }
+
+  &--dark {
+    background-color: $primary-black;
+
+    &::before {
+      background-color: $accent-gold;
+    }
+
+    .figcaption__name {
+      color: $primary-light-gray;
+    }
+
+    .figcaption__date {
+      color: $accent-gold;
+    }
+
+    .figcaption__arrow-block {
+      background-color: $accent-gold;
+    }
+  }
+}
