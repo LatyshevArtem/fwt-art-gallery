@@ -7,19 +7,12 @@ const meta: Meta<typeof MainPageCard> = {
 
 type Story = StoryObj<typeof MainPageCard>;
 
-const LightTheme: Story = {
+const Default: Story = {
   args: {
     name: 'Jean-Honore Fragonard',
     years: '1732 - 1806',
   },
 };
 
-const DarkTheme: Story = {
-  args: {
-    name: 'Jean-Honore Fragonard',
-    years: '1732 - 1806',
-  },
-};
-
-export { LightTheme, DarkTheme };
+export { Default };
 export default meta;
