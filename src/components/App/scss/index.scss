@@ -17,7 +17,7 @@ body {
 
 a,
 a:link,
-a:visited  {
+a:visited {
   text-decoration: none;
 }
 
@@ -33,4 +33,13 @@ ul {
 svg,
 img {
   line-height: 0;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+a:focus,
+button:focus {
+  outline: none;
 }

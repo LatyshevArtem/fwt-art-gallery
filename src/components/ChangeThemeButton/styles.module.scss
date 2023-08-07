@@ -1,0 +1,24 @@
+@import "../App/scss/colors.scss";
+
+.button {
+  border-radius: 20px;
+  padding: 8px;
+  line-height: 0;
+  fill: $primary-dark-gray;
+  background-color: $secondary-white;
+
+  &:hover,
+  &:focus-visible {
+    fill: $primary-black;
+  }
+
+  &--dark {
+    fill: $primary-light-gray;
+    background-color: $secondary-black;
+
+    &:hover,
+    &:focus-visible {
+      fill: $primary-white;
+    }
+  }
+}

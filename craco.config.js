@@ -17,6 +17,7 @@ module.exports = {
         additionalData: `
           @import './src/components/App/scss/breakpoints.scss';
           @import './src/components/App/scss/colors.scss';
+          @import './src/components/App/scss/mixins.scss';
         `,
       },
     },

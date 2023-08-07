@@ -1,0 +1,29 @@
+@import "../App/scss/colors.scss";
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $primary-light-gray;
+  border-radius: 30px;
+  padding: 17px;
+  fill: $primary-dark-gray;
+  background-color: $secondary-white;
+
+  svg {
+    rotate: -90deg;
+  }
+
+  &:hover {
+    background-color: $primary-white;
+  }
+
+  &--dark {
+    fill: $primary-light-gray;
+    background-color: $secondary-black;
+
+    &:hover {
+      background-color: #242222;
+    }
+  }
+}
