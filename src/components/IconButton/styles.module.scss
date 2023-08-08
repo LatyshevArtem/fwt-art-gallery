@@ -13,10 +13,7 @@
     opacity: 0.5;
   }
 
-  &:hover:not(:disabled) {
-    fill: $primary-black;
-  }
-
+  &:hover:not(:disabled),
   &:focus-visible {
     fill: $primary-black;
   }
@@ -30,11 +27,7 @@
       opacity: 0.5;
     }
 
-    &:hover:not(:disabled) {
-      fill: $primary-light-gray;
-      background-color: rgba($primary-white, 0.8);
-    }
-
+    &:hover:not(:disabled),
     &:focus-visible {
       fill: $primary-light-gray;
       background-color: rgba($primary-white, 0.8);
@@ -49,29 +42,23 @@
       opacity: 0.5;
     }
 
-    &:hover:not(:disabled) {
-      fill: $primary-white;
-    }
-
+    &:hover:not(:disabled),
     &:focus-visible {
       fill: $primary-white;
     }
-  }
 
-  &--dark.button--over-image {
-    background-color: rgba($secondary-black, 0.9);
-
-    &:disabled {
+    &.button--over-image  {
       background-color: rgba($secondary-black, 0.9);
-      opacity: 0.5;
-    }
 
-    &:hover:not(:disabled) {
-      background-color: rgba($secondary-black, 0.8);
-    }
+      &:disabled {
+        background-color: rgba($secondary-black, 0.9);
+        opacity: 0.5;
+      }
 
-    &:focus-visible {
-      background-color: rgba($secondary-black, 0.8);
+      &:hover:not(:disabled),
+      &:focus-visible {
+        background-color: rgba($secondary-black, 0.8);
+      }
     }
   }
 }

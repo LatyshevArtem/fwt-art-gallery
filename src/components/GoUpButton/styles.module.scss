@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   border: 1px solid $primary-light-gray;
-  border-radius: 30px;
+  border-radius: 50%;
   padding: 17px;
   fill: $primary-dark-gray;
   background-color: $secondary-white;
@@ -14,7 +14,8 @@
     rotate: -90deg;
   }
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     background-color: $primary-white;
   }
 
@@ -22,7 +23,8 @@
     fill: $primary-light-gray;
     background-color: $secondary-black;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background-color: #242222;
     }
   }

@@ -9,9 +9,7 @@ const meta: Meta<typeof GoUpButton> = {
 type Story = StoryObj<typeof GoUpButton>;
 
 const Default: Story = {
-  args: {
-    disabled: false,
-  },
+  args: {},
 };
 
 export { Default as GoUpButton };

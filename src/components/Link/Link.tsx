@@ -5,9 +5,15 @@ import styles from './styles.module.scss';
 
 const cx = cn.bind(styles);
 
-const Link: FC<LinkProps> = ({ children, className, isDarkTheme, ...props }) => {
+const Link: FC<LinkProps> = ({ children, className, isDarkTheme, isIconLink, ...props }) => {
   return (
-    <a className={cx(className, 'link', { 'link--dark': isDarkTheme })} {...props}>
+    <a
+      className={cx(className, 'link', {
+        'link--dark': isDarkTheme,
+        'link--icon-link': isIconLink,
+      })}
+      {...props}
+    >
       {children}
     </a>
   );

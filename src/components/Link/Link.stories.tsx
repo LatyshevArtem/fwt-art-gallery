@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { ReactComponent as LogoIcon } from '@assets/icons/logo.svg';
 import Link from './index';
 
 const meta: Meta<typeof Link> = {
@@ -13,5 +14,12 @@ const Default: Story = {
   },
 };
 
-export { Default as Link };
+const IconLink: Story = {
+  args: {
+    children: <LogoIcon />,
+    isIconLink: true,
+  },
+};
+
+export { Default, IconLink };
 export default meta;

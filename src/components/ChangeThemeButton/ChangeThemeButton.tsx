@@ -7,9 +7,9 @@ import styles from './styles.module.scss';
 
 const cx = cn.bind(styles);
 
-const ChangeThemeButton: FC<ChangeThemeButtonProps> = ({ isDarkTheme, ...props }) => {
+const ChangeThemeButton: FC<ChangeThemeButtonProps> = ({ className, isDarkTheme, ...props }) => {
   return (
-    <button className={cx('button', { 'button--dark': isDarkTheme })} {...props}>
+    <button className={cx(className, 'button', { 'button--dark': isDarkTheme })} {...props}>
       {isDarkTheme ? <LightThemeIcon /> : <DarkThemeIcon />}
     </button>
   );

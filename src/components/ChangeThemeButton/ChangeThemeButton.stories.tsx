@@ -9,9 +9,7 @@ const meta: Meta<typeof ChangeThemeButton> = {
 type Story = StoryObj<typeof ChangeThemeButton>;
 
 const Default: Story = {
-  args: {
-    disabled: false,
-  },
+  args: {},
 };
 
 export { Default as ChangeThemeButton };

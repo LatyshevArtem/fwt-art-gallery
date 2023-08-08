@@ -97,11 +97,11 @@ $desktop-card-height: 260px;
     align-items: center;
     height: 100%;
     background-color: $accent-red;
-  
+
     @media (min-width: $desktop-width) {
       display: none;
     }
-  
+
     svg {
       fill: $primary-light-gray;
     }

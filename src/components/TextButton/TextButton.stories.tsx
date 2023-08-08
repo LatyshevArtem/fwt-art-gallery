@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { ReactComponent as PlusIcon } from '@assets/icons/plus.svg';
 import TextButton from './index';
 
 const meta: Meta<typeof TextButton> = {
@@ -11,10 +12,18 @@ type Story = StoryObj<typeof TextButton>;
 const Default: Story = {
   args: {
     text: 'Text button',
-    isDarkTheme: false,
+    isFilled: true,
     disabled: false,
   },
 };
 
-export { Default as TextButton };
+const TextButtonWithIcon: Story = {
+  args: {
+    children: <PlusIcon />,
+    text: 'With icon',
+    disabled: false,
+  },
+};
+
+export { Default, TextButtonWithIcon };
 export default meta;
