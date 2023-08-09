@@ -10,6 +10,7 @@ const TextButton: FC<TextButtonProps> = ({
   className,
   isDarkTheme,
   isFilled = true,
+  isUnderlined,
   isIconRight,
   isSmallIcon,
   gap = 'small',
@@ -21,7 +22,7 @@ const TextButton: FC<TextButtonProps> = ({
       className={cx(className, 'button', {
         'button--dark': isDarkTheme,
         'button--filled': isFilled,
-        'button--underlined': !isFilled,
+        'button--underlined': isUnderlined,
         'button--icon-right': isIconRight,
         'button--icon-small': isSmallIcon,
         [`button--gap-${gap}`]: Boolean(gap),

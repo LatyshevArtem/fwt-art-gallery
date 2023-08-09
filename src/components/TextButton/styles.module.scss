@@ -6,6 +6,20 @@
   justify-content: center;
   align-items: center;
   @include button-text;
+  color: $primary-dark-gray;
+  background-color: transparent;
+
+  &:disabled {
+    color: $primary-light-gray;
+  }
+
+  &:hover:not(:disabled) {
+    color: $primary-black;
+  }
+
+  &:focus-visible {
+    color: $primary-black;
+  }
 
   &--filled {
     border-radius: 30px;
@@ -28,9 +42,6 @@
   }
 
   &--underlined {
-    color: $primary-dark-gray;
-    background-color: transparent;
-
     svg {
       width: 24px;
       height: 24px;
@@ -49,18 +60,6 @@
         height: 1px;
         background-color: currentColor;
       }
-    }
-
-    &:disabled {
-      color: $primary-light-gray;
-    }
-
-    &:hover:not(:disabled) {
-      color: $primary-black;
-    }
-
-    &:focus-visible {
-      color: $primary-black;
     }
 
     &.button--icon-right {
@@ -88,6 +87,20 @@
   }
 
   &--dark {
+    color: $primary-light-gray;
+
+    &:disabled {
+      color: $secondary-gray;
+    }
+
+    &:hover:not(:disabled) {
+      color: $primary-white;
+    }
+
+    &:focus-visible {
+      color: $primary-white;
+    }
+
     &.button--filled {
       background-color: $accent-gold;
 
@@ -102,22 +115,6 @@
       &:focus-visible {
         background-color: #ba9052;
         box-shadow: 0px 4px 10px 0px rgba(171, 137, 86, 0.25);
-      }
-    }
-
-    &.button--underlined {
-      color: $primary-light-gray;
-
-      &:disabled {
-        color: $secondary-gray;
-      }
-
-      &:hover:not(:disabled) {
-        color: $primary-white;
-      }
-
-      &:focus-visible {
-        color: $primary-white;
       }
     }
   }
