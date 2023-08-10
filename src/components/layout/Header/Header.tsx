@@ -2,10 +2,10 @@ import { FC, useContext, useState } from 'react';
 import cn from 'classnames/bind';
 import Logo from '@components/Logo';
 import { ReactComponent as ClosedMenuButtonIcon } from '@assets/icons/menu-buger.svg';
-import { ThemeContex } from '../../../contexts/ThemeContext';
+import { ThemeContex } from '@contexts/ThemeContext';
+import { useMatchMedia } from '@hooks/useMatchMedia';
 import MobileMenu from './MobileMenu';
 import Menu from './Menu';
-import { useMatchMedia } from '../../../hooks/useMatchMedia';
 import styles from './styles.module.scss';
 
 const cx = cn.bind(styles);
