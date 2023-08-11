@@ -1,0 +1,89 @@
+$footer-light-theme-background-color: $primary-white;
+$footer-dark-theme-background-color: $primary-black;
+
+$project-info-light-theme-text-color: $primary-dark-gray;
+$project-info-dark-theme-text-color: $primary-light-gray;
+
+$project-author-text-color: $secondary-gray;
+
+$social-link-light-theme-fill: $primary-dark-gray;
+$social-link-dark-theme-fill: $primary-light-gray;
+
+.footer {
+  background-color: $footer-light-theme-background-color;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 32px 20px;
+  }
+
+  &__project-info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 9px;
+    font-family: "Inter";
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 140%;
+    color: $project-info-light-theme-text-color;
+  }
+
+  &__company-link {
+    font-size: inherit;
+    font-weight: 500;
+    line-height: inherit;
+
+    &::before {
+      font-size: 12px;
+      display: none;
+    }
+  }
+
+  &__project-author {
+    color: $project-author-text-color;
+  }
+
+  &__social-link-list {
+    display: flex;
+    column-gap: 20px;
+    line-height: 0;
+  }
+
+  &--dark {
+    background-color: $footer-dark-theme-background-color;
+
+    .footer {
+      &__project-info {
+        color: $project-info-dark-theme-text-color;
+      }
+    }
+  }
+
+  @media (min-width: $tablet-width) {
+    &__container {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 40px 20px;
+    }
+
+    &__project-info {
+      row-gap: 12px;
+      font-size: 16px;
+      font-weight: 300;
+    }
+  }
+
+  @media (min-width: $desktop-width) {
+    &__container {
+      padding: 40px 100px;
+    }
+
+    &__project-info {
+      row-gap: 20px;
+    }
+  }
+}
