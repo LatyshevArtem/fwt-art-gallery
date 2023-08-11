@@ -10,7 +10,6 @@ const MainPageCard: FC<MainPageCardProps> = ({ imgSrc, name, years, isDarkTheme 
   return (
     <figure className={cx('card')}>
       <img className={cx('card__image')} src={imgSrc} alt="" />
-      {imgSrc}
       <figcaption className={cx('figcaption', { 'figcaption--dark': isDarkTheme })}>
         <p className={cx('figcaption__name')}>{name}</p>
         <p className={cx('figcaption__date')}>{years}</p>
