@@ -2,17 +2,20 @@ import { FC } from 'react';
 import cn from 'classnames/bind';
 import Link from '@components/Link';
 import { ReactComponent as LogoIcon } from '@assets/icons/logo.svg';
-import { LogoProps } from './Logo.props';
-import styles from './styles.module.scss';
+import styles from './Logo.module.scss';
 
 const cx = cn.bind(styles);
 
-const Logo: FC<LogoProps> = ({ isDarkTheme, isDesktop, href = '/' }) => {
+interface LogoProps {
+  isDarkTheme?: boolean;
+  href?: string;
+}
+
+const Logo: FC<LogoProps> = ({ isDarkTheme, href = '/' }) => {
   return (
     <Link href={href} isIconLink>
       <LogoIcon
         className={cx('logo', {
-          'logo--desktop': isDesktop,
           'logo--dark': isDarkTheme,
         })}
       />

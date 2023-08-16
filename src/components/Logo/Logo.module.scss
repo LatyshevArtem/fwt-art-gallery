@@ -4,12 +4,12 @@ $logo-dark-theme-fill: $primary-light-gray;
 .logo {
   fill: $logo-light-theme-fill;
 
-  &--desktop {
-    width: 91px;
-    height: 20px;
-  }
-
   &--dark {
     fill: $logo-dark-theme-fill;
+  }
+
+  @media (min-width: $desktop-width) {
+    width: 91px;
+    height: 20px;
   }
 }
