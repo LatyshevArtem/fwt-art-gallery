@@ -1,36 +1,30 @@
-import { FC } from 'react';
+import { FC, ButtonHTMLAttributes } from 'react';
 import cn from 'classnames/bind';
-import { TextButtonProps } from './TextButton.props';
-import styles from './styles.module.scss';
+import styles from './TextButton.module.scss';
 
 const cx = cn.bind(styles);
+
+interface TextButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  isDarkTheme?: boolean;
+  isUnderlined?: boolean;
+}
 
 const TextButton: FC<TextButtonProps> = ({
   children,
   className,
   isDarkTheme,
-  isFilled = true,
   isUnderlined,
-  isIconRight,
-  isSmallIcon,
-  gap = 'small',
-  text,
   ...props
 }) => {
   return (
     <button
-      className={cx(className, 'button', {
-        'button--dark': isDarkTheme,
-        'button--filled': isFilled,
-        'button--underlined': isUnderlined,
-        'button--icon-right': isIconRight,
-        'button--icon-small': isSmallIcon,
-        [`button--gap-${gap}`]: Boolean(gap),
+      className={cx(className, 'text-button', {
+        'text-button--dark': isDarkTheme,
+        'text-button--underlined': isUnderlined,
       })}
       {...props}
     >
       {children}
-      <span>{text}</span>
     </button>
   );
 };
