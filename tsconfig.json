@@ -11,7 +11,7 @@
       "@components/*": ["./src/components/*"],
       "@contexts/*": ["./src/contexts/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@providers": ["./src/providers/*"],
+      "@providers/*": ["./src/providers/*"],
     },
     "allowJs": true,
     "skipLibCheck": true,
