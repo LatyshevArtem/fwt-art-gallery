@@ -8,7 +8,10 @@
     ],
     "paths": {
       "@assets/*": ["./src/assets/*"],
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@providers": ["./src/providers/*"],
     },
     "allowJs": true,
     "skipLibCheck": true,
