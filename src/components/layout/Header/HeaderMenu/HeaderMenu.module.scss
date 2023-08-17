@@ -22,7 +22,8 @@
       font-family: "Cormorant SC";
       font-size: 32px;
       font-weight: 600;
-      line-height: 32px;
+      line-height: 100%;
+      text-decoration-line: none;
     }
 
     @media (min-width: $tablet-width) {
@@ -42,7 +43,7 @@
       &__button {
         font-size: 16px;
         font-weight: 700;
-        line-height: 20.48px;
+        line-height: 128%;
       }
     }
   }
