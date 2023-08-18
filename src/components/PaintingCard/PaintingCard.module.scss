@@ -11,7 +11,7 @@ $desktop-card-width: 392px;
 $desktop-card-height: 260px;
 
 
-.card {
+.painting-card {
   position: relative;
   width: $mobile-card-width;
   height: $mobile-card-height;
@@ -91,7 +91,7 @@ $desktop-card-height: 260px;
   &__arrow-block {
     position: absolute;
     top: 0;
-    left: calc(100%);
+    left: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,10 +101,10 @@ $desktop-card-height: 260px;
     @media (min-width: $desktop-width) {
       display: none;
     }
+  }
 
-    svg {
-      fill: $primary-light-gray;
-    }
+  &__arrow-icon {
+    fill: $primary-light-gray;
   }
 
   &--dark {
