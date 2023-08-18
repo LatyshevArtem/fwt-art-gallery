@@ -9,6 +9,7 @@ module.exports = {
       '@components': getPathForAlias('components'),
       '@hooks': getPathForAlias('hooks'),
       '@contexts': getPathForAlias('contexts'),
+      '@schemas': getPathForAlias('schemas'),
     }
   },
   style: {

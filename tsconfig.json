@@ -11,6 +11,7 @@
       "@components/*": ["./src/components/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@contexts/*": ["./src/contexts/*"],
+      "@schemas/*": ["./src/schemas/*"],
     },
     "allowJs": true,
     "skipLibCheck": true,
