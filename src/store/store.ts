@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import artistsReducer from '../features/artistsSlice';
 
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    artists: artistsReducer,
+  },
 });
 
 type RootState = ReturnType<typeof store.getState>;
