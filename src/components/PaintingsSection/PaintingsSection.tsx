@@ -1,20 +1,30 @@
-import { FC, useContext } from 'react';
+import { useContext, FC } from 'react';
 import cn from 'classnames/bind';
+import { Artist } from '@schemas/Artist';
 import { ThemeContex } from '@contexts/ThemeContext';
-import MainPageCard from '@components/MainPageCard';
-import { PaintingsSectionProps } from './PaintingsSection.props';
-import styles from './styles.module.scss';
+import PaintingCard from '@components/PaintingCard';
+import styles from './PaintingsSection.module.scss';
 
 const cx = cn.bind(styles);
 
-const PaintingsSection: FC<PaintingsSectionProps> = ({ paintings }) => {
+interface PaintingsSectionProps {
+  artists: Artist[];
+}
+
+const PaintingsSection: FC<PaintingsSectionProps> = ({ artists }) => {
   const { isDarkTheme } = useContext(ThemeContex);
 
   return (
-    <section className={cx('paintings-section', { 'paintings-section--dark': isDarkTheme })}>
+    <section className={cx('paintings-section')}>
       <div className={cx('paintings-section__container')}>
-        {paintings.map((painting) => (
-          <MainPageCard isDarkTheme={isDarkTheme} {...painting} />
+        {artists.map((artist) => (
+          <PaintingCard
+            isDarkTheme={isDarkTheme}
+            painting={artist.mainPainting.image}
+            name={artist.name}
+            years={artist.yearsOfLife}
+            key={artist.name}
+          />
         ))}
       </div>
     </section>
