@@ -1,0 +1,33 @@
+@import "../App/scss/colors.scss";
+
+.up-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border: 1px solid $primary-light-gray;
+  border-radius: 50%;
+  fill: $primary-dark-gray;
+  background-color: $secondary-white;
+
+  &__icon {
+    rotate: -90deg;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background-color: $primary-white;
+  }
+
+  &--dark {
+    border-color: transparent;
+    fill: $primary-light-gray;
+    background-color: $secondary-black;
+
+    &:hover,
+    &:focus-visible {
+      background-color: #242222;
+    }
+  }
+}

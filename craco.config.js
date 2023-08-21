@@ -7,6 +7,9 @@ module.exports = {
     alias: {
       '@assets': getPathForAlias('assets'),
       '@components': getPathForAlias('components'),
+      '@contexts': getPathForAlias('contexts'),
+      '@hooks': getPathForAlias('hooks'),
+      '@providers': getPathForAlias('providers'),
     }
   },
   style: {
@@ -17,6 +20,7 @@ module.exports = {
         additionalData: `
           @import './src/components/App/scss/breakpoints.scss';
           @import './src/components/App/scss/colors.scss';
+          @import './src/components/App/scss/mixins.scss';
         `,
       },
     },

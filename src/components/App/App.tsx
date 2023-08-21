@@ -1,7 +1,13 @@
+import { ThemeProvider } from '@providers/ThemeProvider';
+import Header from '@components/layout/Header';
 import './scss/index.scss';
 
 const App = () => {
-  return <div>Hello, World!</div>;
+  return (
+    <ThemeProvider>
+      <Header />
+    </ThemeProvider>
+  );
 };
 
 export default App;

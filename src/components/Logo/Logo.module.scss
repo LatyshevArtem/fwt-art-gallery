@@ -1,0 +1,15 @@
+$logo-light-theme-fill: $primary-dark-gray;
+$logo-dark-theme-fill: $primary-light-gray;
+
+.logo {
+  fill: $logo-light-theme-fill;
+
+  &--dark {
+    fill: $logo-dark-theme-fill;
+  }
+
+  @media (min-width: $desktop-width) {
+    width: 91px;
+    height: 20px;
+  }
+}

@@ -1,0 +1,109 @@
+$header-light-theme-background-color: $primary-white;
+$header-dark-theme-background-color: $primary-black;
+
+$icon-button-light-theme-fill: $primary-dark-gray;
+$icon-button-dark-theme-fill: $primary-light-gray;
+
+.header {
+  background-color: $header-light-theme-background-color;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 20px;
+
+    @media (min-width: $tablet-width) {
+      padding: 32px 20px;
+    }
+
+    @media (min-width: $desktop-width) {
+      padding: 20px 100px;
+    }
+  }
+
+  &__menu-button {
+    line-height: 0;
+    fill: $icon-button-light-theme-fill;
+    background-color: transparent;
+  }
+
+  &--dark {
+    background-color: $header-dark-theme-background-color;
+
+    .header__menu-button {
+      fill: $icon-button-dark-theme-fill;
+    }
+  }
+}
+
+.side-page {
+  &__content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 100px;
+    width: 252px;
+    height: 100%;
+    padding: 20px 20px 20px 47px;
+    background-color: $secondary-white;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out;
+    pointer-events: auto;
+
+    @media (min-width: $tablet-width) {
+      row-gap: 144px;
+      width: 466px;
+      padding: 32px 20px 32px 94px;
+    }
+  }
+
+  &__menu-button {
+    align-self: flex-end;
+    line-height: 0;
+    fill: $icon-button-light-theme-fill;
+    background-color: transparent;
+  }
+
+  &--dark {
+    .side-page {
+      &__content {
+        background-color: $primary-black;
+      }
+
+      &__menu-button {
+        fill: $icon-button-dark-theme-fill;
+      }
+    }
+  }
+
+  &--open {
+    .side-page__content {
+      transform: translateX(0);
+    }
+  }
+}
+
+.side-page-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: background-color 0.5s ease-in-out;
+  overflow: hidden;
+  pointer-events: none;
+
+  &.side-page--open {
+    pointer-events: auto;
+    background-color: rgba(3, 3, 3, 0.30);
+
+    &.side-page--dark {
+      background-color: rgba(3, 3, 3, 0.60);
+    }
+  }
+}
