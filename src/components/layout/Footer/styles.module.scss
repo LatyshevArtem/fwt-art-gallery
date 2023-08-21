@@ -41,6 +41,7 @@ $project-author-text-color: $secondary-gray;
   }
 
   &__company-link {
+    display: inline-flex;
     font-size: inherit;
     font-weight: 500;
     line-height: inherit;
