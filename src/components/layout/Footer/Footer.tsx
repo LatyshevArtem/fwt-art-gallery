@@ -23,7 +23,8 @@ const Footer = () => {
             <Link
               className={cx('footer__company-link')}
               isDarkTheme={isDarkTheme}
-              href="https://framework.team/"
+              to="https://framework.team/"
+              reloadDocument
             >
               Framework Team
             </Link>{' '}
@@ -36,20 +37,24 @@ const Footer = () => {
             <li>
               <Link
                 isDarkTheme={isDarkTheme}
-                href="https://www.facebook.com/framework.team"
-                isIconLink
+                to="https://www.facebook.com/framework.team"
+                reloadDocument
               >
-                <FacebookIcon className={cx('footer__social-link')} />
+                <FacebookIcon />
               </Link>
             </li>
             <li>
-              <Link isDarkTheme={isDarkTheme} href="https://vk.com/frameworkteam" isIconLink>
-                <VKIcon className={cx('footer__social-link')} />
+              <Link isDarkTheme={isDarkTheme} to="https://vk.com/frameworkteam" reloadDocument>
+                <VKIcon />
               </Link>
             </li>
             <li>
-              <Link isDarkTheme={isDarkTheme} href="/" isIconLink>
-                <InstagramIcon className={cx('footer__social-link')} />
+              <Link
+                isDarkTheme={isDarkTheme}
+                to="https://www.instagram.com/framework.team"
+                reloadDocument
+              >
+                <InstagramIcon />
               </Link>
             </li>
           </ul>

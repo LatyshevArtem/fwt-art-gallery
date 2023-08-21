@@ -1,21 +1,19 @@
 import { FC } from 'react';
+import { Link as ReactRouterLink, LinkProps as ReactRouterLinkProps } from 'react-router-dom';
 import cn from 'classnames/bind';
-import { LinkProps } from './Link.props';
-import styles from './styles.module.scss';
+import styles from './Link.module.scss';
 
 const cx = cn.bind(styles);
 
-const Link: FC<LinkProps> = ({ children, className, isDarkTheme, isIconLink, ...props }) => {
+interface LinkProps extends ReactRouterLinkProps {
+  isDarkTheme?: boolean;
+}
+
+const Link: FC<LinkProps> = ({ children, className, isDarkTheme, ...props }) => {
   return (
-    <a
-      className={cx(className, 'link', {
-        'link--dark': isDarkTheme,
-        'link--icon-link': isIconLink,
-      })}
-      {...props}
-    >
+    <ReactRouterLink className={cx(className, 'link', { 'link--dark': isDarkTheme })} {...props}>
       {children}
-    </a>
+    </ReactRouterLink>
   );
 };
 

@@ -6,9 +6,6 @@ $project-info-dark-theme-text-color: $primary-light-gray;
 
 $project-author-text-color: $secondary-gray;
 
-$social-link-light-theme-fill: $primary-dark-gray;
-$social-link-dark-theme-fill: $primary-light-gray;
-
 .footer {
   position: relative;
   background-color: $footer-light-theme-background-color;
@@ -47,11 +44,7 @@ $social-link-dark-theme-fill: $primary-light-gray;
     font-size: inherit;
     font-weight: 500;
     line-height: inherit;
-
-    &::before {
-      font-size: 12px;
-      display: none;
-    }
+    text-underline-offset: initial;
   }
 
   &__project-author {
