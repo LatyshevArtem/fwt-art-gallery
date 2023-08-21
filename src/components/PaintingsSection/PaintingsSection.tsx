@@ -1,4 +1,5 @@
 import { useContext, FC } from 'react';
+import { Link } from 'react-router-dom';
 import cn from 'classnames/bind';
 import { Artist } from '@schemas/Artist';
 import { ThemeContex } from '@contexts/ThemeContext';
@@ -18,13 +19,14 @@ const PaintingsSection: FC<PaintingsSectionProps> = ({ artists }) => {
     <section className={cx('paintings-section')}>
       <div className={cx('paintings-section__container')}>
         {artists.map((artist) => (
-          <PaintingCard
-            isDarkTheme={isDarkTheme}
-            painting={artist.mainPainting.image}
-            name={artist.name}
-            years={artist.yearsOfLife}
-            key={artist.name}
-          />
+          <Link to={`artists/${artist._id}`} key={artist._id}>
+            <PaintingCard
+              isDarkTheme={isDarkTheme}
+              painting={artist.mainPainting.image}
+              name={artist.name}
+              years={artist.yearsOfLife}
+            />
+          </Link>
         ))}
       </div>
     </section>
