@@ -17,7 +17,6 @@ const Default: Story = {
 const IconLink: Story = {
   args: {
     children: <LogoIcon />,
-    isIconLink: true,
   },
 };
 
