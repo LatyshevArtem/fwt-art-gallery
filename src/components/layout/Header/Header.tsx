@@ -26,7 +26,7 @@ const Header: FC = () => {
   return (
     <header className={cx('header', { 'header--dark': isDarkTheme })}>
       <div className={cx('container')}>
-        <Logo isDarkTheme={isDarkTheme} isDesktop={isDesktop} />
+        <Logo isDarkTheme={isDarkTheme} />
         {shouldShowMobileMenu && (
           <button className={cx('menu-button')} onClick={openMobileMenu}>
             <ClosedMenuButtonIcon />
