@@ -13,12 +13,8 @@ interface LogoProps {
 
 const Logo: FC<LogoProps> = ({ isDarkTheme, to = '/' }) => {
   return (
-    <Link to={to}>
-      <LogoIcon
-        className={cx('logo', {
-          'logo--dark': isDarkTheme,
-        })}
-      />
+    <Link isDarkTheme={isDarkTheme} to={to}>
+      <LogoIcon className={cx('logo')} />
     </Link>
   );
 };
