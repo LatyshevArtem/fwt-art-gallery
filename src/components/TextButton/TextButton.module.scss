@@ -1,0 +1,88 @@
+@import "../App/scss/colors.scss";
+@import "../App/scss/mixins.scss";
+
+.text-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  padding: 16px 20px;
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+  text-transform: uppercase;
+  color: $primary-white;
+  background-color: $primary-black;
+
+  &:not(&--underlined):disabled {
+    background-color: rgba($primary-black, 0.5);
+  }
+
+  &:not(&--underlined):hover {
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  &:not(&--underlined):focus-visible {
+    background-color: #232323;
+    outline: none;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  &--underlined {
+    padding: 0;
+    text-decoration-line: underline;
+    text-underline-offset: calc(1lh - 1em);
+    text-decoration-thickness: 1px;
+    color: $primary-dark-gray;
+    background-color: transparent;
+
+    svg {
+      fill: currentColor;
+    }
+
+    &:disabled {
+      color: $primary-light-gray;
+    }
+
+    &:hover {
+      color: $primary-black;
+    }
+
+    &:focus-visible {
+      outline: none;
+      color: $primary-black;
+    }
+  }
+
+  &--dark {
+    background-color: $accent-gold;
+
+    &:not(.text-button--underlined):disabled {
+      background-color: rgba($accent-gold, 0.5);
+    }
+
+    &:not(.text-button--underlined):hover {
+      box-shadow: 0px 4px 10px 0px rgba(171, 137, 86, 0.25);
+    }
+
+    &:not(.text-button--underlined):focus-visible {
+      background-color: #BA9052;
+      box-shadow: 0px 4px 10px 0px rgba(171, 137, 86, 0.25);
+    }
+
+    &.text-button--underlined {
+      color: $primary-light-gray;
+      background-color: transparent;
+
+      &:disabled {
+        color: $secondary-gray;
+      }
+
+      &:hover,
+      &:focus-visible {
+        color: $primary-white;
+      }
+    }
+  }
+}

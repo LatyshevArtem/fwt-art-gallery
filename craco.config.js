@@ -7,8 +7,9 @@ module.exports = {
     alias: {
       '@assets': getPathForAlias('assets'),
       '@components': getPathForAlias('components'),
-      '@hooks': getPathForAlias('hooks'),
       '@contexts': getPathForAlias('contexts'),
+      '@hooks': getPathForAlias('hooks'),
+      '@providers': getPathForAlias('providers'),
       '@schemas': getPathForAlias('schemas'),
     }
   },

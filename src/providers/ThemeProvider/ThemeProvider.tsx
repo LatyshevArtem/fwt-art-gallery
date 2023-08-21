@@ -1,14 +1,12 @@
-import { FC, ReactNode, useMemo, useState } from 'react';
+import { FC, PropsWithChildren, useMemo, useState } from 'react';
+import { ThemeContex } from '@contexts/ThemeContext';
 import { getInitialIsDarkTheme } from './utils/getInitialIsDarkTheme';
 import { DARK_COLOR_SCHEME, LIGHT_COLOR_SHEME } from './utils/consts';
 import { saveColorScheme } from './utils/saveColorScheme';
-import { ThemeContex } from '../../contexts/ThemeContext';
 
-interface IThemeProvider {
-  children: ReactNode;
-}
+interface ThemeProviderProps extends PropsWithChildren {}
 
-const ThemeProvider: FC<IThemeProvider> = ({ children }) => {
+const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(getInitialIsDarkTheme);
 
   const colorScheme = isDarkTheme ? DARK_COLOR_SCHEME : LIGHT_COLOR_SHEME;

@@ -1,9 +1,9 @@
-import { getUserColorScheme } from './getUserColorScheme';
+import { getColorScheme } from './getColorScheme';
 import { DARK_COLOR_SCHEME } from './consts';
 
 const getInitialIsDarkTheme = () => {
-  const userColorScheme = getUserColorScheme();
-  const initialIsDarkTheme = userColorScheme === DARK_COLOR_SCHEME;
+  const colorScheme = getColorScheme();
+  const initialIsDarkTheme = colorScheme === DARK_COLOR_SCHEME;
   return initialIsDarkTheme;
 };
 

@@ -1,8 +1,8 @@
 import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from '@providers/ThemeProvider';
 import { router } from '../../routes/router';
 import { store } from '../../store/store';
-import { ThemeProvider } from '../../providers/ThemeProvider';
 import './scss/index.scss';
 
 const App = () => {

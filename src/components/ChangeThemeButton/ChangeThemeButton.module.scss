@@ -1,4 +1,4 @@
-.button {
+.change-theme-button {
   display: flex;
   align-items: center;
   column-gap: 12px;
@@ -13,7 +13,6 @@
     align-items: center;
     border-radius: 50%;
     padding: 8px;
-    line-height: 0;
     background-color: $secondary-white;
   }
 
@@ -44,7 +43,7 @@
   &--dark {
     color: $primary-light-gray;
 
-    .button__icon-wrapper {
+    .change-theme-button__icon-wrapper {
       background-color: $secondary-black;
     }
 

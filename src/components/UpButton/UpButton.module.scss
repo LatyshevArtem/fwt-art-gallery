@@ -1,6 +1,6 @@
 @import "../App/scss/colors.scss";
 
-.button {
+.up-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,7 +11,7 @@
   fill: $primary-dark-gray;
   background-color: $secondary-white;
 
-  svg {
+  &__icon {
     rotate: -90deg;
   }
 

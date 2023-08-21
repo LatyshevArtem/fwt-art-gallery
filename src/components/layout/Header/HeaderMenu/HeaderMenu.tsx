@@ -1,48 +1,45 @@
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import cn from 'classnames/bind';
 import ChangeThemeButton from '@components/ChangeThemeButton';
 import TextButton from '@components/TextButton';
-import { MenuProps } from './Menu.props';
-import styles from './styles.module.scss';
+import styles from './HeaderMenu.module.scss';
 
 const cx = cn.bind(styles);
 
-const Menu: FC<MenuProps> = ({
-  isDarkTheme,
-  shouldShowButtonText,
-  onChangeThemeButtonClick,
-  onLogInButtonClick,
-  onSignUpButtonClick,
-}) => {
+export interface MenuProps {
+  isDarkTheme?: boolean;
+  onLogInButtonClick: MouseEventHandler<HTMLButtonElement>;
+  onSignUpButtonClick: MouseEventHandler<HTMLButtonElement>;
+}
+
+const HeaderMenu: FC<MenuProps> = ({ isDarkTheme, onLogInButtonClick, onSignUpButtonClick }) => {
   return (
     <div className={cx('menu', { 'menu--dark': isDarkTheme })}>
-      <ChangeThemeButton
-        isDarkTheme={isDarkTheme}
-        shouldShowButtonText={shouldShowButtonText}
-        onClick={onChangeThemeButtonClick}
-      />
+      <ChangeThemeButton />
       <ul className={cx('user-nav')}>
         <li>
           <TextButton
             className={cx('user-nav__button')}
             isDarkTheme={isDarkTheme}
-            isFilled={false}
-            text="Log in"
             onClick={onLogInButtonClick}
-          />
+            isUnderlined
+          >
+            Log in
+          </TextButton>
         </li>
         <li>
           <TextButton
             className={cx('user-nav__button')}
             isDarkTheme={isDarkTheme}
-            isFilled={false}
-            text="Sign up"
             onClick={onSignUpButtonClick}
-          />
+            isUnderlined
+          >
+            Sign up
+          </TextButton>
         </li>
       </ul>
     </div>
   );
 };
 
-export default Menu;
+export default HeaderMenu;

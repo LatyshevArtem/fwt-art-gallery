@@ -1,21 +1,20 @@
-import { FC, useContext, useState } from 'react';
+import { useState, FC } from 'react';
 import cn from 'classnames/bind';
-import Logo from '@components/Logo';
-import { ReactComponent as ClosedMenuButtonIcon } from '@assets/icons/menu-buger.svg';
-import { ThemeContex } from '@contexts/ThemeContext';
+import { useThemeContext } from '@hooks/useThemeContext';
 import { useMatchMedia } from '@hooks/useMatchMedia';
-import MobileMenu from './MobileMenu';
-import Menu from './Menu';
-import styles from './styles.module.scss';
+import Logo from '@components/Logo';
+import { ReactComponent as BurgerMenuIcon } from '@assets/icons/menu-buger.svg';
+import { ReactComponent as CloseIcon } from '@assets/icons/close.svg';
+import Modal from '@components/Modal';
+import HeaderMenu from './HeaderMenu';
+import styles from './Header.module.scss';
 
 const cx = cn.bind(styles);
 
 const Header: FC = () => {
-  const { isDarkTheme, toggleTheme } = useContext(ThemeContex);
+  const { isDarkTheme } = useThemeContext();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isMobile, isTablet, isDesktop } = useMatchMedia();
-
-  const shouldShowMobileMenu = isMobile || isTablet;
+  const { isDesktop } = useMatchMedia();
 
   const handleLogInButtonClick = () => {};
   const handleSignUpButtonClick = () => {};
@@ -25,27 +24,35 @@ const Header: FC = () => {
 
   return (
     <header className={cx('header', { 'header--dark': isDarkTheme })}>
-      <div className={cx('container')}>
+      <div className={cx('header__container')}>
         <Logo isDarkTheme={isDarkTheme} />
-        {shouldShowMobileMenu && (
-          <button className={cx('menu-button')} onClick={openMobileMenu}>
-            <ClosedMenuButtonIcon />
+        {!isDesktop && (
+          <button className={cx('header__menu-button')} onClick={openMobileMenu}>
+            <BurgerMenuIcon />
           </button>
         )}
-        {shouldShowMobileMenu ? (
-          <MobileMenu
-            isDarkTheme={isDarkTheme}
-            isOpen={isMobileMenuOpen}
-            onCloseButtonClick={closeMobileMenu}
-            onChangeThemeButtonClick={toggleTheme}
-            onLogInButtonClick={handleLogInButtonClick}
-            onSignUpButtonClick={handleSignUpButtonClick}
-          />
+        {!isDesktop ? (
+          <Modal
+            backdropClassName={cx('side-page', 'side-page-overlay', {
+              'side-page--dark': isDarkTheme,
+              'side-page--open': isMobileMenuOpen,
+            })}
+            contentClassName={cx('side-page__content')}
+            onClose={closeMobileMenu}
+            isOpen
+          >
+            <button className={cx('side-page__menu-button')} onClick={closeMobileMenu}>
+              <CloseIcon />
+            </button>
+            <HeaderMenu
+              isDarkTheme={isDarkTheme}
+              onLogInButtonClick={handleLogInButtonClick}
+              onSignUpButtonClick={handleSignUpButtonClick}
+            />
+          </Modal>
         ) : (
-          <Menu
+          <HeaderMenu
             isDarkTheme={isDarkTheme}
-            shouldShowButtonText={!isDesktop}
-            onChangeThemeButtonClick={toggleTheme}
             onLogInButtonClick={handleLogInButtonClick}
             onSignUpButtonClick={handleSignUpButtonClick}
           />

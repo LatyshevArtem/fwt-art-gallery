@@ -11,8 +11,7 @@ type Story = StoryObj<typeof TextButton>;
 
 const Default: Story = {
   args: {
-    text: 'Text button',
-    isFilled: true,
+    isUnderlined: false,
     disabled: false,
   },
 };
@@ -20,7 +19,6 @@ const Default: Story = {
 const TextButtonWithIcon: Story = {
   args: {
     children: <PlusIcon />,
-    text: 'With icon',
     disabled: false,
   },
 };
