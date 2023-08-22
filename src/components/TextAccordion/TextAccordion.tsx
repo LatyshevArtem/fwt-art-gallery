@@ -11,6 +11,8 @@ interface AccordionProps {
   className?: string;
   isDarkTheme?: boolean;
   textClassName?: string;
+  showMoreButtonText?: string;
+  showLessButtonText?: string;
   text: string;
   cropTextLength: number;
 }
@@ -19,6 +21,8 @@ const Accordion: FC<AccordionProps> = ({
   className,
   isDarkTheme,
   textClassName,
+  showMoreButtonText = 'Read more',
+  showLessButtonText = 'Read less',
   text,
   cropTextLength,
 }) => {
@@ -27,27 +31,30 @@ const Accordion: FC<AccordionProps> = ({
   const toggleIsOpen = () => setIsOpen((prevState) => !prevState);
 
   const croppedText = getCropText(text, cropTextLength);
-  const outputText = isOpen ? `${croppedText}...` : text;
+  const outputText = isOpen ? text : `${croppedText}...`;
+
+  const buttonOutputText = isOpen ? showLessButtonText : showMoreButtonText;
 
   return (
     <div className={cx(className, 'text-accordion')}>
       <p
-        className={cx(textClassName, 'text-accordion__text', {
-          'text-accordion__text--hidden': isOpen,
+        className={cx(textClassName, {
+          'text-accordion__text--dark': isDarkTheme,
+          'text-accordion__text--hidden': !isOpen,
         })}
       >
         {outputText}
       </p>
       <TextButton
-        className={cx('text-accordion__show-more-button', {
-          'text-accordion__show-more-button--open': isOpen,
+        className={cx('text-accordion__toggle-button', {
+          'text-accordion__toggle-button--less': isOpen,
         })}
         isDarkTheme={isDarkTheme}
-        isUnderlined
         onClick={toggleIsOpen}
+        isUnderlined
       >
-        <span>Read more</span>
-        <ExpandIcon className={cx('show-more-button__icon')} />
+        <span>{buttonOutputText}</span>
+        <ExpandIcon className={cx('toggle-button__icon')} />
       </TextButton>
     </div>
   );

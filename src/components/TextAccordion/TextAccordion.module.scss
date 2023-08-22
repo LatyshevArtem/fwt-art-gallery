@@ -7,24 +7,24 @@
   &__text {
     &--hidden {
       background-image: linear-gradient(180deg, #575757 0%, rgba(87, 87, 87, 0.40) 100%);
+      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    &--hidden#{&}--dark {
+      background-image: linear-gradient(180deg, #DEDEDE 0%, rgba(222, 222, 222, 0.40) 100%);
+    }
   }
 
-  .show-more-button {
+  &__toggle-button {
     display: flex;
     align-items: center;
     column-gap: 8px;
 
-    &__icon {
-      fill: currentColor;
-      transform: rotate(180deg);
-    }
-
-    &--open {
-      .show-more-button__icon {
-        transform: rotate(0);
+    &--less {
+      .toggle-button__icon {
+        transform: rotate(180deg);
       }
     }
   }
