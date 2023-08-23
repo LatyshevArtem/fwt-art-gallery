@@ -4,6 +4,35 @@
     margin: 0 auto;
   }
 
+  &__back-link-wrapper {
+    padding: 16px 20px 12px;
+
+    @media (min-width: $tablet-width) {
+      padding: 36px 20px 20px;
+    }
+
+    @media (min-width: $desktop-width) {
+      padding: 52px 100px 24px;
+    }
+  }
+
+  &__back-link {
+    display: flex;
+    column-gap: 12px;
+    text-transform: uppercase;
+
+    .back-link {
+      &__icon {
+        transform: rotate(180deg);
+      }
+
+      &__text {
+        font-size: 12px;
+        font-weight: 700;
+      }
+    }
+  }
+
   &__heading {
     padding: 60px 20px;
     font-family: "Cormorant SC";
