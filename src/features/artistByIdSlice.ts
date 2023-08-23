@@ -15,7 +15,11 @@ const initialState: ArtistByIdState = {
 const artistByIdSlice = createSlice({
   name: 'artistById',
   initialState,
-  reducers: {},
+  reducers: {
+    resetArtist: (state) => {
+      state.artist = null;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(fetchArtistById.fulfilled, (state, action) => {
       state.artist = action.payload;
@@ -23,5 +27,6 @@ const artistByIdSlice = createSlice({
   },
 });
 
+export const { resetArtist } = artistByIdSlice.actions;
 export { fetchArtistById };
 export default artistByIdSlice.reducer;
