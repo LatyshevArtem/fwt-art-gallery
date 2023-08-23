@@ -24,7 +24,7 @@ const PaintingsSection: FC<PaintingsSectionProps> = ({ artists }) => {
               isDarkTheme={isDarkTheme}
               painting={artist.mainPainting.image}
               name={artist.name}
-              years={artist.yearsOfLife}
+              date={artist.yearsOfLife}
             />
           </Link>
         ))}

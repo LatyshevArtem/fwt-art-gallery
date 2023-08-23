@@ -10,7 +10,7 @@ type Story = StoryObj<typeof PaintingCard>;
 const Default: Story = {
   args: {
     name: 'Jean-Honore Fragonard',
-    years: '1732 - 1806',
+    date: '1732 - 1806',
   },
 };
 
