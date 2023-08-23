@@ -1,18 +1,10 @@
-import { Image } from './Image';
-
-interface MainPainting {
-  _id: string;
-  name: string;
-  yearsOfCreation: string;
-  image: Image;
-  artist: string;
-}
+import { Painting } from './Painting';
 
 export interface Artist {
   _id: string;
   name: string;
   description: string;
   yearsOfLife: string;
-  mainPainting: MainPainting;
+  mainPainting: Painting;
   __v: number;
 }
