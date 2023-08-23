@@ -27,10 +27,8 @@ const ArtistPage = () => {
   useEffect(() => {
     if (!artist) {
       dispatch(fetchArtistById(id as string));
-      console.log('fetch');
     } else if (artist._id !== id) {
       dispatch(resetArtist());
-      console.log('reset');
     }
   }, [id, artist, dispatch]);
 
