@@ -16,8 +16,10 @@ const MainPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchArtists());
-  }, [dispatch]);
+    if (!artists) {
+      dispatch(fetchArtists());
+    }
+  }, [artists, dispatch]);
 
   return (
     <Layout className={cx('main-page', { 'main-page--dark': isDarkTheme })}>
