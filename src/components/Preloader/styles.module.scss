@@ -1,0 +1,107 @@
+.preloader {
+  width: 50px;
+  height: 50px;
+  fill: none;
+
+  &__circle {
+    stroke-width: 5px;
+    stroke-dasharray: 157px;
+    stroke-dashoffset: 156px;
+    stroke-linecap: round;
+    stroke: $primary-black;
+    transform-origin: center;
+    rotate: 90deg;
+    animation: 2s linear infinite;
+
+    &--dark {
+      stroke: $primary-light-gray;
+    }
+
+    &:nth-child(1) {
+      stroke-opacity: 0.8;
+      animation-name: circle-1;
+    }
+
+    &:nth-child(2),
+    &:nth-child(3),
+    &:nth-child(4) {
+      stroke-opacity: 0.35;
+    }
+
+    &:nth-child(2) {
+      animation-name: circle-2;
+    }
+
+    &:nth-child(3) {
+      animation-name: circle-3;
+    }
+
+    &:nth-child(4) {
+      animation-name: circle-4;
+    }
+  }
+}
+
+@keyframes circle-1 {
+  12% {
+    stroke-dashoffset: 146px;
+  }
+
+  60% {
+    stroke-dashoffset: 120px;
+    rotate: 400deg;
+  }
+
+  100% {
+    stroke-dashoffset: 156px;
+    rotate: 810deg;
+  }
+}
+
+@keyframes circle-2 {
+  12% {
+    stroke-dashoffset: 146px;
+  }
+
+  60% {
+    stroke-dashoffset: 120px;
+    rotate: 360deg;
+  }
+
+  100% {
+    stroke-dashoffset: 156px;
+    rotate: 810deg;
+  }
+}
+
+@keyframes circle-3 {
+  12% {
+    stroke-dashoffset: 146px;
+  }
+
+  60% {
+    stroke-dashoffset: 120px;
+    rotate: 320deg;
+  }
+
+  100% {
+    stroke-dashoffset: 156px;
+    rotate: 810deg;
+  }
+}
+
+@keyframes circle-4 {
+  12% {
+    stroke-dashoffset: 146px;
+  }
+
+  60% {
+    stroke-dashoffset: 120px;
+    rotate: 280deg;
+  }
+
+  100% {
+    stroke-dashoffset: 156px;
+    rotate: 810deg;
+  }
+}
