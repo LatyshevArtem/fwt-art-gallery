@@ -10,6 +10,7 @@ import Link from '@components/Link/Link';
 import ArtistCard from '@components/ArtistCard';
 import PaintingsGrid from '@components/PaintingsGrid';
 import PaintingCard from '@components/PaintingCard/PaintingCard';
+import Preloader from '@components/Preloader/Preloader';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
 import { fetchArtistById } from '../../../features/artistByIdSlice';
 import styles from './ArtistPage.module.scss';
@@ -30,30 +31,38 @@ const ArtistPage = () => {
   return (
     <Layout className={cx('artist-page', { 'artist-page--dark': isDarkTheme })}>
       <main className={cx('artist-page__main')}>
-        <div className={cx('artist-page__back-link-wrapper')}>
-          <Link className={cx('artist-page__back-link')} isDarkTheme={isDarkTheme} to="..">
-            <BackArrowIcon className={cx('back-link__icon')} />
-            {!isMobile && <span className={cx('back-link__text')}>back</span>}
-          </Link>
-        </div>
-        {artist && <ArtistCard artist={artist} />}
-        <h1 className={cx('artist-page__heading', { 'artist-page__heading--dark': isDarkTheme })}>
-          Artworks <span className="visually-hidden">by {artist?.name}</span>
-        </h1>
-        {artist && (
-          <PaintingsGrid className={cx('artist-page__paintings')}>
-            {artist.paintings.map((painting) => {
-              return (
-                <PaintingCard
-                  isDarkTheme={isDarkTheme}
-                  painting={painting.image}
-                  name={painting.name}
-                  date={painting.yearOfCreation}
-                  key={painting._id}
-                />
-              );
-            })}
-          </PaintingsGrid>
+        {artist ? (
+          <>
+            <div className={cx('artist-page__back-link-wrapper')}>
+              <Link className={cx('artist-page__back-link')} isDarkTheme={isDarkTheme} to="..">
+                <BackArrowIcon className={cx('back-link__icon')} />
+                {!isMobile && <span className={cx('back-link__text')}>back</span>}
+              </Link>
+            </div>
+            <ArtistCard artist={artist} />
+            <h1
+              className={cx('artist-page__heading', { 'artist-page__heading--dark': isDarkTheme })}
+            >
+              Artworks <span className="visually-hidden">by {artist?.name}</span>
+            </h1>
+            <PaintingsGrid className={cx('artist-page__paintings')}>
+              {artist.paintings.map((painting) => {
+                return (
+                  <PaintingCard
+                    isDarkTheme={isDarkTheme}
+                    painting={painting.image}
+                    name={painting.name}
+                    date={painting.yearOfCreation}
+                    key={painting._id}
+                  />
+                );
+              })}
+            </PaintingsGrid>
+          </>
+        ) : (
+          <div className={cx('artist-page__preloader-wrapper')}>
+            <Preloader />
+          </div>
         )}
       </main>
     </Layout>
