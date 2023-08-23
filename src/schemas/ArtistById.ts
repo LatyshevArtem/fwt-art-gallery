@@ -1,4 +1,5 @@
 import { Image } from './Image';
+import { Painting } from './Painting';
 import { Genre } from './Genre';
 
 export interface ArtistById {
@@ -7,6 +8,6 @@ export interface ArtistById {
   name: string;
   description: string;
   yearsOfLife: string;
-  paintings: string[];
+  paintings: Painting[];
   genres: Genre[];
 }
