@@ -12,7 +12,7 @@ import PaintingsGrid from '@components/PaintingsGrid';
 import PaintingCard from '@components/PaintingCard/PaintingCard';
 import Preloader from '@components/Preloader/Preloader';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
-import { fetchArtistById } from '../../../features/artistByIdSlice';
+import { resetArtist, fetchArtistById } from '../../../features/artistByIdSlice';
 import styles from './ArtistPage.module.scss';
 
 const cx = cn.bind(styles);
@@ -25,8 +25,14 @@ const ArtistPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchArtistById(id as string));
-  }, [id, dispatch]);
+    if (!artist) {
+      dispatch(fetchArtistById(id as string));
+      console.log('fetch');
+    } else if (artist._id !== id) {
+      dispatch(resetArtist());
+      console.log('reset');
+    }
+  }, [id, artist, dispatch]);
 
   return (
     <Layout className={cx('artist-page', { 'artist-page--dark': isDarkTheme })}>
@@ -46,7 +52,7 @@ const ArtistPage = () => {
               Artworks <span className="visually-hidden">by {artist?.name}</span>
             </h1>
             <PaintingsGrid className={cx('artist-page__paintings')}>
-              {artist.paintings.map((painting) => {
+              {artist!.paintings.map((painting) => {
                 return (
                   <PaintingCard
                     isDarkTheme={isDarkTheme}
