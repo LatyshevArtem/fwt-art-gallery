@@ -1,0 +1,13 @@
+.form-label {
+  width: max-content;
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+  color: $primary-black;
+  cursor: pointer;
+
+  &--dark {
+    color: $primary-white;
+  }
+}
