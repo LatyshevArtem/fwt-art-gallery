@@ -1,0 +1,44 @@
+.input {
+  outline: 1px solid $primary-light-gray;
+  outline-offset: -1px;
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 140%;
+  color: $primary-dark-gray;
+  background-color: $primary-white;
+
+  &::-webkit-input-placeholder {
+    color: $secondary-gray;
+  }
+
+  &:hover {
+    outline-color: $secondary-gray;
+  }
+
+  &:focus {
+    outline-color: $primary-dark-gray;
+    caret-color: $primary-dark-gray;
+  }
+
+  &:not(:focus):invalid {
+    outline-color: $accent-error;
+  }
+
+  &--dark {
+    outline-color: transparent;
+    color: $primary-light-gray;
+    background-color: $secondary-black;;
+
+    &:hover {
+      outline-color: $primary-dark-gray;
+    }
+
+    &:focus {
+      outline-color: $primary-light-gray;
+      caret-color: $primary-light-gray;
+    }
+  }
+}

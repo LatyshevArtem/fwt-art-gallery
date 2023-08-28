@@ -1,0 +1,11 @@
+.form-error-message {
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 140%;
+  color: $accent-error;
+  fill: currentColor;
+}
