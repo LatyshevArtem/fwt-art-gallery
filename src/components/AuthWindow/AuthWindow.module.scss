@@ -102,11 +102,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        row-gap: 32px;
+        width: 100%;
         margin-bottom: 60px;
 
         @media (min-width: $tablet-width) {
-          row-gap: 40px;
           order: 1;
           margin-bottom: 0;
         }
@@ -116,6 +115,29 @@
         }
 
         .form {
+          &__control {
+            width: 100%;
+            max-width: 340px;
+
+            &:not(:last-of-type) {
+              margin-bottom: 32px;
+            }
+
+            &:last-of-type {
+              margin-bottom: 40px;
+            }
+
+            @media (min-width: $tablet-width) {
+              &:not(:last-of-type) {
+                margin-bottom: 40px;
+              }
+
+              &:last-of-type {
+                margin-bottom: 60px;
+              }
+            }
+          }
+
           &__submit-button {
             width: 200px;
             height: 47px;
