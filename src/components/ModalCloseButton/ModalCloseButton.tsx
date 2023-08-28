@@ -10,7 +10,7 @@ const cx = cn.bind(styles);
 interface ModalCloseButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick' | 'type'> {}
 
-const ModalCloseButton: FC<ModalCloseButtonProps> = ({ className, ...props }) => {
+const ModalCloseButton: FC<ModalCloseButtonProps> = ({ children, className, ...props }) => {
   const { isDarkTheme } = useThemeContext();
   const { onCloseButtonClick } = useModalContext();
 
@@ -21,7 +21,7 @@ const ModalCloseButton: FC<ModalCloseButtonProps> = ({ className, ...props }) =>
       type="button"
       {...props}
     >
-      <CloseIcon />
+      {children || <CloseIcon />}
     </button>
   );
 };
