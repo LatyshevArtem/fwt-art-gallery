@@ -12,4 +12,11 @@
   @media (min-width: $tablet-width) {
     row-gap: 100px;
   }
+
+  &__content {
+    &--loading {
+      justify-self: center;
+      align-self: center;
+    }
+  }
 }
