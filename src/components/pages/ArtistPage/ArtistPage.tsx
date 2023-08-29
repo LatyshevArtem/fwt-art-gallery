@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useThemeContext } from '@hooks/useThemeContext';
 import { useMatchMedia } from '@hooks/useMatchMedia';
-import { useAppSelector } from '@hooks/useAppSelector';
-import { useAppDispatch } from '@hooks/useAppDispatch';
+import { useFetchArtistByIdQuery } from '@api/features';
 import Layout from '@components/layout/Layout';
 import cn from 'classnames/bind';
 import Link from '@components/Link/Link';
@@ -12,7 +10,6 @@ import PaintingsGrid from '@components/PaintingsGrid';
 import PaintingCard from '@components/PaintingCard/PaintingCard';
 import Preloader from '@components/Preloader/Preloader';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
-import { resetArtist, fetchArtistById } from '../../../features/artistByIdSlice';
 import styles from './ArtistPage.module.scss';
 
 const cx = cn.bind(styles);
@@ -21,21 +18,14 @@ const ArtistPage = () => {
   const { id } = useParams();
   const { isDarkTheme } = useThemeContext();
   const { isMobile } = useMatchMedia();
-  const artist = useAppSelector((state) => state.artistById.artist);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (!artist) {
-      dispatch(fetchArtistById(id as string));
-    } else if (artist._id !== id) {
-      dispatch(resetArtist());
-    }
-  }, [id, artist, dispatch]);
+  const { data: artist, isLoading } = useFetchArtistByIdQuery(id as string);
 
   return (
     <Layout className={cx('artist-page', { 'artist-page--dark': isDarkTheme })}>
-      <main className={cx('artist-page__main')}>
-        {artist ? (
+      <main className={cx('artist-page__content', { 'artist-page__content--loading': isLoading })}>
+        {isLoading || !artist ? (
+          <Preloader />
+        ) : (
           <>
             <div className={cx('artist-page__back-link-wrapper')}>
               <Link className={cx('artist-page__back-link')} isDarkTheme={isDarkTheme} to="..">
@@ -47,10 +37,10 @@ const ArtistPage = () => {
             <h1
               className={cx('artist-page__heading', { 'artist-page__heading--dark': isDarkTheme })}
             >
-              Artworks <span className="visually-hidden">by {artist?.name}</span>
+              Artworks <span className="visually-hidden">by {artist.name}</span>
             </h1>
             <PaintingsGrid className={cx('artist-page__paintings')}>
-              {artist!.paintings.map((painting) => {
+              {artist.paintings.map((painting) => {
                 return (
                   <PaintingCard
                     isDarkTheme={isDarkTheme}
@@ -63,10 +53,6 @@ const ArtistPage = () => {
               })}
             </PaintingsGrid>
           </>
-        ) : (
-          <div className={cx('artist-page__preloader-wrapper')}>
-            <Preloader />
-          </div>
         )}
       </main>
     </Layout>
