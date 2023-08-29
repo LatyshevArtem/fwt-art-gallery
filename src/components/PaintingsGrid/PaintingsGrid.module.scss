@@ -1,15 +1,15 @@
 .paintings-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 280px);
-  gap: 20px;
+  grid-template-columns: minmax(280px, 1fr);
+  row-gap: 20px;
 
   @media (min-width: $tablet-width) {
-    grid-template-columns: repeat(auto-fit, 352px);
+    grid-template-columns: repeat(2, minmax(352px, 1fr));
     gap: 24px;
   }
 
   @media (min-width: $desktop-width) {
-    grid-template-columns: repeat(auto-fit, 392px);
+    grid-template-columns: repeat(3, minmax(392px, 1fr));
     gap: 32px;
   }
 }

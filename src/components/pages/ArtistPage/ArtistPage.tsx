@@ -5,10 +5,10 @@ import { useFetchArtistByIdQuery } from '@api/features';
 import Layout from '@components/layout/Layout';
 import cn from 'classnames/bind';
 import Link from '@components/Link/Link';
+import Preloader from '@components/Preloader';
 import ArtistCard from '@components/ArtistCard';
 import PaintingsGrid from '@components/PaintingsGrid';
 import PaintingCard from '@components/PaintingCard/PaintingCard';
-import Preloader from '@components/Preloader/Preloader';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
 import styles from './ArtistPage.module.scss';
 
@@ -39,19 +39,20 @@ const ArtistPage = () => {
             >
               Artworks <span className="visually-hidden">by {artist.name}</span>
             </h1>
-            <PaintingsGrid className={cx('artist-page__paintings')}>
-              {artist.paintings.map((painting) => {
-                return (
-                  <PaintingCard
-                    isDarkTheme={isDarkTheme}
-                    painting={painting.image}
-                    name={painting.name}
-                    date={painting.yearOfCreation}
-                    key={painting._id}
-                  />
-                );
-              })}
-            </PaintingsGrid>
+            {artist.paintings && (
+              <PaintingsGrid className={cx('artist-page__paintings')}>
+                {artist.paintings.map((painting) => (
+                  <li key={painting._id}>
+                    <PaintingCard
+                      isDarkTheme={isDarkTheme}
+                      painting={painting.image}
+                      name={painting.name}
+                      date={painting.yearOfCreation}
+                    />
+                  </li>
+                ))}
+              </PaintingsGrid>
+            )}
           </>
         )}
       </main>
