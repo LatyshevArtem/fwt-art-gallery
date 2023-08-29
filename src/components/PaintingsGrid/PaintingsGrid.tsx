@@ -4,12 +4,12 @@ import styles from './PaintingsGrid.module.scss';
 
 const cx = cn.bind(styles);
 
-interface GridProps extends PropsWithChildren {
+interface PaintingsGridProps extends PropsWithChildren {
   className?: string;
 }
 
-const PaintingsGrid: FC<GridProps> = ({ children, className }) => {
-  return <div className={cx(className, 'paintings-grid')}>{children}</div>;
+const PaintingsGrid: FC<PaintingsGridProps> = ({ children, className }) => {
+  return <ul className={cx(className, 'paintings-grid')}>{children}</ul>;
 };
 
 export default PaintingsGrid;
