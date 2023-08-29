@@ -1,20 +1,10 @@
 @import "../App/scss/breakpoints.scss";
 @import "../App/scss/colors.scss";
 
-$mobile-card-width: 280px;
-$mobile-card-height: 185px;
-
-$tablet-card-width: 352px;
-$tablet-card-height: 220px;
-
-$desktop-card-width: 392px;
-$desktop-card-height: 260px;
-
-
 .painting-card {
   position: relative;
-  width: $mobile-card-width;
-  height: $mobile-card-height;
+  width: 100%;
+  aspect-ratio: 56 / 37;
 
   &__image {
     width: 100%;
@@ -22,13 +12,11 @@ $desktop-card-height: 260px;
   }
 
   @media (min-width: $tablet-width) {
-    width: $tablet-card-width;
-    height: $tablet-card-height;
+    aspect-ratio: 8 / 5;
   }
 
   @media (min-width: $desktop-width) {
-    width: $desktop-card-width;
-    height: $desktop-card-height;
+    aspect-ratio: 98 / 65;
   }
 }
 
