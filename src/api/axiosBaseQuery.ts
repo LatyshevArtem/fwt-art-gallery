@@ -4,6 +4,5 @@ import { http } from '@http/http';
 
 export const axiosBaseQuery =
   <T>(): BaseQueryFn<AxiosRequestConfig, T> =>
-  async (config: AxiosRequestConfig<T>) => {
-    return http(config);
-  };
+  async (config: AxiosRequestConfig<T>) =>
+    http(config);
