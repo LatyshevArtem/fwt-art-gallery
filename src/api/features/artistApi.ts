@@ -1,26 +1,18 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { apiService } from '@api/apiService';
 import { Artist } from '@schemas/Artist';
 import { ArtistById } from '@schemas/ArtistById';
-import { axiosBaseQuery } from '../axiosBaseQuery';
 
 const urlStaticArtists = 'artists/static';
 
-const artistApi = createApi({
-  reducerPath: 'artistApi',
-  baseQuery: axiosBaseQuery(),
+const artistApi = apiService.injectEndpoints({
   endpoints: (build) => ({
     fetchArtists: build.query<Artist[], null>({
-      query: () => {
-        return urlStaticArtists;
-      },
+      query: () => ({ url: urlStaticArtists }),
     }),
     fetchArtistById: build.query<ArtistById, string>({
-      query: (id: string) => {
-        return `${urlStaticArtists}/${id}`;
-      },
+      query: (id: string) => ({ url: `${urlStaticArtists}/${id}` }),
     }),
   }),
 });
 
 export const { useFetchArtistsQuery, useFetchArtistByIdQuery } = artistApi;
-export { artistApi };
