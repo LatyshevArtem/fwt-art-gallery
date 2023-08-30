@@ -8,17 +8,13 @@ const cx = cn.bind(styles);
 
 interface LogoProps {
   isDarkTheme?: boolean;
-  href?: string;
+  to?: string;
 }
 
-const Logo: FC<LogoProps> = ({ isDarkTheme, href = '/' }) => {
+const Logo: FC<LogoProps> = ({ isDarkTheme, to = '/' }) => {
   return (
-    <Link href={href} isIconLink>
-      <LogoIcon
-        className={cx('logo', {
-          'logo--dark': isDarkTheme,
-        })}
-      />
+    <Link isDarkTheme={isDarkTheme} to={to}>
+      <LogoIcon className={cx('logo')} />
     </Link>
   );
 };

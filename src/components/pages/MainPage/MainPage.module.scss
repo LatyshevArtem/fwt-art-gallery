@@ -1,0 +1,39 @@
+.main-page {
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+  row-gap: 80px;
+  min-height: 100%;
+  background-color: $primary-white;
+
+  @media (min-width: $tablet-width) {
+    row-gap: 100px;
+  }
+
+  &--dark {
+    background-color: $primary-black;
+  }
+
+  &__content {
+    &--loading {
+      justify-self: center;
+      align-self: center;
+    }
+  }
+
+  &__paintings {
+    justify-content: center;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 20px;
+
+    @media (min-width: $desktop-width) {
+      padding: 0 100px;
+    }
+
+    .paintings {
+      &__link {
+        width: auto;
+      }
+    }
+  }
+}

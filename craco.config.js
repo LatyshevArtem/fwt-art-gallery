@@ -5,11 +5,15 @@ const getPathForAlias = (p) => path.resolve(__dirname, 'src', p);
 module.exports = {
   webpack: {
     alias: {
+      '@api': getPathForAlias('api'),
       '@assets': getPathForAlias('assets'),
       '@components': getPathForAlias('components'),
+      '@consts': getPathForAlias('consts'),
       '@contexts': getPathForAlias('contexts'),
       '@hooks': getPathForAlias('hooks'),
+      '@http': getPathForAlias('http'),
       '@providers': getPathForAlias('providers'),
+      '@schemas': getPathForAlias('schemas'),
     }
   },
   style: {
