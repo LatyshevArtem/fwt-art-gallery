@@ -15,8 +15,8 @@ const LogInWindow: FC<LogInWindowProps> = ({ isOpen, onClose }) => {
   const [password, setPassword] = useState('');
   const { isDarkTheme } = useThemeContext();
 
-  const handleEmailChange: InputChangeEventHandler = (evt) => setEmail(evt.target.value);
-  const handlePasswordChange: InputChangeEventHandler = (evt) => setPassword(evt.target.value);
+  const onEmailChange: InputChangeEventHandler = (evt) => setEmail(evt.target.value);
+  const onPasswordChange: InputChangeEventHandler = (evt) => setPassword(evt.target.value);
 
   return (
     <AuthWindow
@@ -26,9 +26,9 @@ const LogInWindow: FC<LogInWindowProps> = ({ isOpen, onClose }) => {
       onClose={onClose}
       authFormProps={{
         email,
-        onEmailChange: handleEmailChange,
+        onEmailChange,
         password,
-        onPasswordChange: handlePasswordChange,
+        onPasswordChange,
         onFormSubmit: () => {},
       }}
     >
