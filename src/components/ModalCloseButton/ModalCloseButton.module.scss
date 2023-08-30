@@ -1,0 +1,24 @@
+.modal-close-button {
+  width: max-content;
+  line-height: 0;
+  background-color: transparent;
+  fill: $primary-dark-gray;
+
+  &:hover,
+  &:focus-visible {
+    fill: $primary-black;
+  }
+
+  &--dark {
+    fill: $primary-light-gray;
+
+    &:hover,
+    &:focus-visible {
+      fill: $primary-white;
+    }
+
+    @media (min-width: $desktop-width) {
+      fill: $secondary-gray;
+    }
+  }
+}

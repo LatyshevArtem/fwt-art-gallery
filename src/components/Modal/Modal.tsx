@@ -1,12 +1,25 @@
-import { useRef, useEffect, FC, PropsWithChildren } from 'react';
-import Portal from '@components/Portal';
+import { useRef, FC, PropsWithChildren, createContext, useContext, useMemo } from 'react';
 import { useOutsideClick } from '@hooks/useOutsideClick';
+import { useEscapeKeydown } from '@hooks/useEscapeKeydown';
+import Portal from '@components/Portal';
+
+interface ModalContextType {
+  onCloseButtonClick: () => void;
+}
+
+const ModalContext = createContext<ModalContextType>({ onCloseButtonClick: () => {} });
+
+const useModalContext = () => {
+  const { onCloseButtonClick } = useContext(ModalContext);
+
+  return { onCloseButtonClick };
+};
 
 interface ModalProps extends PropsWithChildren {
   backdropClassName?: string;
   contentClassName?: string;
   isOpen: boolean;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -16,31 +29,30 @@ const Modal: FC<ModalProps> = ({
   isOpen,
   onClose = () => {},
 }) => {
+  const context = useMemo<ModalContextType>(
+    () => ({
+      onCloseButtonClick: onClose,
+    }),
+    [onClose],
+  );
+
   const modalRef = useRef<HTMLDivElement>(null);
 
   useOutsideClick(modalRef, onClose);
-
-  useEffect(() => {
-    const handleEscapePress = (evt: KeyboardEvent) => {
-      if (modalRef.current && (evt.key === 'Escape' || evt.key === 'Esc')) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscapePress);
-
-    return () => document.removeEventListener('keydown', handleEscapePress);
-  }, [onClose]);
+  useEscapeKeydown(modalRef, onClose);
 
   return isOpen ? (
-    <Portal>
-      <div className={backdropClassName}>
-        <div className={contentClassName} ref={modalRef}>
-          {children}
+    <ModalContext.Provider value={context}>
+      <Portal>
+        <div className={backdropClassName}>
+          <div className={contentClassName} ref={modalRef}>
+            {children}
+          </div>
         </div>
-      </div>
-    </Portal>
+      </Portal>
+    </ModalContext.Provider>
   ) : null;
 };
 
+export { useModalContext };
 export default Modal;

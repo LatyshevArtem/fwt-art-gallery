@@ -4,60 +4,78 @@ import { useThemeContext } from '@hooks/useThemeContext';
 import { useMatchMedia } from '@hooks/useMatchMedia';
 import Logo from '@components/Logo';
 import { ReactComponent as BurgerMenuIcon } from '@assets/icons/menu-buger.svg';
-import { ReactComponent as CloseIcon } from '@assets/icons/close.svg';
 import Modal from '@components/Modal';
+import ModalCloseButton from '@components/ModalCloseButton';
+import LogInWindow from '@components/LogInWindow';
+import SignUpWindow from '@components/SignUpWindow';
 import HeaderMenu from './HeaderMenu';
 import styles from './Header.module.scss';
 
 const cx = cn.bind(styles);
 
 const Header: FC = () => {
+  const [isSidePageOpen, setIsSidePageOpen] = useState(false);
+  const [isLogInWindowOpen, setIsLogInWindowOpen] = useState(false);
+  const [isSignUpWindowOpen, setIsSignUpWindowOpen] = useState(false);
   const { isDarkTheme } = useThemeContext();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isDesktop } = useMatchMedia();
 
-  const handleLogInButtonClick = () => {};
-  const handleSignUpButtonClick = () => {};
+  const openSidePage = () => setIsSidePageOpen(true);
+  const closeSidePage = () => setIsSidePageOpen(false);
 
-  const openMobileMenu = () => setIsMobileMenuOpen(true);
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const openLogInWindow = () => setIsLogInWindowOpen(true);
+  const closeLogInWindow = () => setIsLogInWindowOpen(false);
+
+  const openSignUpWindow = () => setIsSignUpWindowOpen(true);
+  const closeSignUpWindow = () => setIsSignUpWindowOpen(false);
+
+  const handleAuthButtonClick = (button: 'login' | 'signup') => {
+    return () => {
+      closeSidePage();
+      if (button === 'login') {
+        openLogInWindow();
+      } else {
+        openSignUpWindow();
+      }
+    };
+  };
 
   return (
     <header className={cx('header', { 'header--dark': isDarkTheme })}>
       <div className={cx('header__container')}>
         <Logo isDarkTheme={isDarkTheme} />
         {!isDesktop && (
-          <button className={cx('header__menu-button')} onClick={openMobileMenu}>
+          <button className={cx('header__menu-button')} onClick={openSidePage}>
             <BurgerMenuIcon />
           </button>
         )}
         {!isDesktop ? (
           <Modal
-            backdropClassName={cx('side-page', 'side-page-overlay', {
+            backdropClassName={cx('side-page', {
               'side-page--dark': isDarkTheme,
-              'side-page--open': isMobileMenuOpen,
+              'side-page--open': isSidePageOpen,
             })}
             contentClassName={cx('side-page__content')}
-            onClose={closeMobileMenu}
+            onClose={closeSidePage}
             isOpen
           >
-            <button className={cx('side-page__menu-button')} onClick={closeMobileMenu}>
-              <CloseIcon />
-            </button>
+            <ModalCloseButton className={cx('side-page__menu-button')} />
             <HeaderMenu
               isDarkTheme={isDarkTheme}
-              onLogInButtonClick={handleLogInButtonClick}
-              onSignUpButtonClick={handleSignUpButtonClick}
+              onLogInButtonClick={handleAuthButtonClick('login')}
+              onSignUpButtonClick={handleAuthButtonClick('signup')}
             />
           </Modal>
         ) : (
           <HeaderMenu
             isDarkTheme={isDarkTheme}
-            onLogInButtonClick={handleLogInButtonClick}
-            onSignUpButtonClick={handleSignUpButtonClick}
+            onLogInButtonClick={handleAuthButtonClick('login')}
+            onSignUpButtonClick={handleAuthButtonClick('signup')}
           />
         )}
       </div>
+      <LogInWindow isOpen={isLogInWindowOpen} onClose={closeLogInWindow} />
+      <SignUpWindow isOpen={isSignUpWindowOpen} onClose={closeSignUpWindow} />
     </header>
   );
 };
