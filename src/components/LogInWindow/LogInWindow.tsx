@@ -32,7 +32,7 @@ const LogInWindow: FC<LogInWindowProps> = ({ isOpen, onClose }) => {
         onFormSubmit: () => {},
       }}
     >
-      If you don&apos;t have an account yet, please{' '}
+      If you don&apos;t have an account yet, please&nbsp;
       <AuthWindowLink isDarkTheme={isDarkTheme} to="signup">
         sign up
       </AuthWindowLink>
