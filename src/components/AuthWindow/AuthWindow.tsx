@@ -10,7 +10,7 @@ import styles from './AuthWindow.module.scss';
 
 const cx = cn.bind(styles);
 
-type AuthWindowType = 'login' | 'signup';
+export type AuthWindowType = 'login' | 'signup';
 
 const authWindowContentByType = {
   login: {

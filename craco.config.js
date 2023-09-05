@@ -13,7 +13,10 @@ module.exports = {
       '@hooks': getPathForAlias('hooks'),
       '@http': getPathForAlias('http'),
       '@providers': getPathForAlias('providers'),
+      '@routes': getPathForAlias('routes'),
       '@schemas': getPathForAlias('schemas'),
+      '@store': getPathForAlias('store'),
+      '@utils': getPathForAlias('utils'),
     }
   },
   style: {
