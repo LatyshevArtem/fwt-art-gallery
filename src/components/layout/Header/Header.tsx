@@ -79,7 +79,7 @@ const Header: FC = () => {
     const authWindowType = searchParams.get('auth') as AuthWindowType | null;
     if (authWindowType === 'login') {
       openLogInWindow();
-    } else {
+    } else if (authWindowType === 'signup') {
       openSignUpWindow();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
