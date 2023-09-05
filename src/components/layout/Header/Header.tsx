@@ -67,6 +67,11 @@ const Header: FC = () => {
     return () => {
       closeSidePage();
       appendSearchParam('auth', button);
+      if (button === 'login') {
+        openLogInWindow();
+      } else {
+        openSignUpWindow();
+      }
     };
   };
 
@@ -74,10 +79,11 @@ const Header: FC = () => {
     const authWindowType = searchParams.get('auth') as AuthWindowType | null;
     if (authWindowType === 'login') {
       openLogInWindow();
-    } else if (authWindowType === 'signup') {
+    } else {
       openSignUpWindow();
     }
-  }, [searchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <header className={cx('header', { 'header--dark': isDarkTheme })}>
@@ -113,8 +119,8 @@ const Header: FC = () => {
           />
         )}
       </div>
-      <LogInWindow isOpen={isLogInWindowOpen} onClose={closeLogInWindow} />
-      <SignUpWindow isOpen={isSignUpWindowOpen} onClose={closeSignUpWindow} />
+      {isLogInWindowOpen && <LogInWindow onClose={closeLogInWindow} isOpen />}
+      {isSignUpWindowOpen && <SignUpWindow onClose={closeSignUpWindow} isOpen />}
     </header>
   );
 };
