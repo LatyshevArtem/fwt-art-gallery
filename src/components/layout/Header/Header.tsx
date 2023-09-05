@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import cn from 'classnames/bind';
 import { useThemeContext } from '@hooks/useThemeContext';
@@ -15,6 +15,28 @@ import styles from './Header.module.scss';
 
 const cx = cn.bind(styles);
 
+const getAppendSearchParamFunction = (
+  searchParams: URLSearchParams,
+  setSearchParams: (newSearchParams: URLSearchParams) => void,
+) => {
+  return (name: string, value: string) => {
+    const newSearchParams = searchParams;
+    newSearchParams.append(name, value);
+    setSearchParams(newSearchParams);
+  };
+};
+
+const getDeleteSearchParamFunction = (
+  searchParams: URLSearchParams,
+  setSearchParams: (newSearchParams: URLSearchParams) => void,
+) => {
+  return (name: string) => {
+    const newSearchParams = searchParams;
+    newSearchParams.delete(name);
+    setSearchParams(newSearchParams);
+  };
+};
+
 const Header: FC = () => {
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [isLogInWindowOpen, setIsLogInWindowOpen] = useState(false);
@@ -26,30 +48,20 @@ const Header: FC = () => {
   const openSidePage = () => setIsSidePageOpen(true);
   const closeSidePage = () => setIsSidePageOpen(false);
 
-  const deleteSearchParam = useCallback(
-    (name: string) => {
-      searchParams.delete(name);
-      setSearchParams(searchParams);
-    },
-    [searchParams, setSearchParams],
-  );
-
-  const appendSearchParam = (name: string, value: string) => {
-    searchParams.append(name, value);
-    setSearchParams(searchParams);
-  };
+  const appendSearchParam = getAppendSearchParamFunction(searchParams, setSearchParams);
+  const deleteSearchParam = getDeleteSearchParamFunction(searchParams, setSearchParams);
 
   const openLogInWindow = () => setIsLogInWindowOpen(true);
-  const closeLogInWindow = useCallback(() => {
+  const closeLogInWindow = () => {
     deleteSearchParam('auth');
     setIsLogInWindowOpen(false);
-  }, [deleteSearchParam]);
+  };
 
   const openSignUpWindow = () => setIsSignUpWindowOpen(true);
-  const closeSignUpWindow = useCallback(() => {
+  const closeSignUpWindow = () => {
     deleteSearchParam('auth');
     setIsSignUpWindowOpen(false);
-  }, [deleteSearchParam]);
+  };
 
   const handleAuthButtonClick = (button: AuthWindowType) => {
     return () => {
