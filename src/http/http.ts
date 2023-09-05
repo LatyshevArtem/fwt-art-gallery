@@ -1,5 +1,7 @@
-import axios, { InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import { AuthResponse } from '@schemas/AuthResponse';
+import { setTokensToLocalStorage } from '@utils/token';
 
 const http = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -22,6 +24,15 @@ const handleRequestInterceptorSuccess = async (config: InternalAxiosRequestConfi
   return newConfig;
 };
 
+const handleResponseInterceptorSuccess = (response: AxiosResponse<AuthResponse>) => {
+  if (response.config.method === 'post' && response.config.url?.includes('auth')) {
+    const { accessToken, refreshToken } = response.data;
+    setTokensToLocalStorage(accessToken, refreshToken);
+  }
+  return response;
+};
+
 http.interceptors.request.use(handleRequestInterceptorSuccess);
+http.interceptors.response.use(handleResponseInterceptorSuccess);
 
 export { http };
