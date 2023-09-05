@@ -1,13 +1,9 @@
 import { apiService } from '@api/apiService';
+import { AuthResponse } from '@schemas/AuthResponse';
 
 interface AuthRequestData {
   username: string;
   password: string;
-}
-
-interface AuthResponse {
-  accessToken: string;
-  refreshToken: string;
 }
 
 interface RefreshRequestData {
