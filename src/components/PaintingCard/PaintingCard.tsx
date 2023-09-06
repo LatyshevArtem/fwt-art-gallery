@@ -9,7 +9,7 @@ const cx = cn.bind(styles);
 
 interface PaintingCardProps {
   isDarkTheme?: boolean;
-  painting: Image;
+  painting?: Image;
   name: string;
   date: string;
 }
@@ -17,7 +17,19 @@ interface PaintingCardProps {
 const PaintingCard: FC<PaintingCardProps> = ({ isDarkTheme, painting, name, date }) => {
   return (
     <figure className={cx('painting-card')}>
-      <Picture className={cx('painting-card__image')} {...painting} />
+      {painting ? (
+        <Picture className={cx('painting-card__image')} {...painting} />
+      ) : (
+        <div
+          className={cx('painting-card__without-image', {
+            'painting-card__without-image--dark': isDarkTheme,
+          })}
+        >
+          <p className={cx('without-image__text', { 'without-image__text--dark': isDarkTheme })}>
+            No Image uploaded
+          </p>
+        </div>
+      )}
       <figcaption className={cx('figcaption', { 'figcaption--dark': isDarkTheme })}>
         <p className={cx('figcaption__name')}>{name}</p>
         <p className={cx('figcaption__date')}>{date}</p>

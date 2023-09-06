@@ -6,17 +6,61 @@
   width: 100%;
   aspect-ratio: 56 / 37;
 
-  &__image {
-    width: 100%;
-    height: 100%;
-  }
-
   @media (min-width: $tablet-width) {
     aspect-ratio: 8 / 5;
   }
 
   @media (min-width: $desktop-width) {
     aspect-ratio: 98 / 65;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__without-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 16px;
+    background-color: $secondary-white;
+
+    &--dark {
+      background-color: $secondary-black;
+    }
+
+    .without-image {
+      &__text {
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 12px;
+        font-family: "Inter";
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 15px;
+        text-transform: uppercase;
+        color: $secondary-gray;
+
+        &::before {
+          content: "";
+          width: 68px;
+          height: 59px;
+          background-image: url("../../assets/icons/no-photo-icon.svg");
+          opacity: 0.2;
+        }
+
+        &--dark{
+          &::before {
+            opacity: 0.1;
+          }
+        }
+      }
+    }
   }
 }
 
