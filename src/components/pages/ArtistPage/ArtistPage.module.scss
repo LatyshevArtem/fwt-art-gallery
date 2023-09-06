@@ -14,31 +14,41 @@
     }
   }
 
-  &__back-link-wrapper {
-    padding: 16px 20px 12px;
+  &__tools-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
 
     @media (min-width: $tablet-width) {
-      padding: 36px 20px 20px;
+      padding: 32px 20px 20px;
     }
 
     @media (min-width: $desktop-width) {
-      padding: 52px 100px 24px;
+      padding: 52px 100px 20px;
     }
-  }
 
-  &__back-link {
-    display: flex;
-    column-gap: 12px;
-    text-transform: uppercase;
+    .tools-bar {
+      &__back-link {
+        display: flex;
+        column-gap: 12px;
+        text-transform: uppercase;
 
-    .back-link {
-      &__icon {
-        transform: rotate(180deg);
+        .back-link {
+          &__icon {
+            transform: rotate(180deg);
+          }
+
+          &__text {
+            font-size: 12px;
+            font-weight: 700;
+          }
+        }
       }
 
-      &__text {
-        font-size: 12px;
-        font-weight: 700;
+      &__edit-buttons {
+        display: flex;
+        column-gap: 20px;
       }
     }
   }
