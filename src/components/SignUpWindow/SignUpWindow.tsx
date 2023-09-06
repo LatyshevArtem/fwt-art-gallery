@@ -21,11 +21,11 @@ const SignUpWindow: FC<SignUpWindowProps> = ({ isOpen, onClose }) => {
 
   useSuccessAuthResponse(isSuccess, onClose);
 
-  const onEmailChange: InputChangeEventHandler = (evt) => setEmail(evt.target.value);
-  const onPasswordChange: InputChangeEventHandler = (evt) => setPassword(evt.target.value);
+  const onEmailChange: InputChangeEventHandler = (event) => setEmail(event.target.value);
+  const onPasswordChange: InputChangeEventHandler = (event) => setPassword(event.target.value);
 
-  const onFormSubmit: FormSubmitEventHandler = (evt) => {
-    evt.preventDefault();
+  const onFormSubmit: FormSubmitEventHandler = (event) => {
+    event.preventDefault();
     signup({ username: email, password });
   };
 

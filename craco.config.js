@@ -11,7 +11,6 @@ module.exports = {
       '@consts': getPathForAlias('consts'),
       '@contexts': getPathForAlias('contexts'),
       '@hooks': getPathForAlias('hooks'),
-      '@http': getPathForAlias('http'),
       '@providers': getPathForAlias('providers'),
       '@routes': getPathForAlias('routes'),
       '@schemas': getPathForAlias('schemas'),

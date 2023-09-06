@@ -3,6 +3,7 @@ import cn from 'classnames/bind';
 import Picture from '@components/Picture';
 import { ReactComponent as ArrowIcon } from '@assets/icons/arrow.svg';
 import { Image } from '@schemas/Image';
+import ImagePlaceholder from './ImagePlaceholder';
 import styles from './PaintingCard.module.scss';
 
 const cx = cn.bind(styles);
@@ -20,15 +21,12 @@ const PaintingCard: FC<PaintingCardProps> = ({ isDarkTheme, painting, name, date
       {painting ? (
         <Picture className={cx('painting-card__image')} {...painting} />
       ) : (
-        <div
-          className={cx('painting-card__without-image', {
-            'painting-card__without-image--dark': isDarkTheme,
+        <ImagePlaceholder
+          className={cx('painting-card__image-placeholder', {
+            'painting-card__image-placeholder--dark': isDarkTheme,
           })}
-        >
-          <p className={cx('without-image__text', { 'without-image__text--dark': isDarkTheme })}>
-            No Image uploaded
-          </p>
-        </div>
+          isDarkTheme={isDarkTheme}
+        />
       )}
       <figcaption className={cx('figcaption', { 'figcaption--dark': isDarkTheme })}>
         <p className={cx('figcaption__name')}>{name}</p>

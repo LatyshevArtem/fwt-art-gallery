@@ -13,7 +13,6 @@
       "@consts/*": ["./src/consts/*"],
       "@contexts/*": ["./src/contexts/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@http/*": ["./src/http/*"],
       "@providers/*": ["./src/providers/*"],
       "@routes/*": ["./src/routes/*"],
       "@schemas/*": ["./src/schemas/*"],

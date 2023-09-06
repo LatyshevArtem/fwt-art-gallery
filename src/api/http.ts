@@ -1,17 +1,11 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { AuthResponse } from '@schemas/AuthResponse';
 import { setTokensToLocalStorage } from '@utils/token';
+import { getFingerprint } from './getFingerprint';
 
 const http = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
-
-const getFingerprint = async () => {
-  const fingerprint = await FingerprintJS.load();
-  const { visitorId } = await fingerprint.get();
-  return visitorId;
-};
 
 const handleRequestInterceptorSuccess = async (config: InternalAxiosRequestConfig) => {
   const newConfig = config;

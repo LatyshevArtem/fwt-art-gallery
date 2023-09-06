@@ -17,30 +17,24 @@ const urlRefresh = 'auth/refresh';
 const artistApi = apiService.injectEndpoints({
   endpoints: (build) => ({
     signup: build.mutation<AuthResponse, AuthRequestData>({
-      query: (authRequestData) => ({
+      query: (data) => ({
         method: 'POST',
         url: urlSignUp,
-        data: {
-          ...authRequestData,
-        },
+        data,
       }),
     }),
     login: build.mutation<AuthResponse, AuthRequestData>({
-      query: (authRequestData) => ({
+      query: (data) => ({
         method: 'POST',
         url: urlLogIn,
-        data: {
-          ...authRequestData,
-        },
+        data,
       }),
     }),
     refresh: build.mutation<AuthResponse, RefreshRequestData>({
-      query: (refreshRequestData) => ({
+      query: (data) => ({
         method: 'POST',
         url: urlRefresh,
-        data: {
-          ...refreshRequestData,
-        },
+        data,
       }),
     }),
   }),
