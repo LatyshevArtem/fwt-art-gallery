@@ -1,8 +1,14 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
-import type { AxiosRequestConfig } from 'axios';
-import { http } from '@http/http';
+import { AxiosError, AxiosRequestConfig } from 'axios';
+import { http } from './http';
 
 export const axiosBaseQuery =
   <T>(): BaseQueryFn<AxiosRequestConfig, T> =>
-  async (config: AxiosRequestConfig<T>) =>
-    http(config);
+  async (config: AxiosRequestConfig<T>) => {
+    try {
+      return await http(config);
+    } catch (axiosError) {
+      const error = axiosError as AxiosError;
+      return { error: error.response?.data };
+    }
+  };

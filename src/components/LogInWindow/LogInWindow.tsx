@@ -1,9 +1,12 @@
-import { ChangeEventHandler, FC, useState } from 'react';
+import { ChangeEventHandler, FC, FormEventHandler, useState } from 'react';
 import { useThemeContext } from '@hooks/useThemeContext';
+import { useLoginMutation } from '@api/features';
+import { useSuccessAuthResponse } from '@hooks/useSuccessAuthResponse';
 import AuthWindow from '@components/AuthWindow';
 import AuthWindowLink from '@components/AuthWindowLink';
 
 type InputChangeEventHandler = ChangeEventHandler<HTMLInputElement>;
+type FormSubmitEventHandler = FormEventHandler<HTMLFormElement>;
 
 interface LogInWindowProps {
   isOpen: boolean;
@@ -14,9 +17,17 @@ const LogInWindow: FC<LogInWindowProps> = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { isDarkTheme } = useThemeContext();
+  const [login, { isSuccess }] = useLoginMutation();
 
-  const onEmailChange: InputChangeEventHandler = (evt) => setEmail(evt.target.value);
-  const onPasswordChange: InputChangeEventHandler = (evt) => setPassword(evt.target.value);
+  useSuccessAuthResponse(isSuccess, onClose);
+
+  const onEmailChange: InputChangeEventHandler = (event) => setEmail(event.target.value);
+  const onPasswordChange: InputChangeEventHandler = (event) => setPassword(event.target.value);
+
+  const onFormSubmit: FormSubmitEventHandler = (event) => {
+    event.preventDefault();
+    login({ username: email, password });
+  };
 
   return (
     <AuthWindow
@@ -29,11 +40,11 @@ const LogInWindow: FC<LogInWindowProps> = ({ isOpen, onClose }) => {
         onEmailChange,
         password,
         onPasswordChange,
-        onFormSubmit: () => {},
+        onFormSubmit,
       }}
     >
       If you don&apos;t have an account yet, please&nbsp;
-      <AuthWindowLink isDarkTheme={isDarkTheme} to="signup">
+      <AuthWindowLink isDarkTheme={isDarkTheme} to="?auth=signup">
         sign up
       </AuthWindowLink>
     </AuthWindow>

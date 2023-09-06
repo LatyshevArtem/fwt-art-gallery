@@ -1,7 +1,9 @@
-import { useState, FC } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import cn from 'classnames/bind';
 import { useThemeContext } from '@hooks/useThemeContext';
 import { useMatchMedia } from '@hooks/useMatchMedia';
+import { AuthWindowType } from '@components/AuthWindow';
 import Logo from '@components/Logo';
 import { ReactComponent as BurgerMenuIcon } from '@assets/icons/menu-buger.svg';
 import Modal from '@components/Modal';
@@ -13,25 +15,58 @@ import styles from './Header.module.scss';
 
 const cx = cn.bind(styles);
 
+const getAppendSearchParamFunction = (
+  searchParams: URLSearchParams,
+  setSearchParams: (newSearchParams: URLSearchParams) => void,
+) => {
+  return (name: string, value: string) => {
+    const newSearchParams = searchParams;
+    newSearchParams.append(name, value);
+    setSearchParams(newSearchParams);
+  };
+};
+
+const getDeleteSearchParamFunction = (
+  searchParams: URLSearchParams,
+  setSearchParams: (newSearchParams: URLSearchParams) => void,
+) => {
+  return (name: string) => {
+    const newSearchParams = searchParams;
+    newSearchParams.delete(name);
+    setSearchParams(newSearchParams);
+  };
+};
+
 const Header: FC = () => {
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [isLogInWindowOpen, setIsLogInWindowOpen] = useState(false);
   const [isSignUpWindowOpen, setIsSignUpWindowOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const { isDarkTheme } = useThemeContext();
   const { isDesktop } = useMatchMedia();
 
   const openSidePage = () => setIsSidePageOpen(true);
   const closeSidePage = () => setIsSidePageOpen(false);
 
+  const appendSearchParam = getAppendSearchParamFunction(searchParams, setSearchParams);
+  const deleteSearchParam = getDeleteSearchParamFunction(searchParams, setSearchParams);
+
   const openLogInWindow = () => setIsLogInWindowOpen(true);
-  const closeLogInWindow = () => setIsLogInWindowOpen(false);
+  const closeLogInWindow = () => {
+    deleteSearchParam('auth');
+    setIsLogInWindowOpen(false);
+  };
 
   const openSignUpWindow = () => setIsSignUpWindowOpen(true);
-  const closeSignUpWindow = () => setIsSignUpWindowOpen(false);
+  const closeSignUpWindow = () => {
+    deleteSearchParam('auth');
+    setIsSignUpWindowOpen(false);
+  };
 
-  const handleAuthButtonClick = (button: 'login' | 'signup') => {
+  const handleAuthButtonClick = (button: AuthWindowType) => {
     return () => {
       closeSidePage();
+      appendSearchParam('auth', button);
       if (button === 'login') {
         openLogInWindow();
       } else {
@@ -39,6 +74,16 @@ const Header: FC = () => {
       }
     };
   };
+
+  useEffect(() => {
+    const authWindowType = searchParams.get('auth') as AuthWindowType | null;
+    if (authWindowType === 'login') {
+      openLogInWindow();
+    } else if (authWindowType === 'signup') {
+      openSignUpWindow();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <header className={cx('header', { 'header--dark': isDarkTheme })}>
@@ -74,8 +119,8 @@ const Header: FC = () => {
           />
         )}
       </div>
-      <LogInWindow isOpen={isLogInWindowOpen} onClose={closeLogInWindow} />
-      <SignUpWindow isOpen={isSignUpWindowOpen} onClose={closeSignUpWindow} />
+      {isLogInWindowOpen && <LogInWindow onClose={closeLogInWindow} isOpen />}
+      {isSignUpWindowOpen && <SignUpWindow onClose={closeSignUpWindow} isOpen />}
     </header>
   );
 };

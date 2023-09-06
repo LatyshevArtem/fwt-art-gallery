@@ -6,17 +6,31 @@
   width: 100%;
   aspect-ratio: 56 / 37;
 
-  &__image {
-    width: 100%;
-    height: 100%;
-  }
-
   @media (min-width: $tablet-width) {
     aspect-ratio: 8 / 5;
   }
 
   @media (min-width: $desktop-width) {
     aspect-ratio: 98 / 65;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__image-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 16px;
+    background-color: $secondary-white;
+
+    &--dark {
+      background-color: $secondary-black;
+    }
   }
 }
 
