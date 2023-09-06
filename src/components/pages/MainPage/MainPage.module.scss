@@ -14,14 +14,8 @@
   }
 
   &__content {
-    &--loading {
-      justify-self: center;
-      align-self: center;
-    }
-  }
-
-  &__paintings {
-    justify-content: center;
+    position: relative;
+    width: 100%;
     max-width: 1920px;
     margin: 0 auto;
     padding: 0 20px;
@@ -29,6 +23,26 @@
     @media (min-width: $desktop-width) {
       padding: 0 100px;
     }
+
+    &--loading {
+      justify-self: center;
+      align-self: center;
+    }
+  }
+
+  &__add-artist-button {
+    position: absolute;
+    transform: translateY(calc(-100% - 20px));
+    column-gap: 12px;
+    color: $primary-dark-gray;
+
+    &--dark {
+      color: $primary-light-gray;
+    }
+  }
+
+  &__paintings {
+    justify-content: center;
 
     .paintings {
       &__link {
