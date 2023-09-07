@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { AuthResponse } from '@schemas/AuthResponse';
-import { setTokensToLocalStorage } from '@utils/token';
+import { getTokenFromLocalStorage, setTokensToLocalStorage } from '@utils/token';
 import { getFingerprint } from './getFingerprint';
 
 const http = axios.create({
@@ -9,6 +9,13 @@ const http = axios.create({
 
 const handleRequestInterceptorSuccess = async (config: InternalAxiosRequestConfig) => {
   const newConfig = config;
+
+  if (config.method === 'get') {
+    const accessToken = getTokenFromLocalStorage('access_token');
+    if (accessToken) {
+      config.headers.set('Authorization', `Bearer ${accessToken}`);
+    }
+  }
 
   if (config.method === 'post' && config.url?.includes('auth')) {
     const fingerprint = await getFingerprint();
