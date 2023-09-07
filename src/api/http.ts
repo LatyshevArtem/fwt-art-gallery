@@ -10,7 +10,7 @@ const http = axios.create({
 const handleRequestInterceptorSuccess = async (config: InternalAxiosRequestConfig) => {
   const newConfig = config;
 
-  if (config.method === 'get') {
+  if (config.method === 'get' || config.method === 'delete') {
     const accessToken = getTokenFromLocalStorage('access_token');
     if (accessToken) {
       config.headers.set('Authorization', `Bearer ${accessToken}`);
