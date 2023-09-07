@@ -36,7 +36,14 @@ const artistApi = apiService.injectEndpoints({
         };
       },
     }),
+    deleteArtistById: build.mutation<string, string>({
+      query: (id) => ({ method: 'DELETE', url: `${urlArtists}/${id}` }),
+    }),
   }),
 });
 
-export const { useLazyFetchArtistsQuery, useLazyFetchArtistByIdQuery } = artistApi;
+export const {
+  useLazyFetchArtistsQuery,
+  useLazyFetchArtistByIdQuery,
+  useDeleteArtistByIdMutation,
+} = artistApi;
