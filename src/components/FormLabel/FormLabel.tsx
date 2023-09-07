@@ -5,12 +5,10 @@ import styles from './FormLabel.module.scss';
 
 const cx = cn.bind(styles);
 
-interface FormLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
-  isDarkTheme?: boolean;
-}
+interface FormLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {}
 
-const FormLabel: FC<FormLabelProps> = ({ isDarkTheme, children, htmlFor, ...props }) => {
-  const { id } = useFormControlContext();
+const FormLabel: FC<FormLabelProps> = ({ children, htmlFor, ...props }) => {
+  const { isDarkTheme, id } = useFormControlContext();
   const labelHtmlFor = htmlFor || id;
 
   return (
