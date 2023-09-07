@@ -1,4 +1,5 @@
 import { apiService } from '@api/apiService';
+import { Genre } from '@schemas/Genre';
 import { Artist } from '@schemas/Artist';
 import { ArtistById } from '@schemas/ArtistById';
 
@@ -9,6 +10,14 @@ interface ArtistsMeta {
   count: number;
   pageNumber: number;
   perPage: number;
+}
+
+interface DataOfAddArtistRequest {
+  avatar?: Blob;
+  name: string;
+  yearsOfLife: string;
+  description: string;
+  genres: Genre[];
 }
 
 const artistApi = apiService.injectEndpoints({
@@ -36,6 +45,9 @@ const artistApi = apiService.injectEndpoints({
         };
       },
     }),
+    addArtist: build.mutation<ArtistById, DataOfAddArtistRequest>({
+      query: (data) => ({ method: 'POST', url: urlArtists, data }),
+    }),
     deleteArtistById: build.mutation<string, string>({
       query: (id) => ({ method: 'DELETE', url: `${urlArtists}/${id}` }),
     }),
@@ -45,5 +57,6 @@ const artistApi = apiService.injectEndpoints({
 export const {
   useLazyFetchArtistsQuery,
   useLazyFetchArtistByIdQuery,
+  useAddArtistMutation,
   useDeleteArtistByIdMutation,
 } = artistApi;
