@@ -66,23 +66,13 @@ const AuthWindow: FC<AuthWindowProps> = ({
             {welcomeMessage}
           </p>
           <form className={cx('content__form')} onSubmit={onFormSubmit}>
-            <FormControl className={cx('form__control')}>
-              <FormLabel isDarkTheme={isDarkTheme}>Email</FormLabel>
-              <Input
-                isDarkTheme={isDarkTheme}
-                value={email}
-                onChange={onEmailChange}
-                type="email"
-              />
+            <FormControl className={cx('form__control')} isDarkTheme={isDarkTheme}>
+              <FormLabel>Email</FormLabel>
+              <Input value={email} onChange={onEmailChange} type="email" />
             </FormControl>
-            <FormControl className={cx('form__control')}>
-              <FormLabel isDarkTheme={isDarkTheme}>Password</FormLabel>
-              <Input
-                isDarkTheme={isDarkTheme}
-                value={password}
-                onChange={onPasswordChange}
-                type="password"
-              />
+            <FormControl className={cx('form__control')} isDarkTheme={isDarkTheme}>
+              <FormLabel>Password</FormLabel>
+              <Input value={password} onChange={onPasswordChange} type="password" />
             </FormControl>
             <TextButton
               className={cx('form__submit-button')}
