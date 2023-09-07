@@ -1,16 +1,17 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import cn from 'classnames/bind';
 import { useIsAuth } from '@hooks/useIsAuth';
 import { useThemeContext } from '@hooks/useThemeContext';
 import { useMatchMedia } from '@hooks/useMatchMedia';
-import { useFetchArtistByIdQuery } from '@api/features';
+import { useLazyFetchArtistByIdQuery } from '@api/features';
 import Layout from '@components/layout/Layout';
-import cn from 'classnames/bind';
-import Link from '@components/Link/Link';
+import Link from '@components/Link';
 import IconButton from '@components/IconButton';
 import Preloader from '@components/Preloader';
 import ArtistCard from '@components/ArtistCard';
 import PaintingsGrid from '@components/PaintingsGrid';
-import PaintingCard from '@components/PaintingCard/PaintingCard';
+import PaintingCard from '@components/PaintingCard';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
 import { ReactComponent as EditIcon } from '@assets/icons/edit.svg';
 import { ReactComponent as DeleteIcon } from '@assets/icons/delete.svg';
@@ -23,9 +24,18 @@ const ArtistPage = () => {
   const isAuth = useIsAuth();
   const { isDarkTheme } = useThemeContext();
   const { isMobile } = useMatchMedia();
-  const { data: artist, isLoading } = useFetchArtistByIdQuery(id as string);
+  const [fetchArtistById, { data, isLoading }] = useLazyFetchArtistByIdQuery();
 
-  const shouldShowEditButtons = typeof isAuth === 'boolean' && isAuth;
+  const isAuthStatusKnow = typeof isAuth === 'boolean';
+  const shouldShowEditButtons = isAuthStatusKnow && isAuth;
+
+  const artist = data;
+
+  useEffect(() => {
+    if (isAuthStatusKnow && id) {
+      fetchArtistById({ id, isAuth }, true);
+    }
+  }, [isAuthStatusKnow, id, isAuth, fetchArtistById]);
 
   return (
     <Layout className={cx('artist-page', { 'artist-page--dark': isDarkTheme })}>
