@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import cn from 'classnames/bind';
 import { useIsAuth } from '@hooks/useIsAuth';
@@ -12,6 +12,7 @@ import Preloader from '@components/Preloader';
 import ArtistCard from '@components/ArtistCard';
 import PaintingsGrid from '@components/PaintingsGrid';
 import PaintingCard from '@components/PaintingCard';
+import ArtistDeletePopUp from '@components/ArtistDeletePopUp';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
 import { ReactComponent as EditIcon } from '@assets/icons/edit.svg';
 import { ReactComponent as DeleteIcon } from '@assets/icons/delete.svg';
@@ -20,6 +21,7 @@ import styles from './ArtistPage.module.scss';
 const cx = cn.bind(styles);
 
 const ArtistPage = () => {
+  const [isArtistDeletePopUpOpen, setIsArtistDeletePopUpOpen] = useState(false);
   const { id } = useParams();
   const isAuth = useIsAuth();
   const { isDarkTheme } = useThemeContext();
@@ -30,6 +32,9 @@ const ArtistPage = () => {
   const shouldShowEditButtons = isAuthStatusKnow && isAuth;
 
   const artist = data;
+
+  const openArtistDeletePopUpOpen = () => setIsArtistDeletePopUpOpen(true);
+  const closeArtistDeletePopUpOpen = () => setIsArtistDeletePopUpOpen(false);
 
   useEffect(() => {
     if (isAuthStatusKnow && id) {
@@ -54,7 +59,7 @@ const ArtistPage = () => {
                   <IconButton isDarkTheme={isDarkTheme}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton isDarkTheme={isDarkTheme}>
+                  <IconButton isDarkTheme={isDarkTheme} onClick={openArtistDeletePopUpOpen}>
                     <DeleteIcon />
                   </IconButton>
                 </div>
@@ -83,6 +88,9 @@ const ArtistPage = () => {
           </>
         )}
       </main>
+      {isArtistDeletePopUpOpen && (
+        <ArtistDeletePopUp id={id as string} onClose={closeArtistDeletePopUpOpen} />
+      )}
     </Layout>
   );
 };
