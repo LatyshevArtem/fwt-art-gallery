@@ -4,6 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 28px;
+  height: 28px;
   border-radius: 4px;
   padding: 2px;
   fill: $primary-dark-gray;
@@ -16,6 +18,20 @@
   &:hover:not(:disabled),
   &:focus-visible {
     fill: $primary-black;
+  }
+
+  &--dark {
+    fill: $primary-light-gray;
+    background-color: $secondary-black;
+
+    &:disabled {
+      opacity: 0.5;
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      fill: $primary-white;
+    }
   }
 
   &--over-image {
@@ -32,32 +48,16 @@
       fill: $primary-light-gray;
       background-color: rgba($primary-white, 0.8);
     }
-  }
 
-  &--dark {
-    fill: $primary-light-gray;
-    background-color: $secondary-black;
-
-    &:disabled {
-      opacity: 0.5;
-    }
-
-    &:hover:not(:disabled),
-    &:focus-visible {
-      fill: $primary-white;
-    }
-
-    &.button--over-image  {
-      background-color: rgba($secondary-black, 0.9);
+    &.button-dark {
+      background-color: rgba($secondary-black, 0.1);
 
       &:disabled {
-        background-color: rgba($secondary-black, 0.9);
         opacity: 0.5;
       }
 
-      &:hover:not(:disabled),
-      &:focus-visible {
-        background-color: rgba($secondary-black, 0.8);
+      &:hover:not(:disabled) {
+        background-color: rgba($secondary-black, 0.2);
       }
     }
   }
