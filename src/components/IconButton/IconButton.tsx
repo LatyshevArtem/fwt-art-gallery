@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, FC } from 'react';
 import cn from 'classnames/bind';
-import styles from './styles.module.scss';
+import styles from './IconButton.module.scss';
 
 const cx = cn.bind(styles);
 
