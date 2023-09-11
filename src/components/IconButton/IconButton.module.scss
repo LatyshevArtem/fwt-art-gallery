@@ -36,7 +36,7 @@
 
   &--over-image {
     fill: $primary-light-gray;
-    background-color: rgba($primary-white, 0.9);
+    background-color: rgba($primary-white, 0.1);
 
     &:disabled {
       fill: $primary-light-gray;
@@ -46,7 +46,7 @@
     &:hover:not(:disabled),
     &:focus-visible {
       fill: $primary-light-gray;
-      background-color: rgba($primary-white, 0.8);
+      background-color: rgba($primary-white, 0.2);
     }
 
     &.button-dark {
