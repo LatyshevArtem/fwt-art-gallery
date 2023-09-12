@@ -1,0 +1,28 @@
+.checkbox-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &__icon-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background-color: $secondary-white;
+    outline: 1px solid $primary-light-gray;
+    outline-offset: -1px;
+
+    &--dark {
+      outline: none;
+      background-color: $primary-black;
+    }
+  }
+
+  &__icon {
+    fill: $primary-dark-gray;
+
+    &--dark {
+      fill: $primary-light-gray;
+    }
+  }
+}
