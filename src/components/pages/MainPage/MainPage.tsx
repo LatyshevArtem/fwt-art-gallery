@@ -61,7 +61,7 @@ const MainPage = () => {
                   <Link className={cx('paintings__link')} to={`artists/${artist._id}`}>
                     <PaintingCard
                       isDarkTheme={isDarkTheme}
-                      painting={artist.mainPainting.image}
+                      painting={artist.mainPainting?.image}
                       name={artist.name}
                       date={artist.yearsOfLife}
                     />
