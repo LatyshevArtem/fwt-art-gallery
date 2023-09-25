@@ -1,19 +1,23 @@
 import { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
 import cn from 'classnames/bind';
 import { useThemeContext } from '@hooks/useThemeContext';
 import { useMatchMedia } from '@hooks/useMatchMedia';
 import { AuthWindowType } from '@components/AuthWindow';
 import Logo from '@components/Logo';
 import { ReactComponent as BurgerMenuIcon } from '@assets/icons/menu-buger.svg';
-import Modal from '@components/Modal';
-import ModalCloseButton from '@components/ModalCloseButton';
+import Modal, { ModalBackdrop, ModalContent, ModalCloseButton } from '@components/Modal';
 import LogInWindow from '@components/LogInWindow';
 import SignUpWindow from '@components/SignUpWindow';
 import HeaderMenu from './HeaderMenu';
 import styles from './Header.module.scss';
 
 const cx = cn.bind(styles);
+
+const ANIMATION_TIME = 500;
+
+// let render = 0;
 
 const getAppendSearchParamFunction = (
   searchParams: URLSearchParams,
@@ -39,6 +43,7 @@ const getDeleteSearchParamFunction = (
 
 const Header: FC = () => {
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
+  const [isSidePageMount, setIsSidePageMount] = useState(false);
   const [isLogInWindowOpen, setIsLogInWindowOpen] = useState(false);
   const [isSignUpWindowOpen, setIsSignUpWindowOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -47,6 +52,9 @@ const Header: FC = () => {
 
   const openSidePage = () => setIsSidePageOpen(true);
   const closeSidePage = () => setIsSidePageOpen(false);
+
+  const mountSidePage = () => setIsSidePageMount(true);
+  const unmountSidePage = () => setIsSidePageMount(false);
 
   const appendSearchParam = getAppendSearchParamFunction(searchParams, setSearchParams);
   const deleteSearchParam = getDeleteSearchParamFunction(searchParams, setSearchParams);
@@ -95,22 +103,40 @@ const Header: FC = () => {
           </button>
         )}
         {!isDesktop ? (
-          <Modal
-            backdropClassName={cx('side-page', {
-              'side-page--dark': isDarkTheme,
-              'side-page--open': isSidePageOpen,
-            })}
-            contentClassName={cx('side-page__content')}
-            onClose={closeSidePage}
-            isOpen
+          <CSSTransition
+            in={isSidePageOpen}
+            timeout={ANIMATION_TIME}
+            onEnter={mountSidePage}
+            onExit={unmountSidePage}
+            mountOnEnter
+            unmountOnExit
           >
-            <ModalCloseButton className={cx('side-page__menu-button')} />
-            <HeaderMenu
-              isDarkTheme={isDarkTheme}
-              onLogInButtonClick={handleAuthButtonClick('login')}
-              onSignUpButtonClick={handleAuthButtonClick('signup')}
-            />
-          </Modal>
+            <Modal onClose={closeSidePage}>
+              <CSSTransition in={isSidePageMount} timeout={ANIMATION_TIME}>
+                <ModalBackdrop
+                  className={cx('side-page-backdrop', {
+                    'side-page-backdrop--active': isSidePageMount,
+                    'side-page-backdrop--dark': isDarkTheme,
+                  })}
+                />
+              </CSSTransition>
+              <CSSTransition in={isSidePageMount} timeout={ANIMATION_TIME}>
+                <ModalContent
+                  className={cx('side-page', {
+                    'side-page--dark': isDarkTheme,
+                    'side-page--active': isSidePageMount,
+                  })}
+                >
+                  <ModalCloseButton className={cx('side-page__close-button')} />
+                  <HeaderMenu
+                    isDarkTheme={isDarkTheme}
+                    onLogInButtonClick={handleAuthButtonClick('login')}
+                    onSignUpButtonClick={handleAuthButtonClick('signup')}
+                  />
+                </ModalContent>
+              </CSSTransition>
+            </Modal>
+          </CSSTransition>
         ) : (
           <HeaderMenu
             isDarkTheme={isDarkTheme}
@@ -119,8 +145,8 @@ const Header: FC = () => {
           />
         )}
       </div>
-      {isLogInWindowOpen && <LogInWindow onClose={closeLogInWindow} isOpen />}
-      {isSignUpWindowOpen && <SignUpWindow onClose={closeSignUpWindow} isOpen />}
+      {isLogInWindowOpen && <LogInWindow onClose={closeLogInWindow} />}
+      {isSignUpWindowOpen && <SignUpWindow onClose={closeSignUpWindow} />}
     </header>
   );
 };
