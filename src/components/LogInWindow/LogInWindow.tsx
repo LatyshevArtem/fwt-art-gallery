@@ -9,11 +9,10 @@ type InputChangeEventHandler = ChangeEventHandler<HTMLInputElement>;
 type FormSubmitEventHandler = FormEventHandler<HTMLFormElement>;
 
 interface LogInWindowProps {
-  isOpen: boolean;
   onClose: () => void;
 }
 
-const LogInWindow: FC<LogInWindowProps> = ({ isOpen, onClose }) => {
+const LogInWindow: FC<LogInWindowProps> = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { isDarkTheme } = useThemeContext();
@@ -33,7 +32,6 @@ const LogInWindow: FC<LogInWindowProps> = ({ isOpen, onClose }) => {
     <AuthWindow
       windowType="login"
       isDarkTheme={isDarkTheme}
-      isOpen={isOpen}
       onClose={onClose}
       authFormProps={{
         email,
