@@ -1,57 +1,49 @@
-import { useRef, FC, PropsWithChildren, createContext, useContext, useMemo } from 'react';
-import { useOutsideClick } from '@hooks/useOutsideClick';
-import { useEscapeKeydown } from '@hooks/useEscapeKeydown';
+import { FC, PropsWithChildren, createContext, useContext, useEffect, useMemo } from 'react';
 import Portal from '@components/Portal';
 
 interface ModalContextType {
-  onCloseButtonClick: () => void;
-}
-
-const ModalContext = createContext<ModalContextType>({ onCloseButtonClick: () => {} });
-
-const useModalContext = () => {
-  const { onCloseButtonClick } = useContext(ModalContext);
-
-  return { onCloseButtonClick };
-};
-
-interface ModalProps extends PropsWithChildren {
-  backdropClassName?: string;
-  contentClassName?: string;
-  isOpen: boolean;
   onClose: () => void;
 }
 
-const Modal: FC<ModalProps> = ({
-  children,
-  backdropClassName,
-  contentClassName,
-  isOpen,
-  onClose = () => {},
-}) => {
-  const context = useMemo<ModalContextType>(
+const ModalContext = createContext<ModalContextType>({
+  onClose: () => {},
+});
+
+const useModalContext = () => useContext(ModalContext);
+
+interface ModalProps extends PropsWithChildren {
+  shouldSetOverflowHiddenToBody?: boolean;
+  onClose: () => void;
+}
+
+const Modal: FC<ModalProps> = ({ children, shouldSetOverflowHiddenToBody = true, onClose }) => {
+  const context = useMemo(
     () => ({
-      onCloseButtonClick: onClose,
+      onClose,
     }),
     [onClose],
   );
 
-  const modalRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const prevOverflowValue = document.body.style.overflow;
 
-  useOutsideClick(modalRef, onClose);
-  useEscapeKeydown(modalRef, onClose);
+    if (shouldSetOverflowHiddenToBody) {
+      document.body.style.overflow = 'hidden';
+    }
 
-  return isOpen ? (
-    <ModalContext.Provider value={context}>
-      <Portal>
-        <div className={backdropClassName}>
-          <div className={contentClassName} ref={modalRef}>
-            {children}
-          </div>
-        </div>
-      </Portal>
-    </ModalContext.Provider>
-  ) : null;
+    return () => {
+      document.body.style.overflow = prevOverflowValue;
+      if (document.body.style.length === 0) {
+        document.body.removeAttribute('style');
+      }
+    };
+  }, [shouldSetOverflowHiddenToBody]);
+
+  return (
+    <Portal>
+      <ModalContext.Provider value={context}>{children}</ModalContext.Provider>
+    </Portal>
+  );
 };
 
 export { useModalContext };
