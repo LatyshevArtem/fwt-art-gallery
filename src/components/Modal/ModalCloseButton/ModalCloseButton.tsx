@@ -1,8 +1,8 @@
 import { ButtonHTMLAttributes, FC } from 'react';
 import cn from 'classnames/bind';
 import { useThemeContext } from '@hooks/useThemeContext';
-import { useModalContext } from '@components/Modal';
 import { ReactComponent as CloseIcon } from '@assets/icons/close.svg';
+import { useModalContext } from '../Modal';
 import styles from './ModalCloseButton.module.scss';
 
 const cx = cn.bind(styles);
@@ -12,12 +12,12 @@ interface ModalCloseButtonProps
 
 const ModalCloseButton: FC<ModalCloseButtonProps> = ({ children, className, ...props }) => {
   const { isDarkTheme } = useThemeContext();
-  const { onCloseButtonClick } = useModalContext();
+  const { onClose } = useModalContext();
 
   return (
     <button
       className={cx(className, 'modal-close-button', { 'modal-close-button--dark': isDarkTheme })}
-      onClick={onCloseButtonClick}
+      onClick={onClose}
       type="button"
       {...props}
     >
