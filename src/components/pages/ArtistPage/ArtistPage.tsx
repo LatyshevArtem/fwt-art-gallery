@@ -12,6 +12,7 @@ import Preloader from '@components/Preloader';
 import ArtistCard from '@components/ArtistCard';
 import PaintingsGrid from '@components/PaintingsGrid';
 import PaintingCard from '@components/PaintingCard';
+import EditArtistWindow from '@components/EditArtistWindow';
 import ArtistDeletePopUp from '@components/ArtistDeletePopUp';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
 import { ReactComponent as EditIcon } from '@assets/icons/edit.svg';
@@ -21,6 +22,7 @@ import styles from './ArtistPage.module.scss';
 const cx = cn.bind(styles);
 
 const ArtistPage = () => {
+  const [isEditArtistWindowOpen, setIsEditArtistWindowOpen] = useState(false);
   const [isArtistDeletePopUpOpen, setIsArtistDeletePopUpOpen] = useState(false);
   const { id } = useParams();
   const isAuth = useIsAuth();
@@ -32,6 +34,9 @@ const ArtistPage = () => {
   const shouldShowEditButtons = isAuthStatusKnow && isAuth;
 
   const artist = data;
+
+  const openEditArtistWindow = () => setIsEditArtistWindowOpen(true);
+  const closeEditArtistWindow = () => setIsEditArtistWindowOpen(false);
 
   const openArtistDeletePopUpOpen = () => setIsArtistDeletePopUpOpen(true);
   const closeArtistDeletePopUpOpen = () => setIsArtistDeletePopUpOpen(false);
@@ -56,7 +61,7 @@ const ArtistPage = () => {
               </Link>
               {shouldShowEditButtons && (
                 <div className={cx('tools-bar__edit-buttons')}>
-                  <IconButton isDarkTheme={isDarkTheme}>
+                  <IconButton isDarkTheme={isDarkTheme} onClick={openEditArtistWindow}>
                     <EditIcon />
                   </IconButton>
                   <IconButton isDarkTheme={isDarkTheme} onClick={openArtistDeletePopUpOpen}>
@@ -88,6 +93,9 @@ const ArtistPage = () => {
           </>
         )}
       </main>
+      {isEditArtistWindowOpen && (
+        <EditArtistWindow artist={artist} onClose={closeEditArtistWindow} />
+      )}
       {isArtistDeletePopUpOpen && (
         <ArtistDeletePopUp id={id as string} onClose={closeArtistDeletePopUpOpen} />
       )}
