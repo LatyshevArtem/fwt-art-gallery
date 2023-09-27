@@ -2,6 +2,7 @@ import { apiService } from '@api/apiService';
 import { Genre } from '@schemas/Genre';
 import { Artist } from '@schemas/Artist';
 import { ArtistById } from '@schemas/ArtistById';
+import { Painting } from '@schemas/Painting';
 
 const urlStaticArtists = 'artists/static';
 const urlArtists = 'artists';
@@ -18,6 +19,12 @@ export interface DataOfAddArtistRequest {
   yearsOfLife: string;
   description: string;
   genres: Genre[];
+}
+
+export interface DataOfAddPaintingToArtist {
+  name: string;
+  yearOfCreation: number;
+  image?: File;
 }
 
 const artistApi = apiService
@@ -69,6 +76,14 @@ const artistApi = apiService
         query: (id) => ({ method: 'DELETE', url: `${urlArtists}/${id}` }),
         invalidatesTags: ['Artists'],
       }),
+      addPaintingToArtist: build.mutation<Painting, { id: string; data: FormData }>({
+        query: ({ id, data }) => ({
+          method: 'POST',
+          url: `${urlArtists}/${id}/paintings`,
+          data,
+        }),
+        invalidatesTags: ['SpecificArtist'],
+      }),
     }),
   });
 
@@ -78,4 +93,5 @@ export const {
   useAddArtistMutation,
   useEditArtistMutation,
   useDeleteArtistByIdMutation,
+  useAddPaintingToArtistMutation,
 } = artistApi;
