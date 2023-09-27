@@ -10,19 +10,23 @@ import Link from '@components/Link';
 import IconButton from '@components/IconButton';
 import Preloader from '@components/Preloader';
 import ArtistCard from '@components/ArtistCard';
+import TextButton from '@components/TextButton';
 import PaintingsGrid from '@components/PaintingsGrid';
 import PaintingCard from '@components/PaintingCard';
 import EditArtistWindow from '@components/EditArtistWindow';
+import EditPaintingWindow from '@components/EditPaintingWindow';
 import ArtistDeletePopUp from '@components/ArtistDeletePopUp';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
 import { ReactComponent as EditIcon } from '@assets/icons/edit.svg';
 import { ReactComponent as DeleteIcon } from '@assets/icons/delete.svg';
+import { ReactComponent as PlusIcon } from '@assets/icons/plus.svg';
 import styles from './ArtistPage.module.scss';
 
 const cx = cn.bind(styles);
 
 const ArtistPage = () => {
   const [isEditArtistWindowOpen, setIsEditArtistWindowOpen] = useState(false);
+  const [isEditPaintingWindowOpen, setIsEditPaintingWindowOpen] = useState(false);
   const [isArtistDeletePopUpOpen, setIsArtistDeletePopUpOpen] = useState(false);
   const { id } = useParams();
   const isAuth = useIsAuth();
@@ -37,6 +41,9 @@ const ArtistPage = () => {
 
   const openEditArtistWindow = () => setIsEditArtistWindowOpen(true);
   const closeEditArtistWindow = () => setIsEditArtistWindowOpen(false);
+
+  const openEditPaintingWindow = () => setIsEditPaintingWindowOpen(true);
+  const closeEditPaintingWindow = () => setIsEditPaintingWindowOpen(false);
 
   const openArtistDeletePopUpOpen = () => setIsArtistDeletePopUpOpen(true);
   const closeArtistDeletePopUpOpen = () => setIsArtistDeletePopUpOpen(false);
@@ -72,10 +79,24 @@ const ArtistPage = () => {
             </div>
             <ArtistCard artist={artist} />
             <h1
-              className={cx('artist-page__heading', { 'artist-page__heading--dark': isDarkTheme })}
+              className={cx('artist-page__heading', {
+                'artist-page__heading--dark': isDarkTheme,
+                'artist-page__heading--auth-user': isAuth,
+              })}
             >
               Artworks <span className="visually-hidden">by {artist.name}</span>
             </h1>
+            {isAuth && (
+              <TextButton
+                className={cx('artist-page__add-painting-button')}
+                isDarkTheme={isDarkTheme}
+                onClick={openEditPaintingWindow}
+                isUnderlined
+              >
+                <PlusIcon />
+                <span>Add picture</span>
+              </TextButton>
+            )}
             {artist.paintings && (
               <PaintingsGrid className={cx('artist-page__paintings')}>
                 {artist.paintings.map((painting) => (
@@ -95,6 +116,9 @@ const ArtistPage = () => {
       </main>
       {isEditArtistWindowOpen && (
         <EditArtistWindow artist={artist} onClose={closeEditArtistWindow} />
+      )}
+      {isEditPaintingWindowOpen && artist && (
+        <EditPaintingWindow artistId={artist._id} onClose={closeEditPaintingWindow} />
       )}
       {isArtistDeletePopUpOpen && (
         <ArtistDeletePopUp id={id as string} onClose={closeArtistDeletePopUpOpen} />

@@ -61,11 +61,20 @@
     line-height: 100%;
     color: $accent-red;
 
+    &--auth-user {
+      padding-bottom: 20px;
+    }
+
     @media (min-width: $tablet-width) {
       padding: 98px 20px 60px 20px;
       font-size: 60px;
       font-weight: 500;
       line-height: 73px;
+
+      &--auth-user {
+        padding-bottom: 16px;
+      }
+
     }
 
     @media (min-width: $desktop-width) {
@@ -77,6 +86,22 @@
 
     &--dark {
       color: $accent-gold;
+    }
+  }
+
+  &__add-painting-button {
+    display: flex;
+    margin-right: 20px;
+    margin-left: auto;
+    column-gap: 12px;
+    margin-bottom: 16px;
+
+    @media (min-width: $tablet-width) {
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: $desktop-width) {
+      margin-right: 100px;
     }
   }
 
