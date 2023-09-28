@@ -14,7 +14,8 @@ const handleRequestInterceptorSuccess = async (config: InternalAxiosRequestConfi
     config.method === 'get' ||
     config.method === 'delete' ||
     config.method === 'post' ||
-    config.method === 'put'
+    config.method === 'put' ||
+    config.method === 'patch'
   ) {
     const accessToken = getTokenFromLocalStorage('access_token');
     if (accessToken) {
