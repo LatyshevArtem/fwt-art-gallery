@@ -84,6 +84,24 @@ const artistApi = apiService
         }),
         invalidatesTags: ['SpecificArtist'],
       }),
+      changeArtistMainPainting: build.mutation<
+        null,
+        { artistId: string; data: { mainPainting: string } }
+      >({
+        query: ({ artistId, data }) => ({
+          method: 'PATCH',
+          url: `artists/${artistId}/main-painting`,
+          data,
+        }),
+        invalidatesTags: ['Artists'],
+      }),
+      deleteArtistPainting: build.mutation<string, { artistId: string; paintingId: string }>({
+        query: ({ artistId, paintingId }) => ({
+          method: 'DELETE',
+          url: `artists/${artistId}/paintings/${paintingId}`,
+        }),
+        invalidatesTags: ['SpecificArtist'],
+      }),
     }),
   });
 
@@ -94,4 +112,6 @@ export const {
   useEditArtistMutation,
   useDeleteArtistByIdMutation,
   useAddPaintingToArtistMutation,
+  useChangeArtistMainPaintingMutation,
+  useDeleteArtistPaintingMutation,
 } = artistApi;
