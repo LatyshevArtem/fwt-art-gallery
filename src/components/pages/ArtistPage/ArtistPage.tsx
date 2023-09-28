@@ -4,7 +4,7 @@ import cn from 'classnames/bind';
 import { useIsAuth } from '@hooks/useIsAuth';
 import { useThemeContext } from '@hooks/useThemeContext';
 import { useMatchMedia } from '@hooks/useMatchMedia';
-import { useLazyFetchArtistByIdQuery } from '@api/features';
+import { useDeleteArtistByIdMutation, useLazyFetchArtistByIdQuery } from '@api/features';
 import Layout from '@components/layout/Layout';
 import Link from '@components/Link';
 import IconButton from '@components/IconButton';
@@ -15,7 +15,8 @@ import PaintingsGrid from '@components/PaintingsGrid';
 import PaintingCard from '@components/PaintingCard';
 import EditArtistWindow from '@components/EditArtistWindow';
 import EditPaintingWindow from '@components/EditPaintingWindow';
-import ArtistDeletePopUp from '@components/ArtistDeletePopUp';
+import ViewPaintingsWindow from '@components/ViewPaintingsWindow';
+import ArtistDeletePopUp from '@components/DeletionWindow';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
 import { ReactComponent as EditIcon } from '@assets/icons/edit.svg';
 import { ReactComponent as DeleteIcon } from '@assets/icons/delete.svg';
@@ -24,15 +25,19 @@ import styles from './ArtistPage.module.scss';
 
 const cx = cn.bind(styles);
 
+let slideNumber = 0;
+
 const ArtistPage = () => {
   const [isEditArtistWindowOpen, setIsEditArtistWindowOpen] = useState(false);
   const [isEditPaintingWindowOpen, setIsEditPaintingWindowOpen] = useState(false);
+  const [isViewPaintingsWindowOpen, setIsViewPaintingsWindowOpen] = useState(false);
   const [isArtistDeletePopUpOpen, setIsArtistDeletePopUpOpen] = useState(false);
   const { id } = useParams();
   const isAuth = useIsAuth();
   const { isDarkTheme } = useThemeContext();
   const { isMobile } = useMatchMedia();
   const [fetchArtistById, { data, isLoading }] = useLazyFetchArtistByIdQuery();
+  const [deleteArtistById, { isSuccess }] = useDeleteArtistByIdMutation();
 
   const isAuthStatusKnow = typeof isAuth === 'boolean';
   const shouldShowEditButtons = isAuthStatusKnow && isAuth;
@@ -53,6 +58,12 @@ const ArtistPage = () => {
       fetchArtistById({ id, isAuth }, true);
     }
   }, [isAuthStatusKnow, id, isAuth, fetchArtistById]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      closeArtistDeletePopUpOpen();
+    }
+  }, [isSuccess]);
 
   return (
     <Layout className={cx('artist-page', { 'artist-page--dark': isDarkTheme })}>
@@ -99,14 +110,21 @@ const ArtistPage = () => {
             )}
             {artist.paintings && (
               <PaintingsGrid className={cx('artist-page__paintings')}>
-                {artist.paintings.map((painting) => (
+                {artist.paintings.map((painting, index) => (
                   <li key={painting._id}>
-                    <PaintingCard
-                      isDarkTheme={isDarkTheme}
-                      painting={painting.image}
-                      name={painting.name}
-                      date={painting.yearOfCreation}
-                    />
+                    <button
+                      onClick={() => {
+                        setIsViewPaintingsWindowOpen(true);
+                        slideNumber = index;
+                      }}
+                    >
+                      <PaintingCard
+                        isDarkTheme={isDarkTheme}
+                        painting={painting.image}
+                        name={painting.name}
+                        date={painting.yearOfCreation}
+                      />
+                    </button>
                   </li>
                 ))}
               </PaintingsGrid>
@@ -120,8 +138,19 @@ const ArtistPage = () => {
       {isEditPaintingWindowOpen && artist && (
         <EditPaintingWindow artistId={artist._id} onClose={closeEditPaintingWindow} />
       )}
+      {isViewPaintingsWindowOpen && artist && (
+        <ViewPaintingsWindow
+          artistId={id as string}
+          slideNumberToStartView={slideNumber}
+          paintings={artist.paintings}
+          onClose={() => setIsViewPaintingsWindowOpen(false)}
+        />
+      )}
       {isArtistDeletePopUpOpen && (
-        <ArtistDeletePopUp id={id as string} onClose={closeArtistDeletePopUpOpen} />
+        <ArtistDeletePopUp
+          onClose={closeArtistDeletePopUpOpen}
+          onSubmit={() => deleteArtistById(id as string)}
+        />
       )}
     </Layout>
   );
