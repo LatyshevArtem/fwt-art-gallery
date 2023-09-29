@@ -12,7 +12,7 @@ import Preloader from '@components/Preloader';
 import ArtistCard from '@components/ArtistCard';
 import TextButton from '@components/TextButton';
 import PaintingsGrid from '@components/PaintingsGrid';
-import PaintingCard from '@components/PaintingCard';
+import PaintingCard from '@components/Card';
 import EditArtistWindow from '@components/EditArtistWindow';
 import EditPaintingWindow from '@components/EditPaintingWindow';
 import ViewPaintingsWindow from '@components/ViewPaintingsWindow';
