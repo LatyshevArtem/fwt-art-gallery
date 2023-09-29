@@ -4,7 +4,7 @@ import { Image } from '@schemas/Image';
 import Picture from '@components/Picture';
 import ImagePlaceholder from '@components/ImagePlaceholder';
 import { ReactComponent as ArrowIcon } from '@assets/icons/arrow.svg';
-import styles from './Card.module.scss';
+import styles from './PaintingCard.module.scss';
 
 const cx = cn.bind(styles);
 
