@@ -4,11 +4,11 @@ import { Image } from '@schemas/Image';
 import Picture from '@components/Picture';
 import ImagePlaceholder from '@components/ImagePlaceholder';
 import { ReactComponent as ArrowIcon } from '@assets/icons/arrow.svg';
-import styles from './Card.module.scss';
+import styles from './PaintingCard.module.scss';
 
 const cx = cn.bind(styles);
 
-interface CardProps {
+export interface PaintingCardProps {
   isDarkTheme?: boolean;
   shouldShowArrowBlock?: boolean;
   painting?: Image | null;
@@ -16,7 +16,7 @@ interface CardProps {
   date: string;
 }
 
-const Card: FC<CardProps> = ({
+const PaintingCard: FC<PaintingCardProps> = ({
   isDarkTheme,
   shouldShowArrowBlock = true,
   painting,
@@ -45,4 +45,4 @@ const Card: FC<CardProps> = ({
   );
 };
 
-export default Card;
+export default PaintingCard;

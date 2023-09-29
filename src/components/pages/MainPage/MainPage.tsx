@@ -7,8 +7,7 @@ import Layout from '@components/layout/Layout';
 import TextButton from '@components/TextButton';
 import Preloader from '@components/Preloader';
 import PaintingsGrid from '@components/PaintingsGrid';
-// import Link from '@components/Link';
-import PaintingCard from '@components/Card';
+import MainPagePaintingCard from '@components/MainPagePaintingCard';
 import EditArtistWindow from '@components/EditArtistWindow';
 import { ReactComponent as PlusIcon } from '@assets/icons/plus.svg';
 import styles from './MainPage.module.scss';
@@ -58,14 +57,13 @@ const MainPage = () => {
             {artists &&
               artists.map((artist) => (
                 <li key={artist._id}>
-                  {/* <Link className={cx('paintings__link')} to={`artists/${artist._id}`}> */}
-                  <PaintingCard
+                  <MainPagePaintingCard
                     isDarkTheme={isDarkTheme}
-                    painting={artist.mainPainting?.image}
+                    artistId={artist._id}
                     name={artist.name}
                     date={artist.yearsOfLife}
+                    painting={artist.mainPainting?.image}
                   />
-                  {/* </Link> */}
                 </li>
               ))}
           </PaintingsGrid>
