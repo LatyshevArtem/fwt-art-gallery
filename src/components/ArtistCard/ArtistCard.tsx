@@ -20,7 +20,7 @@ const ArtistCard: FC<ArtistCardProps> = ({ artist }) => {
 
   return (
     <figure className={cx('artist-card', { 'artist-card--dark': isDarkTheme })}>
-      <Picture className={cx('artist-card__image')} {...avatar} />
+      <Picture className={cx('artist-card__image')} image={avatar} />
       <figcaption className={cx('artist-card__figcaption')}>
         <div className={cx('figcaption__brief-info')}>
           <p

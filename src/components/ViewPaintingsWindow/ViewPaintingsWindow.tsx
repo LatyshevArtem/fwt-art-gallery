@@ -146,7 +146,7 @@ const ViewPaintingsWindow: FC<ViewPaintingsWindowProps> = ({
                     </TextButton>
                     <Picture
                       className={cx('view-paintings-window__painting')}
-                      {...painting.image}
+                      image={painting.image}
                     />
                     <figcaption className={cx('view-paintings-window__painting-caption')}>
                       {!isMobile && (
