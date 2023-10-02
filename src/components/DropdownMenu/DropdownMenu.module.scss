@@ -1,0 +1,50 @@
+.dropdown-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+  width: max-content;
+  border-radius: 4px;
+  padding: 12px 0;
+  background-color: $secondary-white;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 1px;
+    background-color: inherit;
+    transform: rotate(45deg);
+  }
+
+  &--dark {
+    background-color: $secondary-black;
+  }
+
+  &__option {
+    width: 100%;
+    padding: 4px 16px;
+    text-align: left;
+    font-family: "Inter";
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    color: $primary-dark-gray;
+    background-color: transparent;
+
+    &:hover {
+      color: $primary-black;
+      background-color: $primary-white;
+    }
+
+    &--dark {
+      color: $primary-light-gray;
+
+      &:hover {
+        color: $accent-gold;
+        background-color: $primary-black;
+      }
+    }
+  }
+}
