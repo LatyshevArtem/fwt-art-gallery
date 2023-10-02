@@ -93,6 +93,7 @@ const ViewPaintingsWindow: FC<ViewPaintingsWindowProps> = ({
             className={cx('view-paintings-window', {
               'view-paintings-window--service-windows-open': areServiceWindowsOpen,
             })}
+            shouldAttachHandlerOutsideEvents={!areServiceWindowsOpen}
           >
             <ModalCloseButton className={cx('view-paintings-window__close-button')} />
             <Swiper
@@ -196,7 +197,12 @@ const ViewPaintingsWindow: FC<ViewPaintingsWindowProps> = ({
         </div>
       </Modal>
       {isPaintingDeleteWindowOpen && (
-        <DeletionWindow onSubmit={submitDeletionForm} onClose={closePaintingDeleteWindow} />
+        <DeletionWindow
+          confirmationText="Do you want to delete this picture?"
+          warningText="You will not be able to recover this picture afterwards."
+          onSubmit={submitDeletionForm}
+          onClose={closePaintingDeleteWindow}
+        />
       )}
       {isEditPaintingWindowOpen && (
         <EditPaintingWindow artistId={artistId} onClose={closeEditPaintingWindow} />

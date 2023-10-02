@@ -16,7 +16,7 @@ import PaintingCard from '@components/PaintingCard';
 import EditArtistWindow from '@components/EditArtistWindow';
 import EditPaintingWindow from '@components/EditPaintingWindow';
 import ViewPaintingsWindow from '@components/ViewPaintingsWindow';
-import ArtistDeletePopUp from '@components/DeletionWindow';
+import DeletionWindow from '@components/DeletionWindow';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
 import { ReactComponent as EditIcon } from '@assets/icons/edit.svg';
 import { ReactComponent as DeleteIcon } from '@assets/icons/delete.svg';
@@ -31,7 +31,7 @@ const ArtistPage = () => {
   const [isEditArtistWindowOpen, setIsEditArtistWindowOpen] = useState(false);
   const [isEditPaintingWindowOpen, setIsEditPaintingWindowOpen] = useState(false);
   const [isViewPaintingsWindowOpen, setIsViewPaintingsWindowOpen] = useState(false);
-  const [isArtistDeletePopUpOpen, setIsArtistDeletePopUpOpen] = useState(false);
+  const [isDeletionWindowOpen, setIsDeletionWindowOpen] = useState(false);
   const { id } = useParams();
   const isAuth = useIsAuth();
   const { isDarkTheme } = useThemeContext();
@@ -50,8 +50,8 @@ const ArtistPage = () => {
   const openEditPaintingWindow = () => setIsEditPaintingWindowOpen(true);
   const closeEditPaintingWindow = () => setIsEditPaintingWindowOpen(false);
 
-  const openArtistDeletePopUpOpen = () => setIsArtistDeletePopUpOpen(true);
-  const closeArtistDeletePopUpOpen = () => setIsArtistDeletePopUpOpen(false);
+  const openDeletionWindow = () => setIsDeletionWindowOpen(true);
+  const closeDeletionWindow = () => setIsDeletionWindowOpen(false);
 
   useEffect(() => {
     if (isAuthStatusKnow && id) {
@@ -61,7 +61,7 @@ const ArtistPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      closeArtistDeletePopUpOpen();
+      closeDeletionWindow();
     }
   }, [isSuccess]);
 
@@ -82,7 +82,7 @@ const ArtistPage = () => {
                   <IconButton isDarkTheme={isDarkTheme} onClick={openEditArtistWindow}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton isDarkTheme={isDarkTheme} onClick={openArtistDeletePopUpOpen}>
+                  <IconButton isDarkTheme={isDarkTheme} onClick={openDeletionWindow}>
                     <DeleteIcon />
                   </IconButton>
                 </div>
@@ -146,9 +146,11 @@ const ArtistPage = () => {
           onClose={() => setIsViewPaintingsWindowOpen(false)}
         />
       )}
-      {isArtistDeletePopUpOpen && (
-        <ArtistDeletePopUp
-          onClose={closeArtistDeletePopUpOpen}
+      {isDeletionWindowOpen && (
+        <DeletionWindow
+          confirmationText="Do you want to delete this artist profile?"
+          warningText="You will not be able to recover this profile afterwards."
+          onClose={closeDeletionWindow}
           onSubmit={() => deleteArtistById(id as string)}
         />
       )}

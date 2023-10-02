@@ -1,9 +1,15 @@
 import { useEffect, RefObject } from 'react';
 
-type UseEscapeKeydown = (ref: RefObject<HTMLElement>, onEscapeKeydown: () => void) => void;
+type UseEscapeKeydown = (
+  ref: RefObject<HTMLElement>,
+  onEscapeKeydown: () => void,
+  attached?: boolean,
+) => void;
 
-const useEscapeKeydown: UseEscapeKeydown = (ref, onEscapeKeydown) => {
+const useEscapeKeydown: UseEscapeKeydown = (ref, onEscapeKeydown, attached = true) => {
   useEffect(() => {
+    if (!attached) return undefined;
+
     const handleEscapePress = (evt: KeyboardEvent) => {
       if (ref.current && (evt.key === 'Escape' || evt.key === 'Esc')) {
         onEscapeKeydown();
@@ -13,7 +19,7 @@ const useEscapeKeydown: UseEscapeKeydown = (ref, onEscapeKeydown) => {
     document.addEventListener('keydown', handleEscapePress);
 
     return () => document.removeEventListener('keydown', handleEscapePress);
-  }, [ref, onEscapeKeydown]);
+  }, [ref, onEscapeKeydown, attached]);
 };
 
 export { useEscapeKeydown };
