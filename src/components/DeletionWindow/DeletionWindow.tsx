@@ -10,11 +10,18 @@ import styles from './DeletionWindow.module.scss';
 const cx = cn.bind(styles);
 
 interface DeletionWindowProps {
+  confirmationText: string;
+  warningText: string;
   onClose: () => void;
   onSubmit: () => void;
 }
 
-const DeletionWindow: FC<DeletionWindowProps> = ({ onClose, onSubmit }) => {
+const DeletionWindow: FC<DeletionWindowProps> = ({
+  confirmationText,
+  warningText,
+  onClose,
+  onSubmit,
+}) => {
   const { isDarkTheme } = useThemeContext();
   const { isMobile } = useMatchMedia();
 
@@ -47,11 +54,9 @@ const DeletionWindow: FC<DeletionWindowProps> = ({ onClose, onSubmit }) => {
               'artist-delete-pop-up__title--dark': isDarkTheme,
             })}
           >
-            Do you want to delete this artist profile?
+            {confirmationText}
           </p>
-          <small className={cx('artist-delete-pop-up__caption')}>
-            You will not be able to recover this profile afterwards.
-          </small>
+          <strong className={cx('artist-delete-pop-up__caption')}>{warningText}</strong>
           <form className={cx('artist-delete-pop-up__deletion-form')} onSubmit={handleSubmit}>
             <TextButton
               className={cx('artist-delete-pop-up__deletion-form-submit-button')}
