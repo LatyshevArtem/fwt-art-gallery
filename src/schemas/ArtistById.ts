@@ -8,7 +8,7 @@ export interface ArtistById {
   name: string;
   description: string;
   yearsOfLife: string;
-  mainPainting: Painting;
+  mainPainting?: Painting | null;
   paintings: Painting[];
   genres: Genre[];
 }
