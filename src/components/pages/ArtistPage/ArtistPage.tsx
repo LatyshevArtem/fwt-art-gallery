@@ -12,7 +12,7 @@ import Preloader from '@components/Preloader';
 import ArtistCard from '@components/ArtistCard';
 import TextButton from '@components/TextButton';
 import PaintingsGrid from '@components/PaintingsGrid';
-import PaintingCard from '@components/PaintingCard';
+import ArtistPagePaintingCard from '@components/ArtistPagePaintingCard';
 import EditArtistWindow from '@components/EditArtistWindow';
 import EditPaintingWindow from '@components/EditPaintingWindow';
 import ViewPaintingsWindow from '@components/ViewPaintingsWindow';
@@ -44,14 +44,33 @@ const ArtistPage = () => {
 
   const artist = data;
 
+  const checkIsPaintingIsMainOne = (paintingId: string) => {
+    let isMain = false;
+    if (artist?.mainPainting) {
+      isMain = artist.mainPainting._id === paintingId;
+    }
+
+    return isMain;
+  };
+
   const openEditArtistWindow = () => setIsEditArtistWindowOpen(true);
   const closeEditArtistWindow = () => setIsEditArtistWindowOpen(false);
 
   const openEditPaintingWindow = () => setIsEditPaintingWindowOpen(true);
   const closeEditPaintingWindow = () => setIsEditPaintingWindowOpen(false);
 
+  const openViewPaintingsWindow = () => setIsViewPaintingsWindowOpen(true);
+  const closeViewPaintingsWindow = () => setIsViewPaintingsWindowOpen(false);
+
   const openDeletionWindow = () => setIsDeletionWindowOpen(true);
   const closeDeletionWindow = () => setIsDeletionWindowOpen(false);
+
+  const handleOpenViewPaintingsWindowButtonClick = (paintingNumber: number) => {
+    return () => {
+      slideNumber = paintingNumber;
+      openViewPaintingsWindow();
+    };
+  };
 
   useEffect(() => {
     if (isAuthStatusKnow && id) {
@@ -112,19 +131,16 @@ const ArtistPage = () => {
               <PaintingsGrid className={cx('artist-page__paintings')}>
                 {artist.paintings.map((painting, index) => (
                   <li key={painting._id}>
-                    <button
-                      onClick={() => {
-                        setIsViewPaintingsWindowOpen(true);
-                        slideNumber = index;
-                      }}
-                    >
-                      <PaintingCard
-                        isDarkTheme={isDarkTheme}
-                        painting={painting.image}
-                        name={painting.name}
-                        date={painting.yearOfCreation}
-                      />
-                    </button>
+                    <ArtistPagePaintingCard
+                      isAuth={isAuth}
+                      isDarkTheme={isDarkTheme}
+                      artistId={id as string}
+                      painting={painting}
+                      isTheCover={checkIsPaintingIsMainOne(painting._id)}
+                      onClickOpenViewPaintingsWindowButton={handleOpenViewPaintingsWindowButtonClick(
+                        index,
+                      )}
+                    />
                   </li>
                 ))}
               </PaintingsGrid>
@@ -143,7 +159,7 @@ const ArtistPage = () => {
           artistId={id as string}
           slideNumberToStartView={slideNumber}
           paintings={artist.paintings}
-          onClose={() => setIsViewPaintingsWindowOpen(false)}
+          onClose={closeViewPaintingsWindow}
         />
       )}
       {isDeletionWindowOpen && (
