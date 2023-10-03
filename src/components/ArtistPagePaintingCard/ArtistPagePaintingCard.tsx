@@ -21,7 +21,7 @@ interface ArtistPagePaintingCardProps {
   isTheCover?: boolean;
   artistId: string;
   painting: Painting;
-  onOpenButtonViewPaintingsWindow: () => void;
+  onClickOpenViewPaintingsWindowButton: () => void;
 }
 
 const ArtistPagePaintingCard: FC<ArtistPagePaintingCardProps> = ({
@@ -30,7 +30,7 @@ const ArtistPagePaintingCard: FC<ArtistPagePaintingCardProps> = ({
   isTheCover = false,
   artistId,
   painting,
-  onOpenButtonViewPaintingsWindow,
+  onClickOpenViewPaintingsWindowButton,
 }) => {
   const { _id: paintingId, yearOfCreation, ...restPaintingData } = painting;
 
@@ -79,7 +79,7 @@ const ArtistPagePaintingCard: FC<ArtistPagePaintingCardProps> = ({
         <PaintingCard isDarkTheme={isDarkTheme} date={yearOfCreation} {...restPaintingData} />
         <button
           className={cx('artist-page-painting-card__open-view-paintings-window-button')}
-          onClick={onOpenButtonViewPaintingsWindow}
+          onClick={onClickOpenViewPaintingsWindowButton}
         >
           Open full-screen painting viewing mode
         </button>
