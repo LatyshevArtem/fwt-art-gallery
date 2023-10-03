@@ -1,15 +1,31 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import PaintingCard, { PaintingCardProps } from '@components/PaintingCard';
+import PaintingCard from '@components/PaintingCard';
+import { Painting } from '@schemas/Painting';
 
-interface MainPagePaintingCardProps extends PaintingCardProps {
+interface MainPagePaintingCardProps {
+  isDarkTheme?: boolean;
   artistId: string;
+  mainPainting?: Painting | null;
+  name: string;
+  yearsOfLife: string;
 }
 
-const MainPagePaintingCard: FC<MainPagePaintingCardProps> = ({ artistId, ...cardProps }) => {
+const MainPagePaintingCard: FC<MainPagePaintingCardProps> = ({
+  isDarkTheme,
+  artistId,
+  mainPainting,
+  name,
+  yearsOfLife,
+}) => {
   return (
     <Link to={`artists/${artistId}`}>
-      <PaintingCard {...cardProps} />
+      <PaintingCard
+        isDarkTheme={isDarkTheme}
+        image={mainPainting?.image}
+        name={name}
+        date={yearsOfLife}
+      />
     </Link>
   );
 };
