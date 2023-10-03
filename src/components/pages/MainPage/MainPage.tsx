@@ -21,7 +21,7 @@ const MainPage = () => {
   const [fetchArtists, { isLoading, data }] = useLazyFetchArtistsQuery();
 
   const isAuthStatusKnow = typeof isAuth === 'boolean';
-  const shouldShowAddArtistButton = isAuthStatusKnow && isAuth;
+  const shouldShowAddArtistButton = isAuthStatusKnow && isAuth && data;
 
   const artists = data?.artists;
 
@@ -36,7 +36,12 @@ const MainPage = () => {
 
   return (
     <Layout className={cx('main-page', { 'main-page--dark': isDarkTheme })}>
-      <main className={cx('main-page__content', { 'main-page__content--loading': isLoading })}>
+      <main
+        className={cx('main-page__content', {
+          'main-page__content--loading': isLoading,
+          'main-page__content--auth-user': isAuth,
+        })}
+      >
         {shouldShowAddArtistButton && (
           <TextButton
             className={cx('main-page__add-artist-button', {
@@ -46,12 +51,14 @@ const MainPage = () => {
             onClick={openEditArtistWindow}
             isUnderlined
           >
-            <PlusIcon />
+            <PlusIcon aria-hidden />
             <span>Add artist</span>
           </TextButton>
         )}
         {isLoading ? (
-          <Preloader />
+          <div className={cx('main-page__preloader-wrapper')}>
+            <Preloader />
+          </div>
         ) : (
           <PaintingsGrid className={cx('main-page__paintings')}>
             {artists &&
@@ -60,9 +67,7 @@ const MainPage = () => {
                   <MainPagePaintingCard
                     isDarkTheme={isDarkTheme}
                     artistId={artist._id}
-                    name={artist.name}
-                    date={artist.yearsOfLife}
-                    painting={artist.mainPainting?.image}
+                    {...artist}
                   />
                 </li>
               ))}

@@ -1,13 +1,8 @@
 .main-page {
   display: grid;
   grid-template-rows: min-content 1fr min-content;
-  row-gap: 80px;
   min-height: 100%;
   background-color: $primary-white;
-
-  @media (min-width: $tablet-width) {
-    row-gap: 100px;
-  }
 
   &--dark {
     background-color: $primary-black;
@@ -17,28 +12,44 @@
     position: relative;
     width: 100%;
     max-width: 1920px;
-    margin: 0 auto;
+    margin: 80px auto;
     padding: 0 20px;
+
+    &--loading {
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media (min-width: $tablet-width) {
+      margin: 100px auto;
+    }
 
     @media (min-width: $desktop-width) {
       padding: 0 100px;
     }
 
-    &--loading {
-      justify-self: center;
-      align-self: center;
+    &--auth-user {
+      margin-top: 0;
     }
   }
 
   &__add-artist-button {
-    position: absolute;
-    transform: translateY(calc(-100% - 20px));
     column-gap: 12px;
-    color: $primary-dark-gray;
+    margin-top: 36px;
+    margin-bottom: 20px;
 
-    &--dark {
-      color: $primary-light-gray;
+    @media (min-width: $tablet-width) {
+      margin-top: 56px;
     }
+  }
+
+  &__preloader-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   &__paintings {
