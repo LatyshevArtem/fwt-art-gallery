@@ -8,25 +8,18 @@ import styles from './PaintingCard.module.scss';
 
 const cx = cn.bind(styles);
 
-export interface PaintingCardProps {
+interface PaintingCardProps {
   isDarkTheme?: boolean;
-  shouldShowArrowBlock?: boolean;
-  painting?: Image | null;
+  image?: Image | null;
   name: string;
   date: string;
 }
 
-const PaintingCard: FC<PaintingCardProps> = ({
-  isDarkTheme,
-  shouldShowArrowBlock = true,
-  painting,
-  name,
-  date,
-}) => {
+const PaintingCard: FC<PaintingCardProps> = ({ isDarkTheme, image, name, date }) => {
   return (
     <figure className={cx('card')}>
-      {painting ? (
-        <Picture className={cx('card__image')} image={painting} />
+      {image ? (
+        <Picture className={cx('card__image')} image={image} />
       ) : (
         <ImagePlaceholder isDarkTheme={isDarkTheme} />
       )}
@@ -35,11 +28,9 @@ const PaintingCard: FC<PaintingCardProps> = ({
       >
         <p className={cx('card__name', { 'card__name--dark': isDarkTheme })}>{name}</p>
         <p className={cx('card__date', { 'card__date--dark': isDarkTheme })}>{date}</p>
-        {shouldShowArrowBlock && (
-          <div className={cx('card__arrow-block', { 'card__arrow-block--dark': isDarkTheme })}>
-            <ArrowIcon className={cx('card__arrow-block-icon')} />
-          </div>
-        )}
+        <div className={cx('card__arrow-block', { 'card__arrow-block--dark': isDarkTheme })}>
+          <ArrowIcon className={cx('card__arrow-block-icon')} />
+        </div>
       </figcaption>
     </figure>
   );
