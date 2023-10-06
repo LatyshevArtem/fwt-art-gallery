@@ -1,6 +1,6 @@
-import { ChangeEventHandler, FC, useRef, useState } from 'react';
+import { ChangeEventHandler, FC, useRef } from 'react';
+import { useBoolean } from '@hooks/useBoolean';
 import cn from 'classnames/bind';
-import { pushWithCopy } from '@utils/array';
 import { useOutsideClick } from '@hooks/useOutsideClick';
 import Label from '@components/Label';
 import Checkbox from '@components/Checkbox';
@@ -30,33 +30,31 @@ const Select: FC<SelectProps> = ({
   onChangeSelectedOptions,
 }) => {
   const selectRef = useRef<HTMLDivElement>(null);
-  const [isOptionsListOpen, setIsOptionsListOpen] = useState(false);
+  const [isOptionsListOpen, setIsOptionsListOpen] = useBoolean();
 
   const areOptionsSelected = selectedOptions.length !== 0;
 
-  const closeOptionsList = () => setIsOptionsListOpen(false);
-  const toggleIsOptionsListOpen = () => setIsOptionsListOpen((prevState) => !prevState);
-
-  const addOptionWithCopy = (option: Option) => pushWithCopy(selectedOptions, option);
-  const removeOptionWithCopy = (option: Option) =>
+  const removeOption = (option: Option) =>
     selectedOptions.filter((selectedOption) => selectedOption._id !== option._id);
 
-  const removeSelectedOptionLabel = (option: Option) => () => {
-    const newSelectedOptions = removeOptionWithCopy(option);
-    onChangeSelectedOptions(newSelectedOptions);
-  };
+  const removeSelectedOptionLabel = (option: Option) => () =>
+    onChangeSelectedOptions(removeOption(option));
 
-  const handleSpecificOptionCheckedChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    const { checked, value } = event.target;
-    const option = JSON.parse(value) as Option;
-    const newSelectedOptions = checked ? addOptionWithCopy(option) : removeOptionWithCopy(option);
-    onChangeSelectedOptions(newSelectedOptions);
+  const handleOptionCheckedChange = (option: Option) => {
+    const handler: ChangeEventHandler<HTMLInputElement> = (event) => {
+      const newSelectedOptions = event.target.checked
+        ? [...selectedOptions, option]
+        : removeOption(option);
+      onChangeSelectedOptions(newSelectedOptions);
+    };
+
+    return handler;
   };
 
   const checkIsCheckboxChecked = (optionId: string) =>
-    Boolean(selectedOptions.find((selectedOption) => selectedOption._id === optionId));
+    selectedOptions.findIndex((selectedOption) => selectedOption._id === optionId) !== -1;
 
-  useOutsideClick(selectRef, closeOptionsList);
+  useOutsideClick(selectRef, setIsOptionsListOpen.off);
 
   return (
     <div className={cx(className, 'select', { 'select--dark': isDarkTheme })} ref={selectRef}>
@@ -68,7 +66,7 @@ const Select: FC<SelectProps> = ({
       >
         <button
           className={cx('select__toggle-options-list-button')}
-          onClick={toggleIsOptionsListOpen}
+          onClick={setIsOptionsListOpen.toggle}
           type="button"
           aria-label={isOptionsListOpen ? 'Close options list' : 'Open options list'}
         />
@@ -107,8 +105,7 @@ const Select: FC<SelectProps> = ({
                 <Checkbox
                   className={cx('select__option', { 'select__option--dark': isDarkTheme })}
                   isDarkTheme={isDarkTheme}
-                  onChange={handleSpecificOptionCheckedChange}
-                  value={JSON.stringify(option)}
+                  onChange={handleOptionCheckedChange(option)}
                   checked={checkIsCheckboxChecked(option._id)}
                 >
                   <span
