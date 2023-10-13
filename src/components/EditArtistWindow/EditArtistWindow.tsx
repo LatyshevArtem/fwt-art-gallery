@@ -1,137 +1,99 @@
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  DragEventHandler,
-  FC,
-  RefCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { ChangeEventHandler, FC, useId, useImperativeHandle, useRef, useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import cn from 'classnames/bind';
+import { ArtistById } from '@schemas/ArtistById';
+import { useMatchMedia } from '@hooks/useMatchMedia';
 import { useThemeContext } from '@hooks/useThemeContext';
-import { DataOfAddArtistRequest, useAddArtistMutation, useEditArtistMutation } from '@api/features';
+import { useFetchGenresQuery } from '@api/features';
+import { useDragAndDrop } from '@hooks/useDragAndDrop';
+import { addHostToRelativePath } from '@utils/addHostToRelativePath';
 import Modal, { ModalBackdrop, ModalContent, ModalCloseButton } from '@components/Modal';
 import FormControl from '@components/FormControl';
 import FormLabel from '@components/FormLabel';
 import Input from '@components/Input';
 import IconButton from '@components/IconButton';
 import FormErrorMessage from '@components/FormErrorMessage';
+import Textarea from '@components/Textarea';
 import TextButton from '@components/TextButton';
 import { ReactComponent as DeleteIcon } from '@assets/icons/delete--default-size.svg';
-import { ArtistById } from '@schemas/ArtistById';
+import Select from '@components/Select';
 import styles from './EditArtistWindow.module.scss';
 
 const cx = cn.bind(styles);
 
-interface EditFormValues extends Omit<DataOfAddArtistRequest, 'avatar'> {
-  avatar?: string | FileList;
+const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+
+const getInitialImageSrc = (src?: string) => src && addHostToRelativePath(src);
+
+const getDefaultFormValues = (artist?: ArtistById) =>
+  ({
+    avatar: new DataTransfer().files,
+    name: artist?.name || '',
+    yearsOfLife: artist?.yearsOfLife || '',
+    description: artist?.description || '',
+    genres: artist?.genres || [],
+  }) as FormValues;
+
+interface FormValues extends Pick<ArtistById, 'name' | 'yearsOfLife' | 'description' | 'genres'> {
+  avatar: FileList;
 }
 
 interface EditArtistWindowProps {
   artist?: ArtistById;
+  onSubmit: (data: FormData) => void;
   onClose: () => void;
 }
 
-const EditArtistWindow: FC<EditArtistWindowProps> = ({ artist, onClose }) => {
-  const [isDragged, setIsDragged] = useState(false);
-  const editFormRef = useRef<HTMLFormElement>(null);
-  const dropAreaRef = useRef<HTMLDivElement>(null);
-  const avatarSelectNodeRef = useRef<HTMLInputElement | null>(null);
-  const avatarPreviewNodeRef = useRef<HTMLImageElement>(null);
+const EditArtistWindow: FC<EditArtistWindowProps> = ({ artist, onSubmit, onClose }) => {
+  const [imageSrc, setImageSrc] = useState(() => getInitialImageSrc(artist?.avatar?.src));
+  const formRef = useRef<HTMLFormElement>(null);
   const formId = useId();
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
   const {
     register,
     resetField,
     formState: { errors },
     handleSubmit,
-    setValue,
-    watch,
-  } = useForm<EditFormValues>();
+    getValues,
+    control,
+  } = useForm({ defaultValues: getDefaultFormValues(artist) });
+  const { isDesktop } = useMatchMedia();
   const { isDarkTheme } = useThemeContext();
-  const [addArtist, { isSuccess }] = useAddArtistMutation();
-  const [editArtist] = useEditArtistMutation();
+  const { data: genres = [] } = useFetchGenresQuery(undefined);
+  const { isDragActive, setIsDragActive, onDragOver, onDragLeave } = useDragAndDrop();
 
   const {
-    ref: avatarFieldRef,
-    onChange: onAvatarChange,
-    ...restAvatarFiledRegisterValues
+    ref: imageInputCallbackRef,
+    onChange: onImageChange,
+    ...restImageFieldRegisterValues
   } = register('avatar');
 
-  const isAvatarSelected = avatarPreviewNodeRef.current?.src || avatarSelectNodeRef.current?.value;
-  const avatarAltText = isAvatarSelected ? 'Your selected file' : 'Drop your file here';
+  const fileInputPlaceHint = isDragActive ? 'Drop your image here' : 'You can drop your image here';
+  const imageAltText = imageSrc ? 'Your selected file' : 'Drop your file here';
 
-  const triggerClickEventOnAvatarInputElement = () => avatarSelectNodeRef.current?.click();
+  useImperativeHandle(imageInputCallbackRef, () => imageInputRef.current);
 
-  const showSelectedAvatar = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value && event.target.files && avatarPreviewNodeRef.current) {
-      avatarPreviewNodeRef.current.src = URL.createObjectURL(event.target.files[0]);
+  const resetImage = () => {
+    setImageSrc(undefined);
+    resetField('avatar', { defaultValue: undefined });
+  };
+
+  const handleImageChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (event.target.value && event.target.files?.length) {
+      onImageChange(event);
+      setImageSrc(URL.createObjectURL(event.target.files[0]));
+    } else if (imageInputRef.current) {
+      imageInputRef.current.files = getValues('avatar');
     }
   };
 
-  const handleFirstRenderOfAvatarSelectNode: RefCallback<HTMLInputElement> = (avatarSelectNode) => {
-    avatarFieldRef(avatarSelectNode);
-    avatarSelectNodeRef.current = avatarSelectNode;
+  const onEditFormSubmit: SubmitHandler<FormValues> = () => {
+    const formData = new FormData(formRef.current as HTMLFormElement);
+
+    getValues('genres').forEach((genre) => formData.append('genres', genre._id));
+
+    onSubmit(formData);
   };
-
-  const handleAvatarChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    if (avatarSelectNodeRef.current?.value) {
-      onAvatarChange(event);
-      showSelectedAvatar(event);
-    }
-  };
-
-  const resetAvatar = () => {
-    avatarPreviewNodeRef.current?.removeAttribute('src');
-    resetField('avatar');
-  };
-
-  const onEditFormSubmit: SubmitHandler<EditFormValues> = () => {
-    const formData = new FormData(editFormRef.current || undefined);
-    if (artist) {
-      editArtist({ id: artist!._id, data: formData });
-    } else {
-      addArtist(formData);
-    }
-  };
-
-  const handleDragOver: DragEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragged(true);
-  };
-
-  const handleImageDrop: DragEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    if (avatarSelectNodeRef.current && avatarPreviewNodeRef.current) {
-      avatarSelectNodeRef.current.files = event.dataTransfer.files;
-      avatarPreviewNodeRef.current.src = URL.createObjectURL(event.dataTransfer.files[0]);
-      setIsDragged(false);
-    }
-  };
-
-  useEffect(() => {
-    if (artist) {
-      const { avatar, name, yearsOfLife, description, genres } = artist;
-      setValue('avatar', avatar.src);
-      avatarPreviewNodeRef.current!.src = `https://internship-front.framework.team/${avatar.src}`;
-      setValue('name', name);
-      setValue('yearsOfLife', yearsOfLife);
-      setValue('description', description);
-      setValue('genres', genres);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (isSuccess) {
-      onClose();
-    }
-  }, [isSuccess, onClose]);
-
-  watch('avatar');
 
   return (
     <Modal onClose={onClose}>
@@ -142,56 +104,73 @@ const EditArtistWindow: FC<EditArtistWindowProps> = ({ artist, onClose }) => {
       />
       <div className={cx('edit-artist-window-wrapper')}>
         <ModalContent
-          className={cx('edit-artist-window', { 'edit-artist-window--dark': isDarkTheme })}
-          onDragOver={handleDragOver}
-          onDragLeave={() => setIsDragged(false)}
+          className={cx('edit-artist-window', {
+            'edit-artist-window--drag-active': isDragActive,
+            'edit-artist-window--dark': isDarkTheme,
+          })}
+          onDragOver={onDragOver()}
         >
           <ModalCloseButton className={cx('edit-artist-window__close-button')} />
           <FormControl className={cx('edit-artist-window__file-input-container')}>
-            <Input
-              className="visually-hidden"
-              ref={handleFirstRenderOfAvatarSelectNode}
-              onChange={handleAvatarChange}
-              {...restAvatarFiledRegisterValues}
-              form={formId}
-              type="file"
-              accept="image/*"
-            />
             <div
-              className={cx('file-input-container__drop-area', {
-                'file-input-container__drop-area--image-selected': isAvatarSelected,
-                'file-input-container__drop-area--dark': isDarkTheme,
-                'file-input-container__drop-area--active': isDragged,
+              className={cx('edit-artist-window__file-input-wrapper', {
+                'edit-artist-window__file-input-wrapper--dark': isDarkTheme,
+                'edit-artist-window__file-input-wrapper--image-selected': imageSrc,
+                'edit-artist-window__file-input-wrapper--drag-active': isDragActive,
               })}
-              ref={dropAreaRef}
-              onDrop={handleImageDrop}
             >
-              {!isAvatarSelected && (
-                <span className={cx('drop-area__caption')}>You can drop your image here</span>
-              )}
-              <img
-                className={cx('drop-area__image', {
-                  'drop-area__image--image-selected': isAvatarSelected && !isDragged,
+              <p
+                className={cx('edit-artist-window__file-input-hints', {
+                  'edit-artist-window__file-input-hints--dark': isDarkTheme,
                 })}
-                ref={avatarPreviewNodeRef}
+              >
+                {isDesktop && (
+                  <>
+                    <span
+                      className={cx('edit-artist-window__file-input-place-hint', {
+                        'edit-artist-window__file-input-place-hint--dark': isDarkTheme,
+                        'edit-artist-window__file-input-place-hint--drag-active': isDragActive,
+                      })}
+                    >
+                      {fileInputPlaceHint}
+                    </span>
+                    <small
+                      className={cx('edit-artist-window__file-input-allowed-files-hint', {
+                        'edit-artist-window__file-input-allowed-files-hint--dark': isDarkTheme,
+                        'edit-artist-window__file-input-allowed-files-hint--drag-active':
+                          isDragActive,
+                      })}
+                    >
+                      Upload only .jpg or .png format less than 3 MB
+                    </small>
+                  </>
+                )}
+              </p>
+              <img
+                className={cx('edit-artist-window__image', {
+                  'edit-artist-window__image--image-selected': imageSrc,
+                  'edit-artist-window__image--drag-active': isDragActive,
+                })}
                 width="200"
                 height="200"
-                alt={avatarAltText}
+                src={imageSrc}
+                alt={imageAltText}
               />
-              <button
-                className={cx('drop-area__upload-avatar-button', {
-                  'edit-form__upload-avatar-button--avatar-selected': false,
-                })}
-                onClick={triggerClickEventOnAvatarInputElement}
-                type="button"
-                tabIndex={-1}
-                aria-hidden
+              <Input
+                className={cx('edit-artist-window__image-input')}
+                ref={imageInputRef}
+                onChange={handleImageChange}
+                onDrop={() => setIsDragActive(false)}
+                onDragLeave={onDragLeave()}
+                {...restImageFieldRegisterValues}
+                form={formId}
+                type="file"
+                accept={allowedTypes.join(',')}
               />
-              {isAvatarSelected && (
+              {imageSrc && (
                 <IconButton
-                  className={cx('drop-area__avatar-reset-button')}
-                  isDarkTheme={isDarkTheme}
-                  onClick={resetAvatar}
+                  className={cx('edit-artist-window__image-reset-button')}
+                  onClick={resetImage}
                   isOverImage
                 >
                   <span className="visually-hidden">Delete selected profile photo</span>
@@ -200,8 +179,8 @@ const EditArtistWindow: FC<EditArtistWindowProps> = ({ artist, onClose }) => {
               )}
             </div>
             <FormLabel
-              className={cx('file-input-container__label', {
-                'file-input-container__label--dark': isDarkTheme,
+              className={cx('edit-artist-window__file-input-container-label', {
+                'edit-artist-window__file-input-container-label--dark': isDarkTheme,
               })}
             >
               Browse profile photo
@@ -209,22 +188,20 @@ const EditArtistWindow: FC<EditArtistWindowProps> = ({ artist, onClose }) => {
           </FormControl>
           <form
             className={cx('edit-artist-window__edit-form')}
-            ref={editFormRef}
+            ref={formRef}
             onSubmit={handleSubmit(onEditFormSubmit)}
-            method="post"
-            encType="multipart/form-data"
             id={formId}
           >
             <FormControl className={cx('edit-form__form-control')} isDarkTheme={isDarkTheme}>
               <FormLabel>Name</FormLabel>
-              <Input {...register('name', { required: { value: true, message: 'Enter name' } })} />
+              <Input {...register('name', { required: { value: false, message: 'Enter name' } })} />
               <FormErrorMessage text={errors.name?.message} shouldShow={Boolean(errors.name)} />
             </FormControl>
             <FormControl className={cx('edit-form__form-control')} isDarkTheme={isDarkTheme}>
               <FormLabel>Years of life</FormLabel>
               <Input
                 {...register('yearsOfLife', {
-                  required: { value: true, message: 'Enter years of life' },
+                  required: { value: false, message: 'Enter years of life' },
                 })}
               />
               <FormErrorMessage
@@ -232,6 +209,25 @@ const EditArtistWindow: FC<EditArtistWindowProps> = ({ artist, onClose }) => {
                 shouldShow={Boolean(errors.yearsOfLife)}
               />
             </FormControl>
+            <FormControl className={cx('edit-form__form-control')} isDarkTheme={isDarkTheme}>
+              <FormLabel>Description</FormLabel>
+              <Textarea
+                className={cx('edit-artist-window__textarea')}
+                {...register('description')}
+              />
+            </FormControl>
+            <Controller
+              control={control}
+              name="genres"
+              render={({ field: { onChange } }) => (
+                <Select
+                  isDarkTheme={isDarkTheme}
+                  options={genres}
+                  selectedOptions={getValues('genres') || []}
+                  onChangeSelectedOptions={(selectedOptions) => onChange(selectedOptions)}
+                />
+              )}
+            />
             <TextButton
               className={cx('edit-form__submit-button')}
               isDarkTheme={isDarkTheme}

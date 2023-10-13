@@ -1,17 +1,14 @@
 import { FC, PropsWithChildren, useEffect } from 'react';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { useRefreshMutation } from '@api/features';
-import { useSuccessAuthResponse } from '@hooks/useSuccessAuthResponse';
-import { getTokensFromLocalStorage } from '@utils/token';
+import { getTokensFromLocalStorage, setTokensToLocalStorage } from '@utils/token';
 import { setIsAuth } from '@store/features/auth/authSlice';
 
 interface InitializationLayerProps extends PropsWithChildren {}
 
 const InitializationLayer: FC<InitializationLayerProps> = ({ children }) => {
   const dispatch = useAppDispatch();
-  const [refresh, { isSuccess, isError }] = useRefreshMutation();
-
-  useSuccessAuthResponse(isSuccess);
+  const [refresh, { isSuccess, isError, data }] = useRefreshMutation();
 
   useEffect(() => {
     const { accessToken, refreshToken } = getTokensFromLocalStorage();
@@ -24,10 +21,14 @@ const InitializationLayer: FC<InitializationLayerProps> = ({ children }) => {
   }, [dispatch, refresh]);
 
   useEffect(() => {
-    if (isError) {
+    if (isSuccess && data) {
+      const { accessToken, refreshToken } = data;
+      setTokensToLocalStorage(accessToken, refreshToken);
+      dispatch(setIsAuth(true));
+    } else if (isError) {
       dispatch(setIsAuth(false));
     }
-  }, [isError, dispatch]);
+  }, [isSuccess, isError, data, dispatch]);
 
   return children as JSX.Element;
 };

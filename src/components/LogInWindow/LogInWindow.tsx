@@ -1,51 +1,35 @@
-import { ChangeEventHandler, FC, FormEventHandler, useState } from 'react';
-import { useThemeContext } from '@hooks/useThemeContext';
+import { FC } from 'react';
 import { useLoginMutation } from '@api/features';
-import { useSuccessAuthResponse } from '@hooks/useSuccessAuthResponse';
+import { useAppDispatch } from '@hooks/useAppDispatch';
+import { setTokensToLocalStorage } from '@utils/token';
+import { setIsAuth } from '@store/features/auth/authSlice';
 import AuthWindow from '@components/AuthWindow';
-import AuthWindowLink from '@components/AuthWindowLink';
-
-type InputChangeEventHandler = ChangeEventHandler<HTMLInputElement>;
-type FormSubmitEventHandler = FormEventHandler<HTMLFormElement>;
 
 interface LogInWindowProps {
+  onChangeWindowType: () => void;
   onClose: () => void;
 }
 
-const LogInWindow: FC<LogInWindowProps> = ({ onClose }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { isDarkTheme } = useThemeContext();
-  const [login, { isSuccess }] = useLoginMutation();
+const LogInWindow: FC<LogInWindowProps> = ({ onChangeWindowType, onClose }) => {
+  const [login, { isSuccess, data }] = useLoginMutation();
+  const dispatch = useAppDispatch();
 
-  useSuccessAuthResponse(isSuccess, onClose);
+  if (isSuccess && data) {
+    const { accessToken, refreshToken } = data;
+    setTokensToLocalStorage(accessToken, refreshToken);
+    dispatch(setIsAuth(true));
+    onClose();
+  }
 
-  const onEmailChange: InputChangeEventHandler = (event) => setEmail(event.target.value);
-  const onPasswordChange: InputChangeEventHandler = (event) => setPassword(event.target.value);
-
-  const onFormSubmit: FormSubmitEventHandler = (event) => {
-    event.preventDefault();
-    login({ username: email, password });
-  };
+  const handleSubmit = (username: string, password: string) => login({ username, password });
 
   return (
     <AuthWindow
       windowType="login"
-      isDarkTheme={isDarkTheme}
+      onChangeWindowType={onChangeWindowType}
+      onSubmit={handleSubmit}
       onClose={onClose}
-      authFormProps={{
-        email,
-        onEmailChange,
-        password,
-        onPasswordChange,
-        onFormSubmit,
-      }}
-    >
-      If you don&apos;t have an account yet, please&nbsp;
-      <AuthWindowLink isDarkTheme={isDarkTheme} to="?auth=signup">
-        sign up
-      </AuthWindowLink>
-    </AuthWindow>
+    />
   );
 };
 

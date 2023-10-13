@@ -166,4 +166,15 @@
       }
     }
   }
+
+  &__change-window-button {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 500;
+    line-height: inherit;
+    color: inherit;
+    text-decoration-line: underline;
+    text-underline-offset: 0.18lh;
+    background-color: transparent;
+  }
 }

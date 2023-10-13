@@ -14,7 +14,7 @@ const urlSignUp = 'auth/register';
 const urlLogIn = 'auth/login';
 const urlRefresh = 'auth/refresh';
 
-const artistApi = apiService.injectEndpoints({
+const authApi = apiService.injectEndpoints({
   endpoints: (build) => ({
     signup: build.mutation<AuthResponse, AuthRequestData>({
       query: (data) => ({
@@ -40,4 +40,4 @@ const artistApi = apiService.injectEndpoints({
   }),
 });
 
-export const { useSignupMutation, useLoginMutation, useRefreshMutation } = artistApi;
+export const { useSignupMutation, useLoginMutation, useRefreshMutation } = authApi;

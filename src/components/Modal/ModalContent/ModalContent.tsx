@@ -1,7 +1,6 @@
 import { FC, HTMLAttributes, useRef } from 'react';
-import { useOutsideClick } from '@hooks/useOutsideClick';
-import { useEscapeKeydown } from '@hooks/useEscapeKeydown';
 import { useModalContext } from '../Modal';
+import { useCloseOnOutsideEvents } from './useCloseOnOutsideEvents';
 
 interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
   shouldAttachHandlerOutsideEvents?: boolean;
@@ -17,8 +16,7 @@ const ModalContent: FC<ModalContentProps> = ({
 
   const { onClose } = useModalContext();
 
-  useOutsideClick(modalRef, onClose, shouldAttachHandlerOutsideEvents);
-  useEscapeKeydown(modalRef, onClose, shouldAttachHandlerOutsideEvents);
+  useCloseOnOutsideEvents(modalRef, onClose, shouldAttachHandlerOutsideEvents);
 
   return (
     <div className={className} ref={modalRef} {...props}>

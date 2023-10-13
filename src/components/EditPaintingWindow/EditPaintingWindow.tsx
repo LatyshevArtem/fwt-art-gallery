@@ -1,16 +1,10 @@
-import {
-  ChangeEventHandler,
-  DragEventHandler,
-  FC,
-  RefCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEventHandler, FC, useImperativeHandle, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import cn from 'classnames/bind';
-import { DataOfAddPaintingToArtist, useAddPaintingToArtistMutation } from '@api/features';
+import { Painting } from '@schemas/Painting';
+import { useThemeContext } from '@hooks/useThemeContext';
 import { useMatchMedia } from '@hooks/useMatchMedia';
+import { addHostToRelativePath } from '@utils/addHostToRelativePath';
 import Modal, { ModalBackdrop, ModalCloseButton, ModalContent } from '@components/Modal';
 import FormControl from '@components/FormControl';
 import FormLabel from '@components/FormLabel';
@@ -23,104 +17,82 @@ import styles from './EditPaintingWindow.module.scss';
 
 const cx = cn.bind(styles);
 
-interface EditFormValues extends Omit<DataOfAddPaintingToArtist, 'image'> {
-  image?: FileList;
+const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+
+const getInitialImageSrc = (src?: string) => src && addHostToRelativePath(src);
+
+const getDefaultFormValues = (painting?: Painting) =>
+  ({
+    name: painting?.name || '',
+    yearOfCreation: painting?.yearOfCreation || '',
+    image: new DataTransfer().files,
+  }) as FormValues;
+
+interface FormValues extends Pick<Painting, 'name' | 'yearOfCreation'> {
+  image: FileList;
 }
 
 interface EditPaintingWindowProps {
-  artistId: string;
+  painting?: Painting;
+  onSubmit: (data: FormData) => void;
   onClose: () => void;
 }
 
-const EditPaintingWindow: FC<EditPaintingWindowProps> = ({ artistId, onClose }) => {
-  const [isDragged, setIsDragged] = useState(false);
-  const editFormRef = useRef<HTMLFormElement>(null);
-  const imageSelectRef = useRef<HTMLInputElement | null>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
+const EditPaintingWindow: FC<EditPaintingWindowProps> = ({ painting, onSubmit, onClose }) => {
+  const [imageSrc, setImageSrc] = useState(() => getInitialImageSrc(painting?.image.src));
+  const formRef = useRef<HTMLFormElement>(null);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
   const {
     register,
     resetField,
     formState: { errors },
     handleSubmit,
-    watch,
-  } = useForm<EditFormValues>();
+    getValues,
+  } = useForm({ defaultValues: getDefaultFormValues(painting) });
+  const { isDarkTheme } = useThemeContext();
   const { isMobile } = useMatchMedia();
-  const [addPaintingToArtist, { isSuccess }] = useAddPaintingToArtistMutation();
 
   const {
-    ref: imageInputNodeCallbackRef,
+    ref: imageInputCallbackRef,
     onChange: onImageChange,
-    ...restImageFiledRegisterValues
-  } = register('image');
+    ...restImageFieldRegisterValues
+  } = register('image', {
+    required: { value: false, message: 'Image is required' },
+  });
 
-  const isImageSelected = imageRef.current?.src;
-  const uploadButtonTextWithoutUnderline = 'Drop your image here, or';
+  useImperativeHandle(imageInputCallbackRef, () => imageInputRef.current);
 
-  const handleFirstRenderOfImageSelectNode: RefCallback<HTMLInputElement> = (imageSelectNode) => {
-    imageInputNodeCallbackRef(imageSelectNode);
-    imageSelectRef.current = imageSelectNode;
-  };
-
-  const triggerClickEventOnImageInputElement = () => imageSelectRef.current?.click();
+  const imageAltText = imageSrc ? 'Your selected file' : 'Drop your file here';
 
   const handleImageChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    onImageChange(event);
-    if (imageSelectRef.current?.files && imageRef.current) {
-      const imageAsFile = imageSelectRef.current.files[0];
-      const imageAsUrl = URL.createObjectURL(imageAsFile);
-      imageRef.current.src = imageAsUrl;
+    if (event.target.files?.length && allowedTypes.includes(event.target.files[0].type)) {
+      onImageChange(event);
+      setImageSrc(URL.createObjectURL(event.target.files[0]));
+    } else if (imageInputRef.current) {
+      imageInputRef.current.files = getValues('image');
     }
   };
 
   const resetImage = () => {
-    imageRef.current?.removeAttribute('src');
+    setImageSrc(undefined);
     resetField('image');
+    imageInputRef.current!.files = getValues('image');
   };
 
-  const handleDragOver: DragEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragged(true);
-  };
-
-  const handleImageDrop: DragEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    if (imageSelectRef.current && imageRef.current) {
-      imageSelectRef.current.files = event.dataTransfer.files;
-      imageRef.current.src = URL.createObjectURL(event.dataTransfer.files[0]);
-      setIsDragged(false);
-    }
-  };
-
-  const onEditFormSubmit = () => {
-    const formData = new FormData(editFormRef.current || undefined);
-    addPaintingToArtist({ id: artistId, data: formData });
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      onClose();
-    }
-  }, [isSuccess, onClose]);
-
-  watch('image');
+  const onEditFormSubmit = () => onSubmit(new FormData(formRef.current as HTMLFormElement));
 
   return (
     <Modal onClose={onClose}>
       <ModalBackdrop className={cx('edit-painting-window-backdrop')} />
       <div className={cx('edit-painting-window-content-wrapper')}>
         <ModalContent
-          className={cx('edit-painting-window')}
-          onDragOver={handleDragOver}
-          onDragLeave={() => setIsDragged(false)}
+          className={cx('edit-painting-window', { 'edit-painting-window--dark': isDarkTheme })}
         >
           <ModalCloseButton className={cx('edit-painting-window__close-button')} />
           <form
             className={cx('edit-painting-window__edit-form')}
-            ref={editFormRef}
+            ref={formRef}
             onSubmit={handleSubmit(onEditFormSubmit)}
-            method="post"
-            encType="multipart/form-data"
           >
             <div className={cx('edit-painting-window__form-text-controls-wrapper')}>
               <FormControl
@@ -128,10 +100,17 @@ const EditPaintingWindow: FC<EditPaintingWindowProps> = ({ artistId, onClose }) 
                   'edit-painting-window__form-control',
                   'edit-painting-window__form-control--name',
                 )}
+                isDarkTheme={isDarkTheme}
               >
                 <FormLabel>The name of the picture</FormLabel>
                 <Input
-                  {...register('name', { required: { value: true, message: 'Enter name' } })}
+                  {...register('name', {
+                    required: { value: true, message: 'Name should not be empty' },
+                    minLength: {
+                      value: 3,
+                      message: 'Name must be longer than or equal to 3 characters',
+                    },
+                  })}
                 />
                 <FormErrorMessage text={errors.name?.message} shouldShow={Boolean(errors.name)} />
               </FormControl>
@@ -140,79 +119,81 @@ const EditPaintingWindow: FC<EditPaintingWindowProps> = ({ artistId, onClose }) 
                   'edit-painting-window__form-control',
                   'edit-painting-window__form-control--year-of-creation',
                 )}
+                isDarkTheme={isDarkTheme}
               >
                 <FormLabel>Year of creation</FormLabel>
-                <Input
-                  {...register('yearOfCreation', {
-                    required: { value: true, message: 'Enter year of creation' },
-                  })}
-                  type="number"
-                  inputMode="numeric"
-                />
+                <Input {...register('yearOfCreation')} type="number" inputMode="numeric" />
                 <FormErrorMessage
                   text={errors.name?.message}
                   shouldShow={Boolean(errors.yearOfCreation)}
                 />
               </FormControl>
             </div>
-            <div
-              className={cx('edit-painting-window__drop-area', {
-                'edit-painting-window__drop-area--image-selected': isImageSelected,
-                'edit-painting-window__drop-area--active': isDragged,
+            <FormControl
+              className={cx('edit-painting-window__file-input-container', {
+                'edit-painting-window__file-input-container--dark': isDarkTheme,
+                'edit-painting-window__file-input-container--image-selected': imageSrc,
               })}
-              onDrop={handleImageDrop}
             >
-              <FormControl className={cx('visually-hidden')}>
-                <FormLabel>Browse image</FormLabel>
-                <Input
-                  ref={handleFirstRenderOfImageSelectNode}
-                  onChange={handleImageChange}
-                  {...restImageFiledRegisterValues}
-                  type="file"
-                />
-              </FormControl>
-              <span
-                className={cx('edit-painting-window__hint', {
-                  'edit-painting-window__hint--image-selected': isImageSelected,
+              <p
+                className={cx('edit-painting-window__file-input-hints', {
+                  'edit-painting-window__file-input-hints--dark': isDarkTheme,
                 })}
               >
-                Upload only .jpg or .png format less than 3 MB
-              </span>
+                <span
+                  className={cx('edit-painting-window__file-input-place-hint', {
+                    'edit-painting-window__file-input-place-hint--dark': isDarkTheme,
+                  })}
+                >
+                  {!isMobile && (
+                    <>
+                      Drop your image here, or
+                      <br />
+                    </>
+                  )}
+                  <span className={cx('edit-painting-window__underlined-file-input-place-hint')}>
+                    {isMobile ? 'browse image' : 'browse'}
+                  </span>
+                </span>
+                <small
+                  className={cx('edit-painting-window__file-input-allowed-files-hint', {
+                    'edit-painting-window__file-input-allowed-files-hint--dark': isDarkTheme,
+                  })}
+                >
+                  Upload only .jpg or .png format less than 3 MB
+                </small>
+              </p>
               <img
                 className={cx('edit-painting-window__image', {
-                  'edit-painting-window__image--image-selected': isImageSelected,
+                  'edit-painting-window__image--image-selected': imageSrc,
                 })}
-                ref={imageRef}
-                alt=""
+                src={imageSrc}
+                alt={imageAltText}
               />
-              <button
-                className={cx('edit-painting-window__upload-image-button', {
-                  'edit-painting-window__upload-image-button--image-selected': isImageSelected,
-                })}
-                onClick={triggerClickEventOnImageInputElement}
-                type="button"
-                tabIndex={-1}
-                aria-hidden
-              >
-                {!isMobile && uploadButtonTextWithoutUnderline}
-                <span className={cx('upload-image-button__underlined-text')}>
-                  {isMobile ? 'browse image' : 'browse'}
-                </span>
-              </button>
-              {isImageSelected && (
+              <Input
+                className={cx('edit-painting-window__image-input')}
+                ref={imageInputRef}
+                onChange={handleImageChange}
+                {...restImageFieldRegisterValues}
+                type="file"
+                accept={allowedTypes.join(',')}
+              />
+              {imageSrc && (
                 <IconButton
                   className={cx('edit-painting-window__image-reset-button')}
+                  isDarkTheme={isDarkTheme}
                   onClick={resetImage}
                   isOverImage
-                  type="button"
                 >
-                  <span className="visually-hidden">Delete selected image</span>
+                  <span className="visually-hidden">Delete selected painting</span>
                   <DeleteIcon aria-hidden />
                 </IconButton>
               )}
-            </div>
+              <FormLabel className="visually-hidden">Browse image</FormLabel>
+            </FormControl>
             <TextButton
               className={cx('edit-painting-window__edit-form-submit-button')}
+              isDarkTheme={isDarkTheme}
               type="submit"
             >
               Save

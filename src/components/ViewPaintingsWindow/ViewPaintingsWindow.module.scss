@@ -8,6 +8,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 
 .view-paintings-window {
@@ -16,6 +17,12 @@
   left: 0;
   width: 100%;
   height: 100%;
+
+  @media (min-width: $desktop-width) {
+    max-width: 1920px;
+    height: auto;
+    aspect-ratio: 42 / 32;
+  }
 
   &__close-button {
     position: absolute;
@@ -76,7 +83,7 @@
     width: 40px;
     height: 40px;
     background-color: transparent;
-    fill: $secondary-gray;
+    background-image: url("../../assets/icons/arrow-as-triangle--large-size--filled.svg");
     z-index: 1;
 
     &--prev {
@@ -111,7 +118,7 @@
     height: 100%;
   }
 
-  &__painting-caption {
+  &__caption-block {
     position: absolute;
     bottom: 80px;
     left: 0;
@@ -119,6 +126,7 @@
     flex-direction: column;
     row-gap: 4px;
     min-width: 253px;
+    max-width: calc(100% - 67px);
     min-height: 68px;
     padding: 16px 12px;
     text-transform: uppercase;
@@ -129,22 +137,45 @@
       left: 40px;
       row-gap: 8px;
       min-width: 498px;
+      max-width: calc(100% - 270px);
       min-height: 122px;
       padding: 40px 20px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 2px;
+        height: calc(100% - 80px);
+        background-color: $accent-red;
+      }
     }
 
-    @media (min-width: $tablet-width) {
+    @media (min-width: $desktop-width) {
       bottom: 100px;
       left: 120px;
+      max-width: calc(100% - 942px);
+    }
+
+    &--dark {
+      background-color: $primary-black;
+
+      &::before {
+        background-color: $accent-gold;
+      }
     }
   }
 
-  &__year-of-creation-painting {
+  &__year-of-creation {
     font-family: "Inter";
     font-size: 8px;
     font-weight: 700;
     line-height: 10px;
     color: $accent-red;
+
+    &--dark {
+      color: $accent-gold;
+    }
 
     @media (min-width: $tablet-width) {
       font-size: 12px;
@@ -152,13 +183,17 @@
     }
   }
 
-  &__painting-name {
+  &__name {
     font-family: "Cormorant SC";
     font-size: 12px;
     font-weight: 500;
     line-height: 15px;
     font-style: normal;
     color: $primary-black;
+
+    &--dark {
+      color: $primary-white;
+    }
 
     @media (min-width: $tablet-width) {
     font-size: 16px;
@@ -208,10 +243,5 @@
       right: 120px;
       bottom: 100px;
     }
-  }
-
-  &--service-windows-open {
-    pointer-events: none;
-    z-index: 0;
   }
 }

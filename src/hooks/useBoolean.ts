@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 export const useBoolean = (
-  initialState = false,
+  initialState: boolean | (() => boolean) = false,
 ): [boolean, Record<'on' | 'off' | 'toggle', () => void>] => {
   const [state, setState] = useState(initialState);
 

@@ -4,10 +4,10 @@ import { Genre } from './Genre';
 
 export interface ArtistById {
   _id: string;
-  avatar: Image;
-  name: string;
-  description: string;
-  yearsOfLife: string;
+  avatar?: Image | null;
+  name?: string;
+  description?: string;
+  yearsOfLife?: string;
   mainPainting?: Painting | null;
   paintings: Painting[];
   genres: Genre[];

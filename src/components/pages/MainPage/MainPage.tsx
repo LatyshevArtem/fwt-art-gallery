@@ -1,21 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import cn from 'classnames/bind';
 import { useIsAuth } from '@hooks/useIsAuth';
 import { useThemeContext } from '@hooks/useThemeContext';
 import { useLazyFetchArtistsQuery } from '@api/features';
 import Layout from '@components/layout/Layout';
-import TextButton from '@components/TextButton';
 import Preloader from '@components/Preloader';
 import PaintingsGrid from '@components/PaintingsGrid';
 import MainPagePaintingCard from '@components/MainPagePaintingCard';
-import EditArtistWindow from '@components/EditArtistWindow';
-import { ReactComponent as PlusIcon } from '@assets/icons/plus.svg';
+import AddArtistButton from './AddArtistButton';
 import styles from './MainPage.module.scss';
 
 const cx = cn.bind(styles);
 
 const MainPage = () => {
-  const [isEditArtistWindowOpen, setIsEditArtistWindowOpen] = useState(false);
   const isAuth = useIsAuth();
   const { isDarkTheme } = useThemeContext();
   const [fetchArtists, { isLoading, data }] = useLazyFetchArtistsQuery();
@@ -24,9 +21,6 @@ const MainPage = () => {
   const shouldShowAddArtistButton = isAuthStatusKnow && isAuth && data;
 
   const artists = data?.artists;
-
-  const openEditArtistWindow = () => setIsEditArtistWindowOpen(true);
-  const closeEditArtistWindow = () => setIsEditArtistWindowOpen(false);
 
   useEffect(() => {
     if (isAuthStatusKnow) {
@@ -42,19 +36,7 @@ const MainPage = () => {
           'main-page__content--auth-user': isAuth,
         })}
       >
-        {shouldShowAddArtistButton && (
-          <TextButton
-            className={cx('main-page__add-artist-button', {
-              'main-page__add-artist-button--dark': isDarkTheme,
-            })}
-            isDarkTheme={isDarkTheme}
-            onClick={openEditArtistWindow}
-            isUnderlined
-          >
-            <PlusIcon aria-hidden />
-            <span>Add artist</span>
-          </TextButton>
-        )}
+        {shouldShowAddArtistButton && <AddArtistButton isDarkTheme={isDarkTheme} />}
         {isLoading ? (
           <div className={cx('main-page__preloader-wrapper')}>
             <Preloader />
@@ -74,7 +56,6 @@ const MainPage = () => {
           </PaintingsGrid>
         )}
       </main>
-      {isEditArtistWindowOpen && <EditArtistWindow onClose={closeEditArtistWindow} />}
     </Layout>
   );
 };

@@ -8,8 +8,6 @@ const http = axios.create({
 });
 
 const handleRequestInterceptorSuccess = async (config: InternalAxiosRequestConfig) => {
-  const newConfig = config;
-
   if (
     config.method === 'get' ||
     config.method === 'delete' ||
@@ -18,17 +16,15 @@ const handleRequestInterceptorSuccess = async (config: InternalAxiosRequestConfi
     config.method === 'patch'
   ) {
     const accessToken = getTokenFromLocalStorage('access_token');
-    if (accessToken) {
-      config.headers.set('Authorization', `Bearer ${accessToken}`);
-    }
+    config.headers.set('Authorization', `Bearer ${accessToken}`);
   }
 
   if (config.method === 'post' && config.url?.includes('auth')) {
-    const fingerprint = await getFingerprint();
-    newConfig.data.fingerprint = fingerprint;
+    // eslint-disable-next-line no-param-reassign
+    config.data.fingerprint = await getFingerprint();
   }
 
-  return newConfig;
+  return config;
 };
 
 const handleResponseInterceptorSuccess = (response: AxiosResponse<AuthResponse>) => {

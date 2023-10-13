@@ -22,6 +22,31 @@
     padding-bottom: 23px;
   }
 
+  &--for-artist-card {
+    justify-content: flex-start;
+    row-gap: 32px;
+    height: 452px;
+    padding-top: 40px;
+    background-color: $secondary-white;
+
+    &::before {
+      width: 254px;
+      height: 228px;
+    }
+
+    @media (min-width: $tablet-width) {
+      height: 500px;
+      padding-top: 60px;
+    }
+
+    @media (min-width: $desktop-width) {
+      justify-content: center;
+      width: 1000px;
+      height: 1000px;
+      padding: 0;
+    }
+  }
+
   &--dark {
     background-color: $secondary-black;
 
@@ -46,6 +71,12 @@
     &--for-painting-card {
       font-size: 12px;
       line-height: 15px;
+    }
+
+    &--for-artist-card {
+      font-size: 20px;
+      line-height: 24px;
+      opacity: 0.5;
     }
   }
 }
