@@ -14,31 +14,49 @@
     }
   }
 
-  &__back-link-wrapper {
-    padding: 16px 20px 12px;
+  &__tools-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 52px;
+    padding-right: 20px;
+    padding-bottom: 12px;
+    padding-left: 20px;
 
     @media (min-width: $tablet-width) {
-      padding: 36px 20px 20px;
+      height: 80px;
+      padding-bottom: 20px;
     }
 
     @media (min-width: $desktop-width) {
-      padding: 52px 100px 24px;
+      align-items: flex-start;
+      height: 100px;
+      padding: 52px 100px 0 100px;
     }
-  }
 
-  &__back-link {
-    display: flex;
-    column-gap: 12px;
-    text-transform: uppercase;
+    .tools-bar {
+      &__back-link {
+        display: flex;
+        column-gap: 12px;
+        text-transform: uppercase;
 
-    .back-link {
-      &__icon {
-        transform: rotate(180deg);
+        .back-link {
+          &__icon {
+            width: 24px;
+            height: 24px;
+            transform: rotate(180deg);
+          }
+
+          &__text {
+            font-size: 12px;
+            font-weight: 700;
+          }
+        }
       }
 
-      &__text {
-        font-size: 12px;
-        font-weight: 700;
+      &__edit-buttons {
+        display: flex;
+        column-gap: 20px;
       }
     }
   }
@@ -51,11 +69,20 @@
     line-height: 100%;
     color: $accent-red;
 
+    &--auth-user {
+      padding-bottom: 20px;
+    }
+
     @media (min-width: $tablet-width) {
       padding: 98px 20px 60px 20px;
       font-size: 60px;
       font-weight: 500;
       line-height: 73px;
+
+      &--auth-user {
+        padding-bottom: 16px;
+      }
+
     }
 
     @media (min-width: $desktop-width) {
@@ -67,6 +94,22 @@
 
     &--dark {
       color: $accent-gold;
+    }
+  }
+
+  &__add-painting-button {
+    display: flex;
+    margin-right: 20px;
+    margin-left: auto;
+    column-gap: 12px;
+    margin-bottom: 16px;
+
+    @media (min-width: $tablet-width) {
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: $desktop-width) {
+      margin-right: 100px;
     }
   }
 

@@ -1,15 +1,10 @@
 @import "../App/scss/breakpoints.scss";
 @import "../App/scss/colors.scss";
 
-.painting-card {
+.card {
   position: relative;
   width: 100%;
   aspect-ratio: 56 / 37;
-
-  &__image {
-    width: 100%;
-    height: 100%;
-  }
 
   @media (min-width: $tablet-width) {
     aspect-ratio: 8 / 5;
@@ -18,35 +13,55 @@
   @media (min-width: $desktop-width) {
     aspect-ratio: 98 / 65;
   }
-}
 
-.figcaption {
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  row-gap: 4px;
-  width: 236px;
-  padding: 8px 12px;
-  text-transform: uppercase;
-  background-color: $primary-white;
-
-  @media (min-width: $tablet-width) {
-    row-gap: 8px;
-    width: 300px;
-    padding: 12px;
+  &__image {
+    width: 100%;
+    height: 100%;
   }
 
-  @media (min-width: $desktop-width) {
-    padding: 20px;
+  &__caption-block {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+    min-width: 236px;
+    max-width: calc(100% - 44px);
+    min-height: 45px;
+    padding: 8px 12px;
+    text-transform: uppercase;
+    background-color: $primary-white;
 
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      width: 2px;
-      height: 42px;
-      background-color: $accent-red;
+    @media (min-width: $tablet-width) {
+      row-gap: 8px;
+      min-width: 300px;
+      max-width: calc(100% - 52px);
+      min-height: 66px;
+      padding: 12px;
+    }
+
+    @media (min-width: $desktop-width) {
+      max-width: calc(100% - 92px);
+      min-height: 82px;
+      padding: 20px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        bottom: 20px;
+        left: 0;
+        width: 2px;
+        background-color: $accent-red;
+      }
+    }
+
+    &--dark {
+      background-color: $primary-black;
+
+      &::before {
+        background-color: $accent-gold;
+      }
     }
   }
 
@@ -61,6 +76,10 @@
       font-size: 16px;
       line-height: 19px;
     }
+
+    &--dark {
+      color: $primary-light-gray;
+    }
   }
 
   &__date {
@@ -74,6 +93,10 @@
       font-size: 12px;
       line-height: 15px;
     }
+
+    &--dark {
+      color: $accent-gold;
+    }
   }
 
   &__arrow-block {
@@ -83,35 +106,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 24px;
     height: 100%;
     background-color: $accent-red;
+
+    &--dark {
+      background-color: $accent-gold;
+    }
 
     @media (min-width: $desktop-width) {
       display: none;
     }
+
   }
 
-  &__arrow-icon {
+  &__arrow-block-icon {
+    width: 24px;
+    height: 24px;
     fill: $primary-light-gray;
-  }
-
-  &--dark {
-    background-color: $primary-black;
-
-    &::before {
-      background-color: $accent-gold;
-    }
-
-    .figcaption__name {
-      color: $primary-light-gray;
-    }
-
-    .figcaption__date {
-      color: $accent-gold;
-    }
-
-    .figcaption__arrow-block {
-      background-color: $accent-gold;
-    }
   }
 }
