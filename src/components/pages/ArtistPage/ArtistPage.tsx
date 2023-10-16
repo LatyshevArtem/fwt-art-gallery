@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import cn from 'classnames/bind';
 import { useIsAuth } from '@hooks/useIsAuth';
@@ -11,6 +11,7 @@ import Preloader from '@components/Preloader';
 import ArtistCard from '@components/ArtistCard';
 import PaintingsGrid from '@components/PaintingsGrid';
 import ArtistPagePaintingCard from '@components/ArtistPagePaintingCard';
+import Pagination from '@components/Pagination';
 import ViewPaintingsWindow from '@components/ViewPaintingsWindow';
 import { ReactComponent as BackArrowIcon } from '@assets/icons/arrow.svg';
 import EditArtistButton from './EditArtistButton';
@@ -20,27 +21,50 @@ import styles from './ArtistPage.module.scss';
 
 const cx = cn.bind(styles);
 
-let slideNumber = 0;
+const paintingsPerPageByDeviceSize = {
+  isMobile: 4,
+  isTablet: 8,
+  isDesktop: 12,
+};
+
+const getCountPaintingsPerPageByDeviceSize = (
+  isMobile: boolean,
+  isTablet: boolean,
+  isDesktop: boolean,
+) => {
+  let count = paintingsPerPageByDeviceSize.isMobile;
+
+  if (isTablet) {
+    count = paintingsPerPageByDeviceSize.isTablet;
+  } else if (isDesktop) {
+    count = paintingsPerPageByDeviceSize.isDesktop;
+  }
+
+  return count;
+};
 
 const ArtistPage = () => {
+  const [pageNumber, setPageNumber] = useState(1);
   const [isViewPaintingsWindowOpen, setIsViewPaintingsWindowOpen] = useState(false);
+  const slideNumberRef = useRef(0);
   const { id } = useParams();
   const isAuth = useIsAuth();
   const { isDarkTheme } = useThemeContext();
-  const { isMobile } = useMatchMedia();
-  const [fetchArtistById, { data, isLoading }] = useLazyFetchArtistByIdQuery();
+  const { isMobile, isTablet, isDesktop } = useMatchMedia();
+  const [fetchArtistById, { data: artist, isLoading }] = useLazyFetchArtistByIdQuery();
 
   const isAuthStatusKnow = typeof isAuth === 'boolean';
   const shouldShowEditButtons = isAuthStatusKnow && isAuth;
 
-  const artist = data;
+  const paintingsPerPage = getCountPaintingsPerPageByDeviceSize(isMobile, isTablet, isDesktop);
+  const totalPageCount = artist && Math.ceil(artist.paintings.length / paintingsPerPage);
 
   const openViewPaintingsWindow = () => setIsViewPaintingsWindowOpen(true);
   const closeViewPaintingsWindow = () => setIsViewPaintingsWindowOpen(false);
 
   const handlePaintingCardClick = (paintingNumber: number) => {
     return () => {
-      slideNumber = paintingNumber;
+      slideNumberRef.current = paintingNumber;
       openViewPaintingsWindow();
     };
   };
@@ -81,20 +105,35 @@ const ArtistPage = () => {
             </h1>
             {isAuth && <AddPaintingButton isDarkTheme={isDarkTheme} artistId={artist._id} />}
             {artist.paintings && (
-              <PaintingsGrid className={cx('artist-page__paintings')}>
-                {artist.paintings.map((painting, index) => (
-                  <li key={painting._id}>
-                    <ArtistPagePaintingCard
-                      isAuth={isAuth}
-                      isDarkTheme={isDarkTheme}
-                      artistId={id as string}
-                      painting={painting}
-                      mainPaintingId={artist.mainPainting?._id || ''}
-                      onClick={handlePaintingCardClick(index)}
-                    />
-                  </li>
-                ))}
+              <PaintingsGrid
+                className={cx('artist-page__paintings', {
+                  'artist-page__paintings--with-pagination': totalPageCount && totalPageCount > 1,
+                })}
+              >
+                {artist.paintings
+                  .slice((pageNumber - 1) * paintingsPerPage, pageNumber * paintingsPerPage)
+                  .map((painting, index) => (
+                    <li key={painting._id}>
+                      <ArtistPagePaintingCard
+                        isAuth={isAuth}
+                        isDarkTheme={isDarkTheme}
+                        artistId={id as string}
+                        painting={painting}
+                        mainPaintingId={artist.mainPainting?._id || ''}
+                        onClick={handlePaintingCardClick(index)}
+                      />
+                    </li>
+                  ))}
               </PaintingsGrid>
+            )}
+            {totalPageCount && totalPageCount > 1 && (
+              <Pagination
+                className={cx('artist-page__pagination')}
+                isDarkTheme={isDarkTheme}
+                current={pageNumber}
+                total={totalPageCount}
+                onChange={(nextPageNumber) => setPageNumber(nextPageNumber)}
+              />
             )}
           </>
         )}
@@ -102,7 +141,7 @@ const ArtistPage = () => {
       {isViewPaintingsWindowOpen && artist && (
         <ViewPaintingsWindow
           artistId={id as string}
-          initialSlideNumber={slideNumber}
+          initialSlideNumber={slideNumberRef.current}
           paintings={artist.paintings}
           onClose={closeViewPaintingsWindow}
         />
