@@ -6,5 +6,5 @@ export interface Artist {
   description: string;
   yearsOfLife: string;
   mainPainting: Painting;
-  __v: number;
+  genres: string[];
 }

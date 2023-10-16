@@ -5,5 +5,4 @@ export interface Painting {
   image: Image;
   name: string;
   yearOfCreation: string;
-  artist: string;
 }

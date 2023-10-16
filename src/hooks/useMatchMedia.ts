@@ -28,7 +28,8 @@ const useMatchMedia = (): UseMatchMedia => {
       mediaQueryLists.forEach((mediaQueryList) =>
         mediaQueryList.removeEventListener('change', handler),
       );
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return ['isMobile', 'isTablet', 'isDesktop'].reduce(
     (acc, screen, index) => ({ ...acc, [screen]: matchesList[index] }),

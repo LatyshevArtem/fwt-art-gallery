@@ -1,0 +1,29 @@
+.filter-item {
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 140%;
+  color: $primary-dark-gray;
+  cursor: pointer;
+
+  &:hover {
+    color: $primary-black;
+  }
+
+  &--selected {
+    color: $primary-black;
+    font-weight: 500;
+  }
+
+  &--dark {
+    color: $primary-light-gray;
+
+    &:hover {
+      color: $primary-white;
+    }
+  }
+
+  &--dark#{&}--selected {
+    color: $primary-white;
+  }
+}

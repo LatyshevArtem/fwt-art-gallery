@@ -7,16 +7,18 @@ import styles from './FormContiol.module.scss';
 const cx = cn.bind(styles);
 
 const useFormControlContext = () => {
-  const { id } = useContext(FormControlContext);
+  const context = useContext(FormControlContext);
 
-  return { id };
+  return context;
 };
 
-interface FormControlProps extends HTMLAttributes<HTMLDivElement> {}
+interface FormControlProps extends HTMLAttributes<HTMLDivElement> {
+  isDarkTheme?: boolean;
+}
 
-const FormControl: FC<FormControlProps> = ({ children, className, ...props }) => {
+const FormControl: FC<FormControlProps> = ({ children, className, isDarkTheme, ...props }) => {
   return (
-    <FormControlProvider>
+    <FormControlProvider isDarkTheme={isDarkTheme}>
       <div className={cx(className, 'form-control')} {...props}>
         {children}
       </div>

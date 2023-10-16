@@ -1,102 +1,101 @@
-import { ChangeEventHandler, FC, FormEventHandler, PropsWithChildren } from 'react';
+import { FC } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import cn from 'classnames/bind';
-import Modal from '@components/Modal/Modal';
-import ModalCloseButton from '@components/ModalCloseButton';
+import { useThemeContext } from '@hooks/useThemeContext';
+import Modal, { ModalBackdrop, ModalContent, ModalCloseButton } from '@components/Modal';
 import FormControl from '@components/FormControl';
 import FormLabel from '@components/FormLabel';
 import Input from '@components/Input';
-import TextButton from '@components/TextButton/TextButton';
+import TextButton from '@components/TextButton';
 import styles from './AuthWindow.module.scss';
 
 const cx = cn.bind(styles);
-
-type AuthWindowType = 'login' | 'signup';
 
 const authWindowContentByType = {
   login: {
     welcomeMessage: 'Welcome back',
     buttonText: 'Log in',
+    captionText: "If you don't have an account yet, please",
+    captionButtonText: 'sign up',
   },
   signup: {
     welcomeMessage: 'Create your profile',
     buttonText: 'Sign up',
+    captionText: 'If you already have an account, please',
+    captionButtonText: 'log in',
   },
 };
 
-interface AuthFormProps {
-  email: string;
-  onEmailChange: ChangeEventHandler<HTMLInputElement>;
-  password: string;
-  onPasswordChange: ChangeEventHandler<HTMLInputElement>;
-  onFormSubmit: FormEventHandler<HTMLFormElement>;
-}
-
-interface AuthWindowProps extends PropsWithChildren {
-  windowType: AuthWindowType;
-  isDarkTheme?: boolean;
-  isOpen: boolean;
+interface AuthWindowProps {
+  windowType: 'login' | 'signup';
+  onChangeWindowType: () => void;
+  onSubmit: (email: string, password: string) => void;
   onClose: () => void;
-  authFormProps: AuthFormProps;
 }
 
-const AuthWindow: FC<AuthWindowProps> = ({
-  children,
-  windowType,
-  isDarkTheme,
-  isOpen,
-  onClose,
-  authFormProps,
-}) => {
-  const { welcomeMessage, buttonText } = authWindowContentByType[windowType];
-  const { email, onEmailChange, password, onPasswordChange, onFormSubmit } = authFormProps;
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+const AuthWindow: FC<AuthWindowProps> = ({ windowType, onChangeWindowType, onSubmit, onClose }) => {
+  const { register, handleSubmit } = useForm<FormValues>({
+    defaultValues: { email: '', password: '' },
+  });
+  const { isDarkTheme } = useThemeContext();
+
+  const { welcomeMessage, buttonText, captionText, captionButtonText } =
+    authWindowContentByType[windowType];
+
+  const onAuthFormSubmit: SubmitHandler<FormValues> = ({ email, password }) =>
+    onSubmit(email, password);
 
   return (
-    <Modal
-      backdropClassName={cx('auth-modal', { 'auth-modal--dark': isDarkTheme })}
-      contentClassName={cx('auth-modal__content', `auth-modal__content--${windowType}`, {
-        'auth-modal__content--dark': isDarkTheme,
-      })}
-      isOpen={isOpen}
-      onClose={onClose}
-    >
-      <div className={cx('content__right-col')}>
-        <ModalCloseButton className={cx('content__close-button')} />
-        <div className={cx('content__wrapper')}>
-          <p className={cx('content__title', { 'content__title--dark': isDarkTheme })}>
+    <Modal onClose={onClose}>
+      <ModalBackdrop
+        className={cx('auth-window-backdrop', { 'auth-window-backdrop--dark': isDarkTheme })}
+      />
+      <ModalContent
+        className={cx('auth-window', `auth-window--${windowType}`, {
+          'auth-window--dark': isDarkTheme,
+        })}
+      >
+        <ModalCloseButton className={cx('auth-window__close-button')} />
+        <div className={cx('auth-window__main-content')}>
+          <p className={cx('auth-window__title', { 'auth-window__title--dark': isDarkTheme })}>
             {welcomeMessage}
           </p>
-          <form className={cx('content__form')} onSubmit={onFormSubmit}>
-            <FormControl className={cx('form__control')}>
-              <FormLabel isDarkTheme={isDarkTheme}>Email</FormLabel>
-              <Input
-                isDarkTheme={isDarkTheme}
-                value={email}
-                onChange={onEmailChange}
-                type="email"
-              />
+          <form className={cx('auth-window__form')} onSubmit={handleSubmit(onAuthFormSubmit)}>
+            <FormControl className={cx('auth-window__form-control')} isDarkTheme={isDarkTheme}>
+              <FormLabel>Email</FormLabel>
+              <Input {...register('email')} type="email" />
             </FormControl>
-            <FormControl className={cx('form__control')}>
-              <FormLabel isDarkTheme={isDarkTheme}>Password</FormLabel>
-              <Input
-                isDarkTheme={isDarkTheme}
-                value={password}
-                onChange={onPasswordChange}
-                type="password"
-              />
+            <FormControl className={cx('auth-window__form-control')} isDarkTheme={isDarkTheme}>
+              <FormLabel>Password</FormLabel>
+              <Input {...register('password')} type="password" />
             </FormControl>
             <TextButton
-              className={cx('form__submit-button')}
+              className={cx('auth-window__form-submit-button')}
               isDarkTheme={isDarkTheme}
               type="submit"
             >
               {buttonText}
             </TextButton>
           </form>
-          <small className={cx('content__caption', { 'content__caption--dark': isDarkTheme })}>
-            {children}
+          <small
+            className={cx('auth-window__caption', { 'auth-window__caption--dark': isDarkTheme })}
+          >
+            {captionText}&nbsp;
+            <button
+              className={cx('auth-window__change-window-button')}
+              onClick={onChangeWindowType}
+              type="button"
+            >
+              {captionButtonText}
+            </button>
           </small>
         </div>
-      </div>
+      </ModalContent>
     </Modal>
   );
 };
