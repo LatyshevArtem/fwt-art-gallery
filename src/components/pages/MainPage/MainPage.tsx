@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import cn from 'classnames/bind';
+import { useMatchMedia } from '@hooks/useMatchMedia';
 import { useIsAuth } from '@hooks/useIsAuth';
 import { useThemeContext } from '@hooks/useThemeContext';
 import { useAppSelector } from '@hooks/useAppSelector';
 import { selectArtistsFilters } from '@store/features/artistsFilters/artistsFiltersSlice';
 import { useLazyFetchArtistsQuery } from '@api/features';
 import Layout from '@components/layout/Layout';
+import NameFilter from '@components/NameFilter';
 import Preloader from '@components/Preloader';
 import PaintingsGrid from '@components/PaintingsGrid';
 import MainPagePaintingCard from '@components/MainPagePaintingCard';
@@ -16,6 +18,7 @@ import styles from './MainPage.module.scss';
 const cx = cn.bind(styles);
 
 const MainPage = () => {
+  const { isMobile } = useMatchMedia();
   const isAuth = useIsAuth();
   const { isDarkTheme } = useThemeContext();
   const { name, orderBy, genres } = useAppSelector(selectArtistsFilters);
@@ -34,7 +37,7 @@ const MainPage = () => {
       fetchArtists({ isAuth, name, orderBy, genres }, true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthStatusKnow, isAuth, fetchArtists]);
+  }, [isAuthStatusKnow, isAuth, name, fetchArtists]);
 
   return (
     <Layout className={cx('main-page', { 'main-page--dark': isDarkTheme })}>
@@ -47,7 +50,8 @@ const MainPage = () => {
         {shouldShowControls && (
           <div className={cx('main-page__controls')}>
             <AddArtistButton isDarkTheme={isDarkTheme} />
-            <div>
+            <div className={cx('main-page__filters-controls')}>
+              {!isMobile && <NameFilter isMobile={false} isDarkTheme={isDarkTheme} />}
               <FiltersButton isDarkTheme={isDarkTheme} onSubmit={handleFiltersFormSubmit} />
             </div>
           </div>

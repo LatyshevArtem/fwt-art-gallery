@@ -18,7 +18,7 @@ const artistsFiltersSlice = createSlice({
   name: 'artistsFilters',
   initialState,
   reducers: {
-    setName: (state, action: PayloadAction<string>) => {
+    setName: (state, action: PayloadAction<string | null>) => {
       state.name = action.payload;
     },
     setOrderBy: (state, action: PayloadAction<'asc' | 'desc' | null>) => {

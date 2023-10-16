@@ -6,6 +6,7 @@ import { useBoolean } from '@hooks/useBoolean';
 import { useThemeContext } from '@hooks/useThemeContext';
 import { useMatchMedia } from '@hooks/useMatchMedia';
 import Logo from '@components/Logo';
+import NameFilter from '@components/NameFilter';
 import { ReactComponent as BurgerMenuIcon } from '@assets/icons/menu-buger.svg';
 import Modal, { ModalBackdrop, ModalContent, ModalCloseButton } from '@components/Modal';
 import SignUpWindow from '@components/SignUpWindow';
@@ -27,7 +28,7 @@ const Header: FC = () => {
   const [isSidePageOpen, setIsSidePageOpen] = useBoolean();
   const [isSidePageMount, setIsSidePageMount] = useBoolean();
   const { isDarkTheme } = useThemeContext();
-  const { isDesktop } = useMatchMedia();
+  const { isMobile, isDesktop } = useMatchMedia();
 
   const isLogInWindowOpen = openWindow === 'login';
   const isSignUpWindowOpen = openWindow === 'signup';
@@ -52,9 +53,12 @@ const Header: FC = () => {
         <div className={cx('header__container')}>
           <Logo isDarkTheme={isDarkTheme} />
           {!isDesktop && (
-            <button className={cx('header__menu-button')} onClick={setIsSidePageOpen.on}>
-              <BurgerMenuIcon />
-            </button>
+            <div className={cx('header__container-right-col')}>
+              {isMobile && <NameFilter isDarkTheme={isDarkTheme} />}
+              <button className={cx('header__menu-button')} onClick={setIsSidePageOpen.on}>
+                <BurgerMenuIcon />
+              </button>
+            </div>
           )}
           {!isDesktop ? (
             <CSSTransition

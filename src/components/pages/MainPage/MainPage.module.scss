@@ -47,6 +47,12 @@
     }
   }
 
+  &__filters-controls {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+  }
+
   &__add-artist-button {
     column-gap: 12px;
   }

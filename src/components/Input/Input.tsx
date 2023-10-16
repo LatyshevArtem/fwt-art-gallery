@@ -7,18 +7,20 @@ const cx = cn.bind(styles);
 
 interface InputProps extends ComponentPropsWithoutRef<'input'> {}
 
-const Input = forwardRef<HTMLInputElement, InputProps>(({ id: idProp, ...props }, ref) => {
-  const { isDarkTheme, id } = useFormControlContext();
-  const inputId = idProp || id;
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ className, id: idProp, ...props }, ref) => {
+    const { isDarkTheme, id } = useFormControlContext();
+    const inputId = idProp || id;
 
-  return (
-    <input
-      className={cx('input', { 'input--dark': isDarkTheme })}
-      ref={ref}
-      id={inputId}
-      {...props}
-    />
-  );
-});
+    return (
+      <input
+        className={cx(className, 'input', { 'input--dark': isDarkTheme })}
+        ref={ref}
+        id={inputId}
+        {...props}
+      />
+    );
+  },
+);
 
 export default Input;

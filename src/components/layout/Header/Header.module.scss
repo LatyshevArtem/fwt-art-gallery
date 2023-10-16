@@ -24,6 +24,11 @@ $icon-button-dark-theme-fill: $primary-light-gray;
     }
   }
 
+  &__container-right-col {
+    display: flex;
+    column-gap: 20px;
+  }
+
   &__menu-button {
     line-height: 0;
     fill: $icon-button-light-theme-fill;
