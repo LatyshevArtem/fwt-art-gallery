@@ -13,11 +13,24 @@ interface ArtistsMeta {
 
 const artistApi = apiService.injectEndpoints({
   endpoints: (build) => ({
-    fetchArtists: build.query<{ artists: Artist[]; meta: ArtistsMeta | null }, boolean>({
-      query: (isAuth) => {
-        const destinationUrl = isAuth ? urlArtists : urlStaticArtists;
+    fetchArtists: build.query<
+      { artists: Artist[]; meta: ArtistsMeta | null },
+      {
+        isAuth: boolean;
+        name?: string | null;
+        orderBy?: 'asc' | 'desc' | null;
+        genres?: string[] | null;
+      }
+    >({
+      query: ({ isAuth, name, orderBy, genres }) => {
         return {
-          url: destinationUrl,
+          url: isAuth ? urlArtists : urlStaticArtists,
+          params: {
+            name,
+            sortBy: orderBy && 'name',
+            orderBy,
+            genres,
+          },
         };
       },
       transformResponse: (response: Artist[] | { data: Artist[]; meta: ArtistsMeta }) => {

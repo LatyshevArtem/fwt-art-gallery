@@ -35,14 +35,20 @@
     }
   }
 
-  &__add-artist-button {
-    column-gap: 12px;
-    margin-top: 36px;
-    margin-bottom: 20px;
+  &__controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 80px;
+    padding-bottom: 20px;
 
     @media (min-width: $tablet-width) {
-      margin-top: 56px;
+      height: 100px;
     }
+  }
+
+  &__add-artist-button {
+    column-gap: 12px;
   }
 
   &__preloader-wrapper {
