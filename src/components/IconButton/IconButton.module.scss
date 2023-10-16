@@ -1,0 +1,64 @@
+@import "../App/scss/colors.scss";
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  padding: 2px;
+  fill: $primary-dark-gray;
+  background-color: $secondary-white;
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    fill: $primary-black;
+  }
+
+  &--dark {
+    fill: $primary-light-gray;
+    background-color: $secondary-black;
+
+    &:disabled {
+      opacity: 0.5;
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      fill: $primary-white;
+    }
+  }
+
+  &--over-image {
+    fill: $primary-light-gray;
+    background-color: rgba($primary-white, 0.1);
+
+    &:disabled {
+      fill: $primary-light-gray;
+      opacity: 0.5;
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      fill: $primary-light-gray;
+      background-color: rgba($primary-white, 0.2);
+    }
+
+    &.button-dark {
+      background-color: rgba($secondary-black, 0.1);
+
+      &:disabled {
+        opacity: 0.5;
+      }
+
+      &:hover:not(:disabled) {
+        background-color: rgba($secondary-black, 0.2);
+      }
+    }
+  }
+}

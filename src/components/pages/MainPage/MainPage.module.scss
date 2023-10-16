@@ -1,38 +1,76 @@
 .main-page {
   display: grid;
   grid-template-rows: min-content 1fr min-content;
-  row-gap: 80px;
   min-height: 100%;
   background-color: $primary-white;
-
-  @media (min-width: $tablet-width) {
-    row-gap: 100px;
-  }
 
   &--dark {
     background-color: $primary-black;
   }
 
   &__content {
-    &--loading {
-      justify-self: center;
-      align-self: center;
-    }
-  }
-
-  &__paintings {
-    justify-content: center;
+    position: relative;
+    width: 100%;
     max-width: 1920px;
-    margin: 0 auto;
+    margin: 80px auto;
     padding: 0 20px;
+
+    &--loading {
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media (min-width: $tablet-width) {
+      margin: 100px auto;
+    }
 
     @media (min-width: $desktop-width) {
       padding: 0 100px;
     }
 
+    &--auth-user {
+      margin-top: 0;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 80px;
+    padding-bottom: 20px;
+
+    @media (min-width: $tablet-width) {
+      height: 100px;
+    }
+  }
+
+  &__filters-controls {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+  }
+
+  &__add-artist-button {
+    column-gap: 12px;
+  }
+
+  &__preloader-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__paintings {
+    justify-content: center;
+
     .paintings {
       &__link {
         width: auto;
+        text-decoration: none;
       }
     }
   }

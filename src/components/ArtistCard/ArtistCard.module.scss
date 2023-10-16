@@ -1,12 +1,11 @@
 .artist-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
   background-color: $primary-white;
 
   @media (min-width: $desktop-width) {
     position: relative;
-    align-items: flex-end;
+    display: flex;
+    justify-content: flex-end;
   }
 
   &--dark {
@@ -14,12 +13,10 @@
   }
 
   &__image {
-    display: block;
     width: 100%;
     height: 452px;
 
     @media (min-width: $tablet-width) {
-      width: 768px;
       height: 500px;
     }
 
@@ -29,17 +26,9 @@
     }
   }
 
-  &__figcaption {
+  &__caption-block {
     position: relative;
     background-color: inherit;
-
-    @media (max-width: calc($tablet-width - 1px)) {
-      max-width: 565px;
-    }
-
-    @media (min-width: $tablet-width) {
-      width: 768px;
-    }
 
     @media (min-width: $desktop-width) {
       position: absolute;
@@ -47,170 +36,167 @@
       left: 100px;
       display: flex;
       flex-direction: column;
-      row-gap: 52px;
       width: 604px;
       min-height: 552px;
-      padding: 80px;
+      padding: 60px 80px;
+    }
+  }
+
+  &__brief-info {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    min-width: 300px;
+    max-width: calc(100% - 20px);
+    min-height: 118px;
+    padding: 20px;
+    font-family: "Cormorant SC";
+    background-color: inherit;
+
+    @media (min-width: $tablet-width) {
+      row-gap: 12px;
+      min-width: 560px;
+      max-width: calc(100% - 208px);
+      min-height: 119px;
     }
 
-    .figcaption {
-      &__brief-info {
+    @media (min-width: $desktop-width) {
+      position: static;
+      row-gap: 32px;
+      min-width: auto;
+      max-width: none;
+      min-height: auto;
+      margin-bottom: 52px;
+      padding: 0;
+    }
+  }
+
+  &__years-of-life {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    color: $primary-dark-gray;
+
+    @media (min-width: $tablet-width) {
+      font-size: 16px;
+      line-height: 19px;
+    }
+
+    &--dark {
+      color: $secondary-gray
+    }
+  }
+
+  &__name {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 100%;
+    color: $accent-red;
+
+    @media (min-width: $tablet-width) {
+      position: relative;
+      font-size: 48px;
+      font-weight: 500;
+
+      &::before {
+        content: "";
         position: absolute;
-        bottom: 100%;
+        top: 0;
+        left: -20px;
+        width: 2px;
+        height: 100%;
+        background-color: currentColor;
+      }
+    }
+
+    @media (min-width: $desktop-width) {
+      font-size: 60px;
+      line-height: 73px;
+
+      &::before {
+        left: -80px;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -30px;
         left: 0;
-        display: flex;
-        flex-direction: column;
-        row-gap: 8px;
-        width: 300px;
-        height: 118px;
-        padding: 20px;
-        font-family: "Cormorant SC";
-        background-color: inherit;
-
-        @media (min-width: $tablet-width) {
-          row-gap: 12px;
-          width: 560px;
-          height: 119px;
-        }
-
-        @media (min-width: $desktop-width) {
-          position: static;
-          row-gap: 32px;
-          width: 100%;
-          height: auto;
-          padding: 0;
-        }
-
-        .brief-info {
-          &__years-of-life {
-            font-size: 12px;
-            font-weight: 500;
-            line-height: 15px;
-            color: $primary-dark-gray;
-
-            @media (min-width: $tablet-width) {
-              font-size: 16px;
-              line-height: 19px;
-            }
-
-            &--dark {
-              color: $secondary-gray
-            }
-          }
-
-          &__name {
-            font-size: 32px;
-            font-weight: 600;
-            line-height: 100%;
-            color: $accent-red;
-
-            @media (min-width: $tablet-width) {
-              position: relative;
-              font-size: 48px;
-              font-weight: 500;
-
-              &::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: -20px;
-                width: 2px;
-                height: 100%;
-                background-color: currentColor;
-              }
-            }
-
-            @media (min-width: $desktop-width) {
-              font-size: 60px;
-              line-height: 73px;
-
-              &::before {
-                left: -80px;
-              }
-
-              &::after {
-                content: "";
-                position: absolute;
-                bottom: -32px;
-                left: 0;
-                width: 30px;
-                height: 2px;
-                background-color: $primary-dark-gray;
-              }
-            }
-
-            &--dark {
-              color: $accent-gold;
-
-              &::after {
-                background-color: $primary-light-gray;
-              }
-            }
-          }
-        }
+        width: 30px;
+        height: 2px;
+        background-color: $primary-dark-gray;
       }
+    }
 
-      &__info {
-        display: flex;
-        flex-direction: column;
-        row-gap: 32px;
-        padding: 20px 20px 0 20px;
-        font-family: "Inter";
+    &--dark {
+      color: $accent-gold;
 
-        @media (min-width: $tablet-width) {
-          padding: 40px 20px 0 20px;
-        }
-
-        @media (min-width: $desktop-width) {
-          padding: 0;
-        }
-
-        .info {
-          &__description {
-            text-align: justify;
-            font-size: 16px;
-            font-weight: 300;
-            line-height: 140%;
-            color: $primary-dark-gray;
-
-            &--dark {
-              color: $primary-light-gray;
-            }
-          }
-
-          &__genres {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px 8px;
-
-            @media (min-width: $tablet-width) {
-              column-gap: 20px;
-            }
-          }
-
-          &__genre {
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-size: 8px;
-            font-weight: 500;
-            line-height: 10px;
-            color: $primary-dark-gray;
-            background-color: rgba(18, 18, 18, 0.05);
-
-            &--dark {
-              color: $primary-light-gray;
-              outline: 1px solid $primary-white;
-              outline-offset: -1px;
-              background-color: rgba(205, 205, 205, 0.05);
-            }
-
-            @media (min-width: $tablet-width) {
-              font-size: 12px;
-              line-height: 140%;
-            }
-          }
-        }
+      &::after {
+        background-color: $primary-light-gray;
       }
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px;
+    padding: 20px 20px 0 20px;
+    font-family: "Inter";
+
+    @media (min-width: $tablet-width) {
+      padding-top: 40px;
+    }
+
+    @media (min-width: $desktop-width) {
+      padding: 0;
+    }
+  }
+
+  &__biography {
+    text-align: justify;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 140%;
+    color: $primary-dark-gray;
+
+    &--dark {
+      color: $primary-light-gray;
+    }
+  }
+
+  &__genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 8px;
+
+    @media (min-width: $tablet-width) {
+      column-gap: 20px;
+    }
+  }
+
+  &__genre {
+    border-radius: 30px;
+    padding: 8px 16px;
+    font-size: 8px;
+    font-weight: 500;
+    line-height: 10px;
+    color: $primary-dark-gray;
+    background-color: rgba(18, 18, 18, 0.05);
+
+    &--dark {
+      color: $primary-light-gray;
+      outline: 1px solid $primary-white;
+      outline-offset: -1px;
+      background-color: rgba(205, 205, 205, 0.05);
+    }
+
+    @media (min-width: $tablet-width) {
+      font-size: 12px;
+      line-height: 140%;
     }
   }
 }
