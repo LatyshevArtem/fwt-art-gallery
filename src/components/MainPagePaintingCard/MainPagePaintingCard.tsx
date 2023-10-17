@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import PaintingCard from '@components/PaintingCard';
+import { useInView } from 'react-intersection-observer';
+import PaintingCard, { PaintingCardSkeleton } from '@components/PaintingCard';
 import { Painting } from '@schemas/Painting';
 
 interface MainPagePaintingCardProps {
@@ -18,14 +19,20 @@ const MainPagePaintingCard: FC<MainPagePaintingCardProps> = ({
   name,
   yearsOfLife,
 }) => {
+  const { ref, inView } = useInView({ threshold: 0, triggerOnce: true });
+
   return (
-    <Link to={`artists/${artistId}`}>
-      <PaintingCard
-        isDarkTheme={isDarkTheme}
-        image={mainPainting?.image}
-        name={name}
-        date={yearsOfLife}
-      />
+    <Link ref={ref} to={`artists/${artistId}`}>
+      {inView ? (
+        <PaintingCard
+          isDarkTheme={isDarkTheme}
+          image={mainPainting?.image}
+          name={name}
+          date={yearsOfLife}
+        />
+      ) : (
+        <PaintingCardSkeleton isDarkTheme={isDarkTheme} />
+      )}
     </Link>
   );
 };

@@ -8,9 +8,9 @@ import { selectArtistsFilters } from '@store/features/artistsFilters/artistsFilt
 import { useLazyFetchArtistsQuery } from '@api/features';
 import Layout from '@components/layout/Layout';
 import NameFilter from '@components/NameFilter';
-import Preloader from '@components/Preloader';
 import PaintingsGrid from '@components/PaintingsGrid';
 import MainPagePaintingCard from '@components/MainPagePaintingCard';
+import { PaintingCardSkeleton } from '@components/PaintingCard';
 import AddArtistButton from './AddArtistButton';
 import FiltersButton from './FiltersButton';
 import styles from './MainPage.module.scss';
@@ -56,14 +56,9 @@ const MainPage = () => {
             </div>
           </div>
         )}
-        {isLoading ? (
-          <div className={cx('main-page__preloader-wrapper')}>
-            <Preloader />
-          </div>
-        ) : (
-          <PaintingsGrid className={cx('main-page__paintings')}>
-            {artists &&
-              artists.map((artist) => (
+        <PaintingsGrid className={cx('main-page__paintings')}>
+          {artists
+            ? artists.map((artist) => (
                 <li key={artist._id}>
                   <MainPagePaintingCard
                     isDarkTheme={isDarkTheme}
@@ -71,9 +66,13 @@ const MainPage = () => {
                     {...artist}
                   />
                 </li>
+              ))
+            : [...new Array(12)].map(() => (
+                <li>
+                  <PaintingCardSkeleton isDarkTheme={isDarkTheme} />
+                </li>
               ))}
-          </PaintingsGrid>
-        )}
+        </PaintingsGrid>
       </main>
     </Layout>
   );
