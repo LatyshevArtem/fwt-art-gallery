@@ -1,0 +1,39 @@
+.artist-page-painting-card {
+  position: relative;
+
+  &__open-view-paintings-window-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  &__open-context-menu-button {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+
+    @media (min-width: $desktop-width) {
+      &:not(&--visible) {
+        opacity: 0;
+      }
+
+      :hover > & {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__context-menu {
+    position: absolute;
+    top: 44px;
+    left: 12px;
+
+    &::before {
+      top: -2px;
+      left: 10px;
+    }
+  }
+}

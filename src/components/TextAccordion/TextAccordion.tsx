@@ -10,7 +10,6 @@ const cx = cn.bind(styles);
 interface AccordionProps {
   className?: string;
   isDarkTheme?: boolean;
-  textClassName?: string;
   showMoreButtonText?: string;
   showLessButtonText?: string;
   text: string;
@@ -20,7 +19,6 @@ interface AccordionProps {
 const Accordion: FC<AccordionProps> = ({
   className,
   isDarkTheme,
-  textClassName,
   showMoreButtonText = 'Read more',
   showLessButtonText = 'Read less',
   text,
@@ -38,7 +36,7 @@ const Accordion: FC<AccordionProps> = ({
   return (
     <div className={cx(className, 'text-accordion')}>
       <p
-        className={cx(textClassName, {
+        className={cx({
           'text-accordion__text--dark': isDarkTheme,
           'text-accordion__text--hidden': !isOpen,
         })}
@@ -54,7 +52,7 @@ const Accordion: FC<AccordionProps> = ({
         isUnderlined
       >
         <span>{buttonOutputText}</span>
-        <ExpandIcon className={cx('toggle-button__icon')} />
+        <ExpandIcon className={cx('text-accordion__toggle-button-icon')} />
       </TextButton>
     </div>
   );

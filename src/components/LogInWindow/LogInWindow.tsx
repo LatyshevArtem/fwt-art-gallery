@@ -1,42 +1,35 @@
-import { ChangeEventHandler, FC, useState } from 'react';
-import { useThemeContext } from '@hooks/useThemeContext';
+import { FC } from 'react';
+import { useLoginMutation } from '@api/features';
+import { useAppDispatch } from '@hooks/useAppDispatch';
+import { setTokensToLocalStorage } from '@utils/token';
+import { setIsAuth } from '@store/features/auth/authSlice';
 import AuthWindow from '@components/AuthWindow';
-import AuthWindowLink from '@components/AuthWindowLink';
-
-type InputChangeEventHandler = ChangeEventHandler<HTMLInputElement>;
 
 interface LogInWindowProps {
-  isOpen: boolean;
+  onChangeWindowType: () => void;
   onClose: () => void;
 }
 
-const LogInWindow: FC<LogInWindowProps> = ({ isOpen, onClose }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { isDarkTheme } = useThemeContext();
+const LogInWindow: FC<LogInWindowProps> = ({ onChangeWindowType, onClose }) => {
+  const [login, { isSuccess, data }] = useLoginMutation();
+  const dispatch = useAppDispatch();
 
-  const onEmailChange: InputChangeEventHandler = (evt) => setEmail(evt.target.value);
-  const onPasswordChange: InputChangeEventHandler = (evt) => setPassword(evt.target.value);
+  if (isSuccess && data) {
+    const { accessToken, refreshToken } = data;
+    setTokensToLocalStorage(accessToken, refreshToken);
+    dispatch(setIsAuth(true));
+    onClose();
+  }
+
+  const handleSubmit = (username: string, password: string) => login({ username, password });
 
   return (
     <AuthWindow
       windowType="login"
-      isDarkTheme={isDarkTheme}
-      isOpen={isOpen}
+      onChangeWindowType={onChangeWindowType}
+      onSubmit={handleSubmit}
       onClose={onClose}
-      authFormProps={{
-        email,
-        onEmailChange,
-        password,
-        onPasswordChange,
-        onFormSubmit: () => {},
-      }}
-    >
-      If you don&apos;t have an account yet, please&nbsp;
-      <AuthWindowLink isDarkTheme={isDarkTheme} to="signup">
-        sign up
-      </AuthWindowLink>
-    </AuthWindow>
+    />
   );
 };
 

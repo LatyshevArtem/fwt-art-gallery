@@ -1,0 +1,83 @@
+.skeleton {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 56 / 37;
+  background-color: #eeeded;
+  overflow: hidden;
+
+  &--dark {
+    background-color: #0d0d0d;
+  }
+
+  @media (min-width: $tablet-width) {
+    aspect-ratio: 8 / 5;
+  }
+
+  @media (min-width: $desktop-width) {
+    aspect-ratio: 98 / 65;
+  }
+
+  &__filler {
+    width: 1000px;
+    height: 1000px;
+  }
+
+  &__caption-block {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+    width: 260px;
+    height: 45px;
+    padding: 8px 12px;
+    background-color: $primary-white;
+
+    &--dark {
+      background-color: $primary-black;
+    }
+
+    @media (min-width: $tablet-width) {
+      width: 324px;
+      height: 66px;
+      padding: 12px;
+      row-gap: 8px;
+    }
+
+    @media (min-width: $desktop-width) {
+      width: 300px;
+      height: 82px;
+      padding: 20px;
+      row-gap: 8px;
+    }
+  }
+
+  &__caption-block-line {
+    flex-grow: 1;
+    background-color: #eeeded;
+
+    &--first {
+      width: 160px;
+    }
+
+    &--second {
+      width: 47px;
+    }
+
+    @media (min-width: $tablet-width) {
+      &--first {
+        width: 214px;
+      }
+
+      &--second {
+        width: 70px;
+      }
+    }
+
+    &--dark {
+      background-color: #0d0d0d;
+    }
+  }
+}

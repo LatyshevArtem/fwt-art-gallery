@@ -24,6 +24,11 @@ $icon-button-dark-theme-fill: $primary-light-gray;
     }
   }
 
+  &__container-right-col {
+    display: flex;
+    column-gap: 20px;
+  }
+
   &__menu-button {
     line-height: 0;
     fill: $icon-button-light-theme-fill;
@@ -39,62 +44,46 @@ $icon-button-dark-theme-fill: $primary-light-gray;
   }
 }
 
+.side-page-backdrop {
+  background-color: transparent;
+  transition: background-color 0.5s ease-in-out;
+
+  &--active {
+    background-color: rgba(3, 3, 3, 0.3);
+  }
+
+  &--active#{&}--dark {
+    background-color: rgba(3, 3, 3, 0.6);;
+  }
+}
+
 .side-page {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: 252px;
   height: 100%;
-  transition: background-color 0.5s ease-in-out;
-  overflow: hidden;
-  pointer-events: none;
+  padding: 144px 47px;
+  background-color: $secondary-white;
+  transform: translateX(100%);
+  transition: transform 0.5s ease-in-out;
 
-  &--open {
-    pointer-events: auto;
-    background-color: rgba(3, 3, 3, 0.30);
-
-    &--dark {
-      background-color: rgba(3, 3, 3, 0.60);
-    }
+  @media (min-width: $tablet-width) {
+    width: 466px;
+    padding: 200px 94px;
   }
 
-  &__content {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    row-gap: 100px;
-    width: 252px;
-    height: 100%;
-    padding: 20px 20px 20px 47px;
-    background-color: $secondary-white;
-    transform: translateX(100%);
-    transition: transform 0.5s ease-in-out;
-    pointer-events: auto;
-
-    @media (min-width: $tablet-width) {
-      row-gap: 144px;
-      width: 466px;
-      padding: 32px 20px 32px 94px;
-    }
-  }
-
-  &__menu-button {
-    align-self: flex-end;
+  &--active {
+    transform: translateX(0);
   }
 
   &--dark {
-    .side-page {
-      &__content {
-        background-color: $primary-black;
-      }
-    }
+    background-color: $primary-black;
   }
 
-  &--open {
-    .side-page__content {
-      transform: translateX(0);
-    }
+  &__close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
   }
 }

@@ -1,12 +1,11 @@
 import { createContext } from 'react';
 
 interface FormControlContextValue {
+  isDarkTheme?: boolean;
   id?: string;
 }
 
-const defaultValue: FormControlContextValue = {};
-
-const FormControlContext = createContext<FormControlContextValue>(defaultValue);
+const FormControlContext = createContext<FormControlContextValue>({});
 
 export type { FormControlContextValue };
 export { FormControlContext };

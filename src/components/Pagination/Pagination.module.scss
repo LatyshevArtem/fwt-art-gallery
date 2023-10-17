@@ -1,0 +1,80 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    background-color: transparent;
+  }
+
+  &__icon-button {
+    margin-left: 16px;
+
+    &--back {
+      transform: rotate(180deg);
+      margin-right: 16px;
+      margin-left: 0;
+    }
+  }
+
+  &__number-button {
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-family: "Inter";
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 140%;
+    color: $primary-dark-gray;
+
+    &--dark {
+      color: $primary-light-gray;
+    }
+
+    &:hover {
+      font-weight: 500;
+    }
+
+    &--selected {
+      font-weight: 500;
+      background-color: rgba(18, 18, 18, 0.05);
+    }
+
+    &--dark#{&}--selected {
+      background-color: $secondary-black;
+    }
+  }
+
+  &__button-icon {
+    width: 24px;
+    height: 24px;
+    fill: $primary-dark-gray;
+
+    &--dark {
+      fill: $primary-light-gray;
+    }
+
+    :hover > & {
+      fill: $primary-black;
+    }
+
+    :hover > &--dark {
+      fill: $primary-white;
+    }
+  }
+
+  &__ellipsis {
+    font-family: "Inter";
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 140%;
+    color: $primary-dark-gray;
+
+    &--dark {
+      color: $primary-light-gray;
+    }
+  }
+}

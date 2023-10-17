@@ -1,0 +1,41 @@
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AuthResponse } from '@schemas/AuthResponse';
+import { getTokenFromLocalStorage, setTokensToLocalStorage } from '@utils/token';
+import { getFingerprint } from './getFingerprint';
+
+const http = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+});
+
+const handleRequestInterceptorSuccess = async (config: InternalAxiosRequestConfig) => {
+  if (
+    config.method === 'get' ||
+    config.method === 'delete' ||
+    config.method === 'post' ||
+    config.method === 'put' ||
+    config.method === 'patch'
+  ) {
+    const accessToken = getTokenFromLocalStorage('access_token');
+    config.headers.set('Authorization', `Bearer ${accessToken}`);
+  }
+
+  if (config.method === 'post' && config.url?.includes('auth')) {
+    // eslint-disable-next-line no-param-reassign
+    config.data.fingerprint = await getFingerprint();
+  }
+
+  return config;
+};
+
+const handleResponseInterceptorSuccess = (response: AxiosResponse<AuthResponse>) => {
+  if (response.config.method === 'post' && response.config.url?.includes('auth')) {
+    const { accessToken, refreshToken } = response.data;
+    setTokensToLocalStorage(accessToken, refreshToken);
+  }
+  return response;
+};
+
+http.interceptors.request.use(handleRequestInterceptorSuccess);
+http.interceptors.response.use(handleResponseInterceptorSuccess);
+
+export { http };
